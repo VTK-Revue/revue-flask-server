@@ -1,9 +1,7 @@
-from flask import Flask
-app = Flask(__name__)
+#!/usr/bin/env python
+# encoding: utf-8
 
-@app.route('/')
-def hello_world():
-    return 'VTK-revue development!'
+from revue import app
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
