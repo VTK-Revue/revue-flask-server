@@ -1,9 +1,9 @@
 from flask import render_template
 
-from . import public_site
+from . import internal_site
 
 
-@public_site.route("/")
-@public_site.route("/index")
+@internal_site.route("/")
+@internal_site.route("/index")
 def index():
     return render_template("layout.html")

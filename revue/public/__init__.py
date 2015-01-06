@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-public_site = Blueprint()
+public_site = Blueprint('public', __name__, template_folder='templates')
 
-import .views
+from . import views
