@@ -5,6 +5,13 @@ from flask import Flask
 
 # Create application
 app = Flask(__name__)
+app.config.from_object('config.Config')
+
+# Import database handlers
+from flask.ext.sqlalchemy import SQLAlchemy
+
+# Database setup
+db = SQLAlchemy(app)
 
 # Import blueprints
 from .api import api

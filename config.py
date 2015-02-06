@@ -1,5 +1,7 @@
 # http://flask.pocoo.org/docs/config/#development-production
 
+import os
+
 
 class Config(object):
     # Run `python2 -c 'import os; print os.urandom(24)'`
@@ -8,6 +10,7 @@ class Config(object):
     SECRET_KEY = ''
     DEBUG = False
     TESTING = False
+    SQLALCHEMY_DATABASE_URI = "postgresql://revue:revuedb@localhost/revue"
 
 
 class DevelopmentConfig(Config):
