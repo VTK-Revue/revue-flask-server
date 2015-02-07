@@ -5,14 +5,28 @@
 <h2>Here some public <b>login</b> content</h2>
 
 <form action="" method="post">
-    <dl>
-      <dt>Username:
-      <dd><input type="text" placeholder="Username" name="username" value="{{
-          request.form.username }}">
-      <dt>Password:
-      <dd><input type="password" placeholder= "Password" name="password">
-    </dl>
-    <p><input type="submit" value="Login">
+    {{ form.csrf_token }}
+  <p>
+    {{ form.username(placeholder="username") }}
+    <span class="error">
+      {% if form.username.errors %}
+        {% for error in form.username.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.password(placeholder="password") }}
+    <span class="error">
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  {{ form.submit }}
   </form>
 
 {% endblock %}
