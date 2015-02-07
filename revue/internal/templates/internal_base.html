@@ -9,7 +9,7 @@
         <li><a href="">Home</a></li>
         <li><a href="activities">Activities</a></li>
         <li><a href="script">Script</a></li>
-        <li><a href="logout">Logout</a></li>
+        <li><a href="/logout">Logout</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/">Public</a></li>
@@ -18,6 +18,10 @@
 </nav>
 
 <div class="container">
+
+          {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
 
      <div class="jumbotron">
         <h1>Intern home</h1>
