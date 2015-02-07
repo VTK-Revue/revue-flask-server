@@ -1,6 +1,8 @@
 from flask import render_template, Blueprint, redirect, url_for, request, flash, session
 from revue.login import login_required
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
+from revue.models import User
+from revue import db, bcrypt
 
 public_site = Blueprint('public', __name__, template_folder='templates')
 
@@ -12,18 +14,14 @@ def index():
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    if request.method == 'POST':
-        print "validate: "+str(form.validate())
-        if form.validate():
-            if form.username.data != 'admin' or form.password.data != 'admin':
-                print "wrong login"
-                flash('Invalid login', 'danger')
-            else:
-                print "login"
+    if request.method == 'POST' and form.validate():
+            user = User.query.filter_by(username = form.username.data).first()
+            if user is not None and bcrypt.check_password_hash(user.password, form.password.data):
                 session['logged_in'] = True
                 flash('You just logged in', 'success')
                 return redirect('intern')
-        print form.username
+            else:
+                flash('Invalid login', 'danger')
 
     return render_template("public/login.html", form=form)
 
@@ -42,4 +40,21 @@ def info():
 def archive():
     return render_template("public/archive.html")
 
+@public_site.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == 'POST' and form.validate():
+        newUser = User(
+            form.firstName.data,
+            form.lastName.data,
+            form.email.data,
+            form.username.data,
+            form.password.data
+        )
+        db.session.add(newUser)
+        db.session.commit()
+        session['logged_in'] = True
+        flash('You just created an account', 'success')
+        return redirect('intern')
+    return render_template("public/register.html", form = form)
 

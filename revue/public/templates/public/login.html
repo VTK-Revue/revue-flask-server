@@ -2,11 +2,12 @@
 
 {% block content %}
 
-<h2>Here some public <b>login</b> content</h2>
+<h2>Login</h2>
 
 <form action="" method="post">
     {{ form.csrf_token }}
   <p>
+  {{ form.username.label }}
     {{ form.username(placeholder="username") }}
     <span class="error">
       {% if form.username.errors %}
@@ -17,6 +18,7 @@
     </span>
   </p>
   <p>
+  {{ form.password.label }}
   {{ form.password(placeholder="password") }}
     <span class="error">
       {% if form.password.errors %}

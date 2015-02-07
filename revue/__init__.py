@@ -3,15 +3,16 @@
 
 from flask import Flask
 
+
 # Create application
 app = Flask(__name__)
 app.config.from_object('config.Config')
 
-# Import database handlers
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.bcrypt import Bcrypt
 
-# Database setup
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
 # Import blueprints
 from .api import api

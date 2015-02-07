@@ -1,0 +1,78 @@
+{% extends "public_base.html" %}
+
+{% block content %}
+
+<h2>Register</h2>
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+  <p>
+  {{ form.firstName.label }}
+    {{ form.firstName(placeholder="first name") }}
+    <span class="error">
+      {% if form.firstName.errors %}
+        {% for error in form.firstName.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.lastName.label }}
+  {{ form.lastName(placeholder="last name") }}
+    <span class="error">
+      {% if form.lastName.errors %}
+        {% for error in form.lastName.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.email.label }}
+    {{ form.email(placeholder="email") }}
+    <span class="error">
+      {% if form.email.errors %}
+        {% for error in form.email.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.username.label }}
+    {{ form.username(placeholder="username") }}
+    <span class="error">
+      {% if form.username.errors %}
+        {% for error in form.username.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.password.label }}
+  {{ form.password(placeholder="password") }}
+    <span class="error">
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.password_repeat.label }}
+  {{ form.password_repeat(placeholder="password") }}
+    <span class="error">
+      {% if form.password_repeat.errors %}
+        {% for error in form.password_repeat.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  {{ form.submit }}
+  </form>
+
+{% endblock %}
