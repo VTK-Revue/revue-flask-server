@@ -15,13 +15,13 @@ db = SQLAlchemy(app)
 
 # Import blueprints
 from .api import api
-from .public import public_site
-from .internal import internal_site
+from .public.views import public_site
+from .internal.views import internal_site
 
 # Register blueprints
 app.register_blueprint(api, url_prefix='/api')
-app.register_blueprint(public_site)
 app.register_blueprint(internal_site, url_prefix='/intern')
+app.register_blueprint(public_site)
 
 # Setup logging
 # TODO: create sane defaults for development
