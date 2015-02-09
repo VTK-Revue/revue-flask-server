@@ -3,7 +3,7 @@
 import os
 
 
-class Config(object):
+class BaseConfig(object):
     # Run `python2 -c 'import os; print os.urandom(24)'`
     # to generate a random key
     # http://flask.pocoo.org/docs/0.10/quickstart/#sessions
@@ -13,9 +13,11 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 
-class DevelopmentConfig(Config):
+class DevelopmentConfig(BaseConfig):
     DEBUG = True
 
 
-class TestingConfig(Config):
+class TestingConfig(BaseConfig):
     TESTING = True
+
+class ProductionConfig(BaseConfig):
