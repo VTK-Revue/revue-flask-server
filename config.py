@@ -7,10 +7,10 @@ class Config(object):
     # Run `python2 -c 'import os; print os.urandom(24)'`
     # to generate a random key
     # http://flask.pocoo.org/docs/0.10/quickstart/#sessions
-    SECRET_KEY = 'Some key'
+    SECRET_KEY = os.environ['SECRET_KEY']
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = "postgresql://revue:revuedb@localhost/revue"
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 
 class DevelopmentConfig(Config):
