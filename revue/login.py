@@ -1,7 +1,8 @@
 from functools import wraps
 from flask import session, redirect, flash
 
-#login required decorator
+
+# login required decorator
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):

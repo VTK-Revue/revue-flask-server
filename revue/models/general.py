@@ -1,9 +1,10 @@
 from revue import db, bcrypt
 
+
 class User(db.Model):
     __tablename__ = 'user'
     __table_args__ = {'schema': 'general'}
-    id = db.Column('id', db.Integer, primary_key = True)
+    id = db.Column('id', db.Integer, primary_key=True)
     firstName = db.Column(db.String(60))
     lastName = db.Column(db.String(60))
     email = db.Column(db.String(50))

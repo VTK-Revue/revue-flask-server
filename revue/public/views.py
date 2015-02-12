@@ -1,4 +1,5 @@
-from flask import render_template, Blueprint, redirect, url_for, request, flash, session
+from flask import render_template, Blueprint, redirect, url_for, request, \
+    flash, session
 from revue.login import login_required
 from forms import LoginForm, RegisterForm
 from revue.models import User
@@ -6,17 +7,21 @@ from revue import db, bcrypt
 
 public_site = Blueprint('public', __name__, template_folder='templates')
 
+
 @public_site.route("/")
 @public_site.route("/index")
 def index():
     return render_template("public/index.html")
 
+
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-            user = User.query.filter_by(username = form.username.data).first()
-            if user is not None and bcrypt.check_password_hash(user.password, form.password.data):
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is not None and \
+                    bcrypt.check_password_hash(user.password,
+                                               form.password.data):
                 session['logged_in'] = True
                 flash('You just logged in', 'success')
                 return redirect('intern')
@@ -25,6 +30,7 @@ def login():
 
     return render_template("public/login.html", form=form)
 
+
 @public_site.route("/logout")
 @login_required
 def logout():
@@ -32,13 +38,16 @@ def logout():
     flash('You just logged out', 'success')
     return redirect('')
 
+
 @public_site.route("/info")
 def info():
     return render_template("public/info.html")
 
+
 @public_site.route("/archive")
 def archive():
     return render_template("public/archive.html")
+
 
 @public_site.route("/register", methods=['GET', 'POST'])
 def register():
@@ -56,5 +65,4 @@ def register():
         session['logged_in'] = True
         flash('You just created an account', 'success')
         return redirect('intern')
-    return render_template("public/register.html", form = form)
-
+    return render_template("public/register.html", form=form)

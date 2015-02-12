@@ -10,10 +10,12 @@ internal_site = Blueprint('intern', __name__, template_folder='templates')
 def index():
     return render_template("internal/index.html")
 
+
 @internal_site.route("/script")
 @login_required
 def script():
     return render_template("internal/script.html")
+
 
 @internal_site.route("/activities")
 @login_required
