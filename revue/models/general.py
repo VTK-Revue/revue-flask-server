@@ -1,5 +1,6 @@
 from revue import db, bcrypt
 
+from sqlalchemy import func
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -9,7 +10,7 @@ class User(db.Model):
     lastName = db.Column(db.String(60))
     email = db.Column(db.String(50))
 
-    username = db.Column(db.String(20))
+    username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String())
 
     def __init__(self, firstName, lastName, email, username, password):

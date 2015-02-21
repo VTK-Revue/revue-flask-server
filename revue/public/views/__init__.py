@@ -23,6 +23,7 @@ def login():
                     bcrypt.check_password_hash(user.password,
                                                form.password.data):
                 session['logged_in'] = True
+                session['logged_in_user_id'] = user.id
                 flash('You just logged in', 'success')
                 return redirect('intern')
             else:
