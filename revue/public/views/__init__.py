@@ -5,7 +5,7 @@ from forms import LoginForm, RegisterForm
 from revue.models import User
 from revue import db, bcrypt
 
-public_site = Blueprint('public', __name__, template_folder='templates')
+public_site = Blueprint('public', __name__, template_folder='../templates')
 
 
 @public_site.route("/")

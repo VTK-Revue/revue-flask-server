@@ -3,7 +3,7 @@ from revue.login import login_required
 
 import user_view
 
-internal_site = Blueprint('intern', __name__, template_folder='internal/templates')
+internal_site = Blueprint('intern', __name__, template_folder='../templates')
 
 
 @internal_site.route("/")
