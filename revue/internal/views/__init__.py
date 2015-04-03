@@ -1,7 +1,9 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, request
 from revue.login import login_required
 
-import user_view
+from user import user_view
+from user import user_edit_view
+
 
 internal_site = Blueprint('intern', __name__, template_folder='../templates')
 
@@ -24,7 +26,16 @@ def script():
 def activities():
     return render_template("internal/activities.html")
 
-@internal_site.route("/user")
+@internal_site.route("/user",methods=['GET'])
+@login_required
+def user_own():
+    return user_edit_view.show()
+@internal_site.route('/user',methods=['POST'])
+@login_required
+def update_user_data():
+    return user_edit_view.show_update()
+
+
 @internal_site.route("/user/<username>")
 @login_required
 def user(username=None):

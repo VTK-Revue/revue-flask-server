@@ -8,7 +8,7 @@ user = Table(
     Column('lastName', String(60), nullable=False),
     Column('email', String(100), nullable=False),
     Column('username', String(20), nullable=False),
-    Column('password', String(), nullable=False),
+    Column('password', String(60), nullable=False),
     schema="general"
 )
 def upgrade(migrate_engine):

@@ -1,0 +1,29 @@
+{% extends "internal_base.html" %}
+
+{% block content %}
+
+<h2>User information - user</h2>
+<table>
+    <tr>
+        <td>Id</td>
+        <td>{{ u.id }}</td>
+    </tr>
+    <tr>
+        <td>Username:</td>
+        <td>{{ u.username }}</td>
+    </tr>
+    <tr>
+        <td>First name:</td>
+        <td>{{ u.firstName }}</td>
+    </tr>
+    <tr>
+        <td>Last name:</td>
+        <td>{{ u.lastName }}</td>
+    </tr>
+    <tr>
+        <td>E-mail:</td>
+        <td>{{ u.email }}</td>
+    </tr>
+</table>
+
+{% endblock %}
