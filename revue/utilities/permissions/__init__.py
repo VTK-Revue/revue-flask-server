@@ -3,16 +3,19 @@ __author__ = 'fkint'
 from functools import wraps
 from flask import session, redirect, flash
 
-from revue.login import login_required
+from ...models import UserPermission, Permission
+
 
 class Permissions:
     ADMIN = "admin"
 
 
-
-def has_permission(user_id, permission_id):
-    print("has permission check")
-    if permission_id is None:
+def has_permission(user_id, permission_name):
+    p = Permission.query.filter_by(name=permission_name).first()
+    if p is None:
+        return False
+    up = UserPermission.query.filter_by(user=user_id, permission=p.id).first()
+    if up is None:
         return False
     return True
 

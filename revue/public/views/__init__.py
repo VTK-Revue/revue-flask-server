@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, redirect, url_for, request, \
     flash, session
 from revue.login import login_required
 from forms import LoginForm, RegisterForm
-from revue.models import User
+from revue.models import User, Registration
 from revue import db, bcrypt
 
 public_site = Blueprint('public', __name__, template_folder='../templates')
@@ -61,9 +61,10 @@ def register():
             form.username.data,
             form.password.data
         )
-        db.session.add(newUser)
+        db.session.add(Registration.from_user(newUser))
         db.session.commit()
-        session['logged_in'] = True
-        flash('You just created an account', 'success')
-        return redirect('intern')
+        #TODO: send notification e-mail to activate this account
+        flash('You just created an account. Once your account has been activated, you\''
+              'll be able to access the internal part of website.', 'success')
+        return redirect('/')
     return render_template("public/register.html", form=form)
