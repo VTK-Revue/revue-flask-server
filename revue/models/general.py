@@ -14,13 +14,22 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(60))
 
-    def __init__(self, firstName, lastName, email, username, password):
+    def __init__(self, firstName, lastName, email, username, password=None):
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
 
         self.username = username
-        self.password = bcrypt.generate_password_hash(password)
+        if password is None:
+            self.password = None
+        else:
+            self.password = bcrypt.generate_password_hash(password)
+
+    @classmethod
+    def from_registration(cls, r):
+        u = cls(r.firstName, r.lastName, r.email, r.username)
+        u.password = r.password
+        return u
 
 
 class Registration(db.Model):

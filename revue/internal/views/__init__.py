@@ -47,6 +47,7 @@ def user(username):
 
 
 import admin.user as admin_user
+import admin.activate as admin_activate
 
 from ...utilities.permissions import admin_required
 
@@ -59,3 +60,15 @@ def show_admin_user(username=None):
 @admin_required
 def show_admin_user_update(username=None):
     return admin_user.show_user_update(username)
+
+@internal_site.route("/admin/activate")
+@admin_required
+def show_activate():
+    return admin_activate.show_activate_list()
+
+@internal_site.route("/admin/activate/<username>")
+@admin_required
+def show_activate_user(username):
+    return admin_activate.show_activate_user(username)
+
+

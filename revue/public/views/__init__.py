@@ -61,6 +61,7 @@ def register():
             form.username.data,
             form.password.data
         )
+        #TODO: check if duplicate username should be checked
         db.session.add(Registration.from_user(newUser))
         db.session.commit()
         #TODO: send notification e-mail to activate this account
