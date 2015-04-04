@@ -1,6 +1,21 @@
 from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Email, Length, EqualTo
+from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
+
+from ...models import Registration, User
+
+
+class Unique(object):
+    def __init__(self, model, field, message=None):
+        self.model = model
+        self.field = field
+        self.message = message
+        if message is None:
+            self.message = u'This element already exists'
+    def __call__(self, form, field):
+        check = self.model.query.filter(self.field==field.data).first()
+        if check:
+            raise ValidationError(self.message)
 
 
 class LoginForm(Form):
@@ -18,7 +33,10 @@ class LoginForm(Form):
 class RegisterForm(Form):
     username = StringField(
         'Username',
-        validators=[InputRequired(), Length(min=3, max=20)]
+        validators=[InputRequired(),
+                    Length(min=3, max=20),
+                    Unique(User, User.username, "A user with this username already exists."),
+                    Unique(Registration, Registration.username, "This username has already been registered.")]
     )
     password = PasswordField(
         'Password',

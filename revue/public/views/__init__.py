@@ -54,18 +54,20 @@ def archive():
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
-        newUser = User(
-            form.firstName.data,
-            form.lastName.data,
-            form.email.data,
-            form.username.data,
-            form.password.data
-        )
-        #TODO: check if duplicate username should be checked
-        db.session.add(Registration.from_user(newUser))
-        db.session.commit()
-        #TODO: send notification e-mail to activate this account
-        flash('You just created an account. Once your account has been activated, you\''
-              'll be able to access the internal part of website.', 'success')
-        return redirect('/')
+        if User.query.filter_by(username=form.username.data).first() is None:
+            newUser = User(
+                form.firstName.data,
+                form.lastName.data,
+                form.email.data,
+                form.username.data,
+                form.password.data
+            )
+            #TODO: check if duplicate username should be checked
+            db.session.add(Registration.from_user(newUser))
+            db.session.commit()
+            #TODO: send notification e-mail to activate this account
+            flash('You just created an account. Once your account has been activated, you\''
+                  'll be able to access the internal part of website.', 'success')
+            return redirect('/')
+        flash('A user with this username already exists, choose another one')
     return render_template("public/register.html", form=form)
