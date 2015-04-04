@@ -71,4 +71,5 @@ def show_activate():
 def show_activate_user(username):
     return admin_activate.show_activate_user(username)
 
+import pages
 
