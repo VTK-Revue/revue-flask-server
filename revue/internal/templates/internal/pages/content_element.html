@@ -1,0 +1,21 @@
+<style type="text/css">
+    div.content-element{
+        width:100%;
+        border: 5px solid grey;
+        border-radius:10px;
+    }
+    div.content-element p.content-element-info{
+        font-style: italic;
+    }
+</style>
+<div class="content-element">
+<h1>{{ element.content_element.title }}</h1>
+<p class="content-element-info">Published by {{ element.content_element.author.name() }}</p>
+<div>
+{% if element.content_element.type == "text" %}
+    {% include "internal/pages/text_element.html" %}
+{% else  %}
+<span>incorrect content element</span>
+{% endif %}
+</div>
+</div>

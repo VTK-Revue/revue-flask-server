@@ -7,5 +7,7 @@
     <p>
     {{ description }}
     </p>
-
+{% for element in content_elements %}
+    {%  include "internal/pages/content_element.html" %}
+{% endfor %}
 {% endblock %}

@@ -1,6 +1,7 @@
 from revue import db, bcrypt
 
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+from sqlalchemy.orm import relationship
 
 
 class User(db.Model):
@@ -14,6 +15,9 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(60))
 
+    content_elements = relationship("ContentElement", backref="author")
+
+
     def __init__(self, firstName, lastName, email, username, password=None):
         self.firstName = firstName
         self.lastName = lastName
@@ -24,6 +28,9 @@ class User(db.Model):
             self.password = None
         else:
             self.password = bcrypt.generate_password_hash(password)
+
+    def name(self):
+        return self.firstName + " " + self.lastName
 
     @classmethod
     def from_registration(cls, r):
