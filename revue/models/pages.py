@@ -1,8 +1,11 @@
 __author__ = 'fkint'
 from revue import db
 
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint, UniqueConstraint
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint, UniqueConstraint, Table
+
+
 from sqlalchemy.orm import relationship
+
 
 class Page(db.Model):
     __tablename__ = 'page'
@@ -15,6 +18,7 @@ class Page(db.Model):
     url_identifier = db.Column('url_identifier', db.String(50), nullable=False)
 
     page_content_elements = relationship("PageContentElement", backref="page")
+
 
     def __init__(self, name, parent_page, description, access_restricted):
         self.name = name
@@ -48,7 +52,10 @@ class ContentElement(db.Model):
     author_id =db.Column('author', db.Integer, ForeignKey('general.user.id'), nullable=False)
 
     page_content_elements = relationship("PageContentElement", backref="content_element")
-    text_elements = relationship("TextElement", backref="content_element")
+
+    __mapper_args__ = {
+        'polymorphic_on':type
+    }
 
     def __init__(self, type, sticky, title, identifier, author_id):
         self.type = type
@@ -56,9 +63,6 @@ class ContentElement(db.Model):
         self.title = title
         self.identifier = identifier
         self.author_id = author_id
-
-
-
 
 class PageContentElement(db.Model):
     __tablename__ = "page_content_element"
@@ -73,17 +77,18 @@ class PageContentElement(db.Model):
         self.page_id = page_id
         self.order_index = order_index
 
-
-class TextElement(db.Model):
+class TextElement(ContentElement):
     __tablename__ = "text_element"
     __table_args__ = {"schema":"content"}
 
-    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
-    content_element_id = db.Column("content_element", db.Integer, ForeignKey("content.content_element.id"), nullable=False)
+    text_element_id = db.Column("id", db.Integer, ForeignKey('content.content_element.id'), primary_key=True, nullable=False)
     content = db.Column("content", db.Text, nullable=False)
 
-    def __init__(self, content_element_id, content):
-        self.content_element_id = content_element_id
+    __mapper_args__ = {
+        "polymorphic_identity":"text"
+    }
+
+    def __init__(self, content):
         self.content = content
 
 

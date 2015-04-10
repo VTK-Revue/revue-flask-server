@@ -1,3 +1,4 @@
+
 <style type="text/css">
     div.content-element{
         width:100%;
@@ -9,10 +10,10 @@
     }
 </style>
 <div class="content-element">
-<h1>{{ element.content_element.title }}</h1>
-<p class="content-element-info">Published by {{ element.content_element.author.name() }}</p>
+<h1>{{ element.title }}</h1>
+<p class="content-element-info">Published by {{ element.author.name() }}</p>
 <div>
-{% if element.content_element.type == "text" %}
+{% if element.type == "text" %}
     {% include "internal/pages/text_element.html" %}
 {% else  %}
 <span>incorrect content element</span>

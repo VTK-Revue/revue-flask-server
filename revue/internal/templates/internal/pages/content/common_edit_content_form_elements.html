@@ -1,0 +1,32 @@
+{{ form.sticky.label }}
+    {{ form.sticky(placeholder="sticky") }}
+    <span class="error">
+      {% if form.sticky.errors %}
+        {% for error in form.sticky.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.title.label }}
+  {{ form.title(placeholder="title") }}
+    <span class="error">
+      {% if form.title.errors %}
+        {% for error in form.title.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+  <p>
+  {{ form.identifier.label }}
+    {{ form.identifier(placeholder="identifier") }}
+    <span class="error">
+      {% if form.identifier.errors %}
+        {% for error in form.identifier.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>

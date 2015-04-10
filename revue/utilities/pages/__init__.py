@@ -1,8 +1,9 @@
 __author__ = 'fkint'
 
 
-from revue.models import YearGroupParticipation, Page, PageAccessRestriction, TextElement
+from revue.models import YearGroupParticipation, Page, PageAccessRestriction, TextElement, ContentElement
 from revue.utilities import session
+from revue import db
 
 def user_meets_restriction(restriction, user_id):
     ygp = YearGroupParticipation.query.filter_by(year_group=restriction.year_group, year=restriction.revue_year, user=user_id).first()
@@ -38,11 +39,21 @@ def get_page(path):
     return None
 
 
-def get_content_element(element):
+def old_get_content_element(element):
     if element.type == "text":
         return TextElement.query.filter_by(id=element.id).first()
     return None
 
 
+def old_get_content_elements(page):
+    return page.page_content_elements
+
+
+def get_content_element_by_id(id):
+    print(id)
+    content_element = db.session.query(ContentElement).filter_by(id=id).first()
+    print(content_element)
+    return content_element
+
 def get_content_elements(page):
-    return [get_content_element(pce.content_element) for pce in page.page_content_elements]
+    return [pce.content_element for pce in page.page_content_elements]

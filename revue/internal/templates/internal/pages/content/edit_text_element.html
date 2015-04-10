@@ -1,0 +1,25 @@
+{% extends "internal_base.html" %}
+
+{% block content %}
+
+<h1>Edit text element</h1>
+<form action="{{ update_url }}" method="post">
+    {{ form.csrf_token }}
+
+    {% include "internal/pages/content/common_edit_content_form_elements.html" %}
+  <p>
+  {{ form.content.label }}
+    {{ form.content(placeholder="content") }}
+    <span class="error">
+      {% if form.content.errors %}
+        {% for error in form.content.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
+    </span>
+  </p>
+{{ form.submit }}
+  </form>
+
+
+{% endblock %}

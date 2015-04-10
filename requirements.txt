@@ -7,7 +7,7 @@ Flask-WTF==0.11
 Jinja2==2.7.3
 Mako==1.0.1
 MarkupSafe==0.23
-SQLAlchemy==0.7.2
+SQLAlchemy==0.8
 WTForms==2.0.2
 Werkzeug==0.9.6
 alembic==0.7.4
