@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 
-from ...models import Registration, User
+from revue.models import Registration, User
 
 
 class Unique(object):

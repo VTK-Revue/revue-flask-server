@@ -2,7 +2,7 @@ __author__ = 'fkint'
 
 from flask import render_template, flash, request
 
-from .....models import Registration, User
+from revue.models import Registration, User
 from revue import db
 
 

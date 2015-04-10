@@ -1,5 +1,4 @@
-from . import api
-
+from revue.api import api
 
 @api.route("/")
 def hello():

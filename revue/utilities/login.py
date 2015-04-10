@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import redirect, flash
 
-from .utilities import session
+from revue.utilities import session
 
 
 # login required decorator

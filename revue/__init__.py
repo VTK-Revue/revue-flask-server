@@ -16,9 +16,9 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 # Import blueprints
-from .api import api
-from .public.views import public_site
-from .internal.views import internal_site
+from revue.api import api
+from revue.public.views import public_site
+from revue.internal.views import internal_site
 
 # Register blueprints
 app.register_blueprint(api, url_prefix='/api')

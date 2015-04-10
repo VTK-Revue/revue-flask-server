@@ -1,8 +1,8 @@
 __author__ = 'fkint'
 
 
-from ...models import YearGroupParticipation, Page, PageAccessRestriction, TextElement
-from ...utilities import session
+from revue.models import YearGroupParticipation, Page, PageAccessRestriction, TextElement
+from revue.utilities import session
 
 def user_meets_restriction(restriction, user_id):
     ygp = YearGroupParticipation.query.filter_by(year_group=restriction.year_group, year=restriction.revue_year, user=user_id).first()

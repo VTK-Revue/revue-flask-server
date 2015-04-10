@@ -2,9 +2,9 @@ __author__ = 'fkint'
 from flask import render_template
 
 
-from .. import internal_site
-from ....login import login_required
-from ....utilities import pages
+from revue.internal.views import internal_site
+from revue.utilities.login import login_required
+from revue.utilities import pages
 
 
 @internal_site.route("/page/<path:path>")

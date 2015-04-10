@@ -1,10 +1,10 @@
 from flask import render_template, Blueprint, redirect, url_for, request, \
     flash
-from revue.login import login_required
+from revue.utilities.login import login_required
 from forms import LoginForm, RegisterForm
 from revue.models import User, Registration
 from revue import db, bcrypt
-from ...utilities import session
+from revue.utilities import session
 
 public_site = Blueprint('public', __name__, template_folder='../templates')
 

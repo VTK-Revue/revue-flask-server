@@ -1,9 +1,9 @@
 __author__ = 'fkint'
 from flask import render_template
 
-from ....models.general import User
+from revue.models.general import User
 
-from ....utilities import session
+from revue.utilities import session
 
 
 def show(username):

@@ -2,7 +2,7 @@ __author__ = 'fkint'
 
 from flask import session
 
-from ...models import *
+from revue.models import *
 
 
 def is_logged_in():

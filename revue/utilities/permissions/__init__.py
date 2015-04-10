@@ -3,8 +3,8 @@ __author__ = 'fkint'
 from functools import wraps
 from flask import redirect, flash
 
-from ...models import UserPermission, Permission
-from ..session import *
+from revue.models import UserPermission, Permission
+from revue.utilities import session
 
 
 class Permissions:

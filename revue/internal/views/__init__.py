@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint
-from revue.login import login_required
+from revue.utilities.login import login_required
 
 
 
@@ -49,7 +49,7 @@ def user(username):
 import admin.user as admin_user
 import admin.activate as admin_activate
 
-from ...utilities.permissions import admin_required
+from revue.utilities.permissions import admin_required
 
 @internal_site.route("/admin/user/<username>", methods=["GET"])
 @admin_required
