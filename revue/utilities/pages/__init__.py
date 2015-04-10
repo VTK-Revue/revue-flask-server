@@ -1,10 +1,8 @@
 __author__ = 'fkint'
 
 
-from flask import session
-
-
 from ...models import YearGroupParticipation, Page, PageAccessRestriction
+from ..session import *
 
 def user_meets_restriction(restriction, user_id):
     ygp = YearGroupParticipation.query.filter_by(year_group=restriction.year_group, year=restriction.revue_year, user=user_id).first()
@@ -35,6 +33,6 @@ def get_page(path):
         current_page = Page.query.filter_by(url_identifier=p,parent_page=parent_page_id).first()
         if current_page is None:
             return None
-    if has_access_to_page(current_page, session['logged_in_user_id']):
+    if has_access_to_page(current_page, session.get_current_user_id()):
         return current_page
     return None

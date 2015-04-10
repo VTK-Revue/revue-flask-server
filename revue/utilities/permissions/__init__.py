@@ -1,9 +1,10 @@
 __author__ = 'fkint'
 
 from functools import wraps
-from flask import session, redirect, flash
+from flask import redirect, flash
 
 from ...models import UserPermission, Permission
+from ..session import *
 
 
 class Permissions:
@@ -24,10 +25,10 @@ def has_permission(user_id, permission_name):
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if 'logged_in' not in session:
+        if not session.is_logged_in():
             flash('You need to login first.', 'danger')
             return redirect('/login')
-        elif not has_permission(session['logged_in_user_id'], Permissions.ADMIN):
+        elif not has_permission(session.get_current_user_id(), Permissions.ADMIN):
             flash('You need to have admin permissions.', 'danger')
             return redirect('/')
         else:

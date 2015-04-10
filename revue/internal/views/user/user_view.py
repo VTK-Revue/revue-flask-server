@@ -1,12 +1,14 @@
 __author__ = 'fkint'
-from flask import render_template, session
+from flask import render_template
 
 from ....models.general import User
+
+from ....utilities import session
 
 
 def show(username):
     if username is None:
-        user = User.query.filter_by(id=session['logged_in_user_id']).first()
+        user = session.get_current_user()
     else:
         user = User.query.filter_by(username=username).first()
     print("user = "+str(user))

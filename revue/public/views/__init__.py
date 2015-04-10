@@ -1,9 +1,10 @@
 from flask import render_template, Blueprint, redirect, url_for, request, \
-    flash, session
+    flash
 from revue.login import login_required
 from forms import LoginForm, RegisterForm
 from revue.models import User, Registration
 from revue import db, bcrypt
+from ...utilities import session
 
 public_site = Blueprint('public', __name__, template_folder='../templates')
 
@@ -22,8 +23,7 @@ def login():
             if user is not None and \
                     bcrypt.check_password_hash(user.password,
                                                form.password.data):
-                session['logged_in'] = True
-                session['logged_in_user_id'] = user.id
+                session.user_login(user)
                 flash('You just logged in', 'success')
                 return redirect('intern')
             else:
@@ -35,7 +35,7 @@ def login():
 @public_site.route("/logout")
 @login_required
 def logout():
-    session.pop('logged_in', None)
+    session.user_logout()
     flash('You just logged out', 'success')
     return redirect('')
 

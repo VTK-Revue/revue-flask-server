@@ -1,14 +1,14 @@
 __author__ = 'fkint'
-from flask import render_template, session, request, url_for, flash
+from flask import render_template, request
 
 from .forms import UpdateUserPasswordForm, UpdateUserInfoForm
-from ....models import User
 from revue import db, bcrypt
+
+from ....utilities import session
 
 
 def show():
-    user = User.query.filter_by(id=session['logged_in_user_id']).first()
-
+    user = session.get_current_user()
     password_form = UpdateUserPasswordForm(request.form)
     info_form = UpdateUserInfoForm(request.form)
     return render_template("internal/user/user_edit.html",
@@ -20,7 +20,7 @@ def show():
 
 def show_update():
     action = request.args.get('action', '')
-    user = User.query.filter_by(id=session['logged_in_user_id']).first()
+    user = session.get_current_user()
     if action == "update_password":
         form = UpdateUserPasswordForm(request.form)
         if form.validate():
