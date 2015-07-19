@@ -2,8 +2,7 @@
 
 {% block content %}
 
-    <h1>Edit page</h1>
-    <a href="{{ url_for('.show_page_by_id', id=page.id) }}">Go Back</a>
+    <h1>Create text element</h1>
     <form action="{{ update_url }}" method="post">
         {{ form.csrf_token }}
         {% for field in form %}

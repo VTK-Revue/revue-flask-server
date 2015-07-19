@@ -2,7 +2,12 @@
 
 {% block content %}
 
-<h2>{{ page.title }}</h2>
+<h1>{{ page.title }}</h1>
+    <ul class="page-actions">
+        <li><a href="{{ url_for('.show_page_by_id', id=page.id, action="edit") }}"><i>Edit</i></a></li>
+        <li><a href="{{ url_for('.show_page_by_id', id=page.id, action="add-content", content_type="text") }}"><i>Add text content</i></a></li>
+    </ul>
+
     <p>
     {{ page.description }}
     </p>

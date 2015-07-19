@@ -1,12 +1,15 @@
 __author__ = 'fkint'
 from flask import render_template, request, redirect, url_for
 
+from revue import db
+
 from revue.internal.views import internal_site
 from revue.utilities.login import login_required
+from revue.utilities.session import get_current_user_id
 from revue.utilities import pages
-from forms import EditTextElementForm, CreatePageForm, EditPageForm
+from forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
 from revue.utilities.pages import save_page, create_page
-from revue.models.pages import Page
+from revue.models.pages import Page, TextElement, PageContentElement, ContentElement
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])
 @login_required
@@ -46,7 +49,9 @@ def show_page(page):
         if request.method == "POST":
             form.populate_obj(page)
             save_page(page)
-        return render_edit_page(page, form)
+        return render_template("internal/pages/edit_page.html", form=form, page=page)
+    elif action == 'add-content':
+        return show_add_content(page)
     return render_page(page)
 
 
@@ -56,8 +61,21 @@ def render_page(page):
                            content_elements=content_elements)
 
 
-def render_edit_page(page, form):
-    return render_template("internal/pages/edit_page.html", form=form, page=page)
+def show_add_content(page):
+    content_type = str(request.args.get('content_type', ''))
+    if content_type == "text":
+        form = CreateTextElementForm(request.form)
+        if request.method == "POST":
+            text_element = TextElement(form.content.data)
+            form.populate_obj(text_element)
+            text_element.author_id = get_current_user_id()
+            db.session.add(text_element)
+            db.session.commit()
+            db.session.add(PageContentElement(text_element.id, page.id, 0))
+            db.session.commit()
+            return redirect(url_for('.show_page_by_id', id=page.id))
+        return render_template("internal/pages/content/create_text_element.html", form=form)
+    return render_template("404.html"), 404
 
 
 @internal_site.route("/content/<int:id>", methods=["GET", "POST"])
@@ -70,28 +88,11 @@ def show_content(id):
     return render_template("internal/pages/content_element_page.html", element=content_element)
 
 
-def show_edit_text_element(text_element):
-    form = EditTextElementForm(request.form, obj=text_element)
-    return render_template("internal/pages/content/edit_text_element.html", element=text_element, form=form)
-
-
-def save_text_element_content(text_element):
-    # TODO: save text element content
-    print("TODO: save text element content")
-
-
-def save_content(content_element):
-    # TODO: save updated content
-    if content_element.type == "text":
-        save_text_element_content(content_element)
-    else:
-        print("TODO: save updated content for " + content_element.type)
-
-
 def show_edit_content(content_element):
-    if request.method == "POST":
-        save_content(content_element)
     if content_element.type == "text":
-        return show_edit_text_element(content_element)
-
+        form = EditTextElementForm(request.form, obj=content_element)
+        if request.method == "POST":
+            form.populate_obj(content_element)
+            db.session.commit()
+        return render_template("internal/pages/content/edit_text_element.html", element=content_element, form=form, referring_page_id=request.args.get('referring_page_id', '#'))
     return render_template("internal/pages/content/edit_content_element.html", element=content_element)

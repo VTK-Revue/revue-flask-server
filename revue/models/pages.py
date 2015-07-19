@@ -66,6 +66,7 @@ class ContentElement(db.Model):
         self.author_id = author_id
 
 
+
 class PageContentElement(db.Model):
     __tablename__ = "page_content_element"
     __table_args__ = (PrimaryKeyConstraint('content_element', 'page'), {"schema": "content"})
@@ -95,3 +96,6 @@ class TextElement(ContentElement):
 
     def __init__(self, content):
         self.content = content
+
+
+
