@@ -1,13 +1,14 @@
 __author__ = 'fkint'
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+
 from revue import db
 
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
 class Group(db.Model):
     __tablename__ = 'group'
     __table_args__ = {'schema': 'general'}
-    id = db.Column('id', db.Integer, primary_key=True,nullable=False)
-    name = db.Column(db.String(50), nullable =False)
+    id = db.Column('id', db.Integer, primary_key=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
 
     def __init__(self, name, description):
@@ -17,8 +18,8 @@ class Group(db.Model):
 
 class YearGroup(db.Model):
     __tablename__ = "year_group"
-    __table_args__ = {"schema":"general"}
-    id = db.Column("id", db.Integer, primary_key=True, nullable= False)
+    __table_args__ = {"schema": "general"}
+    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
     parent_year_group = db.Column(db.Integer, ForeignKey("general.year_group.id"), nullable=True)
@@ -31,7 +32,7 @@ class YearGroup(db.Model):
 
 class GroupParticipation(db.Model):
     __tablename__ = "group_participation"
-    __table_args__ = (PrimaryKeyConstraint("group", "user"),{"schema":"general"})
+    __table_args__ = (PrimaryKeyConstraint("group", "user"), {"schema": "general"})
     group = db.Column("group", db.Integer, ForeignKey("general.group.id"), nullable=False)
     user = db.Column("user", db.Integer, ForeignKey("general.user.id"), nullable=False)
 
@@ -42,7 +43,7 @@ class GroupParticipation(db.Model):
 
 class YearGroupParticipation(db.Model):
     __tablename__ = "year_group_participation"
-    __table_args__ = (PrimaryKeyConstraint("year", "year_group", "user"),{"schema":"general"})
+    __table_args__ = (PrimaryKeyConstraint("year", "year_group", "user"), {"schema": "general"})
     year = db.Column("year", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
     year_group = db.Column("year_group", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
     user = db.Column("user", db.Integer, ForeignKey("general.user.id"), nullable=False)
@@ -55,8 +56,8 @@ class YearGroupParticipation(db.Model):
 
 class RevueYear(db.Model):
     __tablename__ = "revue_year"
-    __table_args__ = {"schema":"general"}
-    id = db.Column("id", db.Integer, primary_key=True,nullable=False)
+    __table_args__ = {"schema": "general"}
+    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     title = db.Column("title", db.String(50), nullable=False)
     year = db.Column("year", db.Integer, nullable=False)
 

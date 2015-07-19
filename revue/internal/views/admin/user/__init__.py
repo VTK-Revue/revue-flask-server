@@ -14,8 +14,9 @@ def show_user(username):
     return render_template("internal/user/user_edit.html",
                            u=user, password_form=password_form,
                            info_form=info_form,
-                           password_update_target_url="/intern/admin/user/"+username+"?action=update_password",
-                           info_update_target_url="/intern/admin/user/"+username+"?action=update_info")
+                           password_update_target_url="/intern/admin/user/" + username + "?action=update_password",
+                           info_update_target_url="/intern/admin/user/" + username + "?action=update_info")
+
 
 def show_user_update(username):
     action = request.args.get('action', '')
@@ -27,10 +28,10 @@ def show_user_update(username):
             user.password = h
             db.session.commit()
         return render_template("internal/user/user_edit.html",
-                       u=user, password_form=form,
-                       info_form=UpdateUserInfoForm(request.form),
-                       password_update_target_url="/intern/admin/user/"+username+"?action=update_password",
-                       info_update_target_url="/intern/admin/user/"+username+"?action=update_info")
+                               u=user, password_form=form,
+                               info_form=UpdateUserInfoForm(request.form),
+                               password_update_target_url="/intern/admin/user/" + username + "?action=update_password",
+                               info_update_target_url="/intern/admin/user/" + username + "?action=update_info")
     elif action == "update_info":
         form = UpdateUserInfoForm(request.form)
         if form.validate():
@@ -39,8 +40,8 @@ def show_user_update(username):
             user.lastName = form.lastName.data
             db.session.commit()
         return render_template("internal/user/user_edit.html",
-                       u=user, password_form=UpdateUserPasswordForm(request.form),
-                       info_form=form,
-                       password_update_target_url="/intern/admin/user/"+username+"?action=update_password",
-                       info_update_target_url="/intern/admin/user/"+username+"?action=update_info")
+                               u=user, password_form=UpdateUserPasswordForm(request.form),
+                               info_form=form,
+                               password_update_target_url="/intern/admin/user/" + username + "?action=update_password",
+                               info_update_target_url="/intern/admin/user/" + username + "?action=update_info")
     return show_user(username)

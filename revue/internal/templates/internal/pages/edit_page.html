@@ -1,0 +1,12 @@
+{% extends "internal_base.html" %}
+
+{% block content %}
+
+    <h1>Edit page</h1>
+    <form action="{{ update_url }}" method="post">
+        {{ form.csrf_token }}
+        {% for field in form %}
+            {{ render_field(field) }}
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -8,9 +8,10 @@ from revue import db
 
 def show_activate_list():
     registrations = Registration.query.all();
-    activate_url = lambda username: "/intern/admin/activate/"+username+"?ok=1"
-    remove_registration_url = lambda username:"/intern/admin/activate/"+username+"?ok=0"
-    return render_template("internal/admin/activate.html", registrations=registrations, activate_url=activate_url, remove_registration_url = remove_registration_url)
+    activate_url = lambda username: "/intern/admin/activate/" + username + "?ok=1"
+    remove_registration_url = lambda username: "/intern/admin/activate/" + username + "?ok=0"
+    return render_template("internal/admin/activate.html", registrations=registrations, activate_url=activate_url,
+                           remove_registration_url=remove_registration_url)
 
 
 def show_activate_user(username):
@@ -26,7 +27,7 @@ def show_activate_user(username):
         else:
             db.session.delete(r)
             db.session.commit()
-            flash("Removed registration for user "+str(username))
+            flash("Removed registration for user " + str(username))
     else:
         flash("No registration found for user " + str(username))
     return show_activate_list()

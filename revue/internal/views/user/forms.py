@@ -20,7 +20,7 @@ class UpdateUserInfoForm(Form):
     submit = SubmitField('Save')
 
     def set_user(self, user):
-        self.firstName.data
+        #self.firstName.data
         self.firstName.default = user.firstName
         self.lastName.default = user.lastName
         self.email.default = user.email

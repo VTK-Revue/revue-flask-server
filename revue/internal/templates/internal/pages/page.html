@@ -2,10 +2,9 @@
 
 {% block content %}
 
-<h2>Here some internal <b>page</b> content</h2>
-    {{ pagename }}
+<h2>{{ page.title }}</h2>
     <p>
-    {{ description }}
+    {{ page.description }}
     </p>
 {% for element in content_elements %}
     {%  include "internal/pages/content/content_element.html" %}
