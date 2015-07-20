@@ -10,23 +10,25 @@ class Group(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=False)
-
+    type = db.Column(db.String(50), nullable=True)
+    __mapper_args__ = {
+        'polymorphic_on': type
+    }
     def __init__(self, name, description):
         self.name = name
         self.description = description
 
 
-class YearGroup(db.Model):
+class YearGroup(Group):
     __tablename__ = "year_group"
     __table_args__ = {"schema": "general"}
-    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.Text, nullable=False)
+    year_group_id = db.Column("id", db.Integer, ForeignKey('general.group.id'), primary_key=True, nullable=False)
     parent_year_group = db.Column(db.Integer, ForeignKey("general.year_group.id"), nullable=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "year_group"
+    }
 
-    def __init__(self, name, description, parent_year_group):
-        self.name = name
-        self.description = description
+    def __init__(self, parent_year_group):
         self.parent_year_group = parent_year_group
 
 
