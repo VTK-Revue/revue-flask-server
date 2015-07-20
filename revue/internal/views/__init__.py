@@ -27,3 +27,13 @@ def script():
 @login_required
 def activities():
     return render_template("internal/activities.html")
+
+@internal_site.route("/media")
+@login_required
+def media():
+    return render_template("internal/media.html")
+
+@internal_site.route("/members")
+@login_required
+def members():
+    return render_template("internal/members.html")

@@ -7,11 +7,13 @@
 
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('.index') }}">Home</a></li>
-                <li><a href="{{ url_for('.activities') }}">Activities</a></li>
+                <li><a href="{{ url_for('.activities') }}">Activiteiten</a></li>
                 <li><a href="{{ url_for('.script') }}">Script</a></li>
-                <li><a href="{{ url_for('.logout') }}">Logout {{ session['logged_in_user_id'] }} </a></li>
+                <li><a href="{{ url_for('.members') }}">Medewerkers</a></li>
+                <li><a href="{{ url_for('.media') }}">Media</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('.logout') }}">Logout</a></li>
                 <li><a href="/">Public</a></li>
             </ul>
         </div>

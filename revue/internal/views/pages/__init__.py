@@ -22,7 +22,7 @@ def show_page_by_path(path):
 
 def show_page(page):
     if page is None:
-        return render_template("404.html"), 404
+        return render_template("../../templates/internal/404.html"), 404
     action = str(request.args.get('action', ''))
     if action == 'edit':
         form = EditPageForm(request.form, obj=page)
@@ -68,7 +68,7 @@ def show_add_content(page):
             if pages.create_text_element_for_page(form, page):
                 return redirect(url_for('.show_page_by_id', id=page.id))
         return render_template("internal/pages/content/create_text_element.html", form=form)
-    return render_template("404.html"), 404
+    return render_template("../../templates/internal/404.html"), 404
 
 
 def show_edit_content(content_element):
