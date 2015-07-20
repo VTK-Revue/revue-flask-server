@@ -22,7 +22,7 @@ def update_user_data():
 
 @internal_site.route("/user/<username>", methods=["GET"])
 @login_required
-def user(username):
+def view_user(username):
     return user_view.show(username)
 
 

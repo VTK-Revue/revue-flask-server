@@ -3,7 +3,7 @@ __author__ = 'Floris'
 from flask import render_template
 
 from revue.internal.views import internal_site
-from revue.utilities.login import  login_required
+from revue.utilities.login import login_required
 import revue.utilities.groups as groups
 from revue.models import Group, YearGroup, YearGroupParticipation, RevueYear, User
 
@@ -12,6 +12,7 @@ from revue.models import Group, YearGroup, YearGroupParticipation, RevueYear, Us
 @login_required
 def show_group_by_id(id):
     return show_group(Group.query.get(id))
+
 
 @internal_site.route('/group/<string:name>')
 @login_required
@@ -29,6 +30,7 @@ def show_group(group):
 def show_yeargroup_by_id(id):
     return show_group(YearGroup.query.get(id))
 
+
 @internal_site.route('/yeargroup/<int:year>/<int:id>')
 @login_required
 def show_yeargroup_by_year_and_id(year, id):
@@ -36,7 +38,14 @@ def show_yeargroup_by_year_and_id(year, id):
     participations = YearGroupParticipation.query.filter_by(year=revue_year.id, year_group=id)
     members = [User.query.get(p.user) for p in participations]
     year_group = YearGroup.query.get(id)
-    return render_template("internal/groups/year_group_year.html", group=year_group, members=members)
+    return render_template("internal/groups/year_group_year.html", group=year_group, members=members, year=revue_year)
+
+
+@internal_site.route('/yeargroup/current/<int:id>')
+@login_required
+def show_yeargroup_current_year(id):
+    return show_yeargroup_by_year_and_id(2015, id)
+
 
 @internal_site.route('/yeargroup/<int:year>/path')
 @login_required

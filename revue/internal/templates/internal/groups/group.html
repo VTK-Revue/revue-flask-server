@@ -5,7 +5,13 @@
     <p>
         {{ group.description }}
     </p>
-    {% for member in members %}
-        {{ render_group_member(member) }}
-    {% endfor %}
+    <section id="members">
+        <h3>Leden</h3></h>
+        <ul>
+        {% for member in members %}
+            {{ render_group_member(member) }}
+        {% endfor %}
+        </ul>
+    </section>
+
 {% endblock %}

@@ -2,6 +2,40 @@
 
 {% block content %}
 
-<h2>Startpagina</h2>
+    <h2>Startpagina</h2>
 
+    <section id="announcements">
+        <h3>Announcements</h3>
+        <ul>
+            <li>...</li>
+        </ul>
+    </section>
+    <section id="welcome">
+        <h3>Welkom</h3>
+
+        <p>
+            Welkom op de interne website van Revue!
+        </p>
+    </section>
+    <section id="yeargroups">
+        <h3>Werkgroepen van dit jaar</h3>
+        <ul>
+            {% for group in year_groups %}
+                <li>
+                    <a href="{{ url_for('.show_yeargroup_current_year', id=group.id) }}">{{ group.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="groups">
+        <h3>Alle groepen</h3>
+
+        <ul>
+            {% for group in groups %}
+                <li>
+                    <a href="{{ url_for('.show_group_by_id', id=group.id) }}">{{ group.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
 {% endblock %}

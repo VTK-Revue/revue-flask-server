@@ -1,11 +1,13 @@
 {% extends "internal_base.html" %}
 {% from "internal/groups/member.html" import render_group_member %}
 {% block content %}
-    <h1>{{ group.name }}</h1>
+    <h1>{{ group.name }} - {{ year.year }}</h1>
     <p>
         {{ group.description }}
     </p>
-    {% for member in members %}
-        {{ render_group_member(member) }}
-    {% endfor %}
+    <ul>
+        {% for member in members %}
+            {{ render_group_member(member) }}
+        {% endfor %}
+    </ul>
 {% endblock %}
