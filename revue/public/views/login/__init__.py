@@ -1,11 +1,12 @@
 __author__ = 'Floris'
+from flask import request, render_template, flash, redirect
+
 from revue.public.views import public_site
 from revue.public.views import LoginForm, RegisterForm
-from revue.utilities.login import login_required
 from revue.utilities import session
 from revue.models import User, Registration
-from flask import request, render_template, flash, redirect
 from revue import bcrypt, db
+
 
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
@@ -22,14 +23,6 @@ def login():
                 flash('Invalid login', 'danger')
 
     return render_template("public/login/login.html", form=form)
-
-
-@public_site.route("/logout")
-@login_required
-def logout():
-    session.user_logout()
-    flash('You just logged out', 'success')
-    return redirect('/')
 
 
 @public_site.route("/register", methods=['GET', 'POST'])

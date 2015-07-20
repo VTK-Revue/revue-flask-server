@@ -1,17 +1,17 @@
 __author__ = 'Floris'
 
+from flask import render_template
+
 from revue.internal.views import internal_site
 from revue.utilities.login import  login_required
 import revue.utilities.groups as groups
 from revue.models import Group, YearGroup, YearGroupParticipation, RevueYear, User
-from flask import render_template
 
 
 @internal_site.route('/group/<int:id>')
 @login_required
 def show_group_by_id(id):
     return show_group(Group.query.get(id))
-
 
 @internal_site.route('/group/<string:name>')
 @login_required
