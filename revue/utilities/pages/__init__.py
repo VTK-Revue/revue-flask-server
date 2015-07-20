@@ -1,6 +1,7 @@
 __author__ = 'fkint'
 
-from revue.models import YearGroupParticipation, Page, PageAccessRestriction, ContentElement
+from revue.models import YearGroupParticipation, Page, PageAccessRestriction, ContentElement, TextElement, \
+    PageContentElement
 from revue.utilities import session
 from revue import db
 
@@ -26,6 +27,7 @@ def has_access_to_page(page, user_id):
 def get_page_by_id(id):
     return Page.query.get(id)
 
+
 def get_page_by_path(path):
     path_parts = path.split("/")
     current_page = None
@@ -44,9 +46,7 @@ def get_page_by_path(path):
 
 
 def get_content_element_by_id(id):
-    print(id)
     content_element = db.session.query(ContentElement).filter_by(id=id).first()
-    print(content_element)
     return content_element
 
 
@@ -54,10 +54,40 @@ def get_content_elements(page):
     return [pce.content_element for pce in page.page_content_elements]
 
 
-def create_page(page):
+def create_page(form):
+    page = Page()
+    if not form.validate():
+        return None
+    form.populate_obj(page)
     db.session.add(page)
     db.session.commit()
+    return page
 
 
-def save_page(page):
+def save_page(page, form):
+    if not form.validate():
+        return False
+    form.populate_obj(page)
     db.session.commit()
+    return True
+
+
+def create_text_element_for_page(form, page):
+    if not form.validate():
+        return False
+    text_element = TextElement(form.content.data)
+    form.populate_obj(text_element)
+    text_element.author_id = session.get_current_user_id()
+    db.session.add(text_element)
+    db.session.commit()
+    db.session.add(PageContentElement(text_element.id, page.id, 0))
+    db.session.commit()
+    return text_element
+
+
+def save_content(content_element, form):
+    if not form.validate():
+        return False
+    form.populate_obj(content_element)
+    db.session.commit()
+    return True
