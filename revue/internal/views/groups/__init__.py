@@ -5,6 +5,7 @@ from flask import render_template
 from revue.internal.views import internal_site
 from revue.utilities.login import login_required
 import revue.utilities.groups as groups
+import revue.utilities.menus as menus
 from revue.models import Group, YearGroup, YearGroupParticipation, RevueYear, User
 
 
@@ -22,7 +23,9 @@ def show_group_by_name(name):
 
 def show_group(group):
     members = groups.get_group_members(group)
-    return render_template("internal/groups/group.html", group=group, members=members)
+    menu_structure = menus.get_menu_structure(groups.get_group_menu(group))
+    print(menu_structure)
+    return render_template("internal/groups/group.html", group=group, members=members, menu=menu_structure)
 
 
 @internal_site.route('/yeargroup/<int:id>')
