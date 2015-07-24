@@ -2,70 +2,20 @@
 
 {% block content %}
 
-<h2>Edit user information</h2>
-<form action="{{ info_update_target_url }}" method="post">
-    {{ info_form.csrf_token }}
-  <p>
-  {{ info_form.firstName.label }}
-    {{ info_form.firstName(placeholder="first name",value=u.firstName) }}
-    <span class="error">
-      {% if info_form.firstName.errors %}
-        {% for error in info_form.firstName.errors %}
-          {{ error }}
+    <h2>Edit user information</h2>
+    <form action="{{ info_update_target_url }}" method="post">
+        {{ info_form.csrf_token }}
+        {% for field in info_form %}
+            {{ render_field(field) }}
         {% endfor %}
-      {% endif %}
-    </span>
-  </p>
-  <p>
-  {{ info_form.lastName.label }}
-  {{ info_form.lastName(placeholder="last name",value=u.lastName) }}
-    <span class="error">
-      {% if info_form.lastName.errors %}
-        {% for error in info_form.lastName.errors %}
-          {{ error }}
-        {% endfor %}
-      {% endif %}
-    </span>
-  </p>
-  <p>
-  {{ info_form.email.label }}
-    {{ info_form.email(placeholder="email",value=u.email) }}
-    <span class="error">
-      {% if info_form.email.errors %}
-        {% for error in info_form.email.errors %}
-          {{ error }}
-        {% endfor %}
-      {% endif %}
-    </span>
-  </p>
-{{ info_form.submit }}
 
-</form>
-<form action="{{ password_update_target_url }}" method="post" >
-  <p>
-  {{ password_form.password.label }}
-  {{ password_form.password(placeholder="password") }}
-    <span class="error">
-      {% if password_form.password.errors %}
-        {% for error in password_form.password.errors %}
-          {{ error }}
+    </form>
+    <form action="{{ password_update_target_url }}" method="post">
+        {{ password_form.csrf_token }}
+        {% for field in password_form %}
+            {{ render_field(field) }}
         {% endfor %}
-      {% endif %}
-    </span>
-  </p>
-  <p>
-  {{ password_form.password_repeat.label }}
-  {{ password_form.password_repeat(placeholder="password") }}
-    <span class="error">
-      {% if password_form.password_repeat.errors %}
-        {% for error in password_form.password_repeat.errors %}
-          {{ error }}
-        {% endfor %}
-      {% endif %}
-    </span>
-  </p>
-  {{ password_form.submit }}
-  </form>
+    </form>
 
 
 {% endblock %}

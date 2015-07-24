@@ -24,7 +24,6 @@ def show_group_by_name(name):
 def show_group(group):
     members = groups.get_group_members(group)
     menu_structure = menus.get_menu_structure(groups.get_group_menu(group))
-    print(menu_structure)
     return render_template("internal/groups/group.html", group=group, members=members, menu=menu_structure)
 
 
