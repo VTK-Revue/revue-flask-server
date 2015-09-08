@@ -1,4 +1,3 @@
-__author__ = 'Floris'
 from flask import request, render_template, flash, redirect
 
 from revue.public.views import public_site
@@ -12,15 +11,15 @@ from revue import bcrypt, db
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-            user = User.query.filter_by(username=form.username.data).first()
-            if user is not None and \
-                    bcrypt.check_password_hash(user.password,
-                                               form.password.data):
-                session.user_login(user)
-                flash('You just logged in', 'success')
-                return redirect('intern')
-            else:
-                flash('Invalid login', 'danger')
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and \
+                bcrypt.check_password_hash(user.password,
+                                           form.password.data):
+            session.user_login(user)
+            flash('You just logged in', 'success')
+            return redirect('intern')
+        else:
+            flash('Invalid login', 'danger')
 
     return render_template("public/login/login.html", form=form)
 
@@ -37,10 +36,10 @@ def register():
                 form.username.data,
                 form.password.data
             )
-            #TODO: check if duplicate username should be checked
+            # TODO: check if duplicate username should be checked
             db.session.add(Registration.from_user(newUser))
             db.session.commit()
-            #TODO: send notification e-mail to activate this account
+            # TODO: send notification e-mail to activate this account
             flash('You just created an account. Once your account has been activated, you\''
                   'll be able to access the internal part of website.', 'success')
             return redirect('/')

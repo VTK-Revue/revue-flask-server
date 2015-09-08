@@ -1,4 +1,3 @@
-__author__ = 'fkint'
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
 from revue import db
@@ -14,6 +13,7 @@ class Group(db.Model):
     __mapper_args__ = {
         'polymorphic_on': type
     }
+
     def __init__(self, name, description):
         self.name = name
         self.description = description

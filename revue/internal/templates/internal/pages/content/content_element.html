@@ -13,15 +13,16 @@
     <h1>{{ element.title }}</h1>
     <ul class="content-actions">
 
-        <li><a href="{{ url_for('.show_content', id=element.id, action="edit", referring_page_id=page.id) }}"><i>Edit</i></a></li>
+        <li><a href="{{ url_for('.show_content', id=element.id, action=" edit", referring_page_id=page.id)
+            }}"><i>Edit</i></a></li>
     </ul>
     <p class="content-element-info">Published by {{ element.author.name() }}</p>
 
     <div>
         {% if element.type == "text" %}
-            {% include "internal/pages/text_element.html" %}
+        {% include "internal/pages/text_element.html" %}
         {% else %}
-            <span>incorrect content element</span>
+        <span>incorrect content element</span>
         {% endif %}
     </div>
 </div>

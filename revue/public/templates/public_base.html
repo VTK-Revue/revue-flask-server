@@ -2,30 +2,30 @@
 
 {% block site %}
 
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/voorstellingen">Voorstellingen</a></li>
-                <li><a href="/ticket_info">Tickets</a></li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/intern">Intern</a></li>
-            </ul>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-default navbar-static-top">
     <div class="container">
 
-        {% for category, message in get_flashed_messages(with_categories=true) %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
-
-        {% block content %}
-        {% endblock %}
-
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/voorstellingen">Voorstellingen</a></li>
+            <li><a href="/ticket_info">Tickets</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/intern">Intern</a></li>
+        </ul>
     </div>
+</nav>
+
+<div class="container">
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}
+    {% endblock %}
+
+</div>
 
 {% endblock %}

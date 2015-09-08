@@ -1,5 +1,3 @@
-__author__ = 'fkint'
-
 from flask import session
 
 from revue.models import *

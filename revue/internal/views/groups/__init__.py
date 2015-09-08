@@ -1,5 +1,3 @@
-__author__ = 'Floris'
-
 from flask import render_template
 
 from revue.internal.views import internal_site

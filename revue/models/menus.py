@@ -1,7 +1,6 @@
-__author__ = 'Floris Kint'
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
 from revue import db
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
 
 class MenuEntry(db.Model):
@@ -41,4 +40,3 @@ class MenuEntryRelationship(db.Model):
     def __init__(self, parent_id, child_id):
         self.child_id = child_id
         self.parent_id = parent_id
-

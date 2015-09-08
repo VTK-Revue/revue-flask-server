@@ -1,5 +1,4 @@
-__author__ = 'Floris'
-from revue.models import GroupParticipation, User
+from revue.models import GroupParticipation, User, Group, YearGroup, YearGroupParticipation, RevueYear
 from revue.models.menus import GroupMenu, MenuEntry
 
 
@@ -13,3 +12,14 @@ def get_group_menu(group):
     if group_menu is None:
         return None
     return MenuEntry.query.get(group_menu.menu_entry_id)
+
+
+def get_user_groups(user):
+    return [Group.query.get(p.group) for p in GroupParticipation.query.filter_by(user=user.id)]
+
+
+def get_user_year_groups_by_year(user):
+    result = {year.year: set() for year in RevueYear.query.all()}
+    for participation in YearGroupParticipation.query.filter_by(user=user.id):
+        result[RevueYear.query.get(participation.year).year].add(YearGroup.query.get(participation.year_group))
+    return result

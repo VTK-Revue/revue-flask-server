@@ -2,34 +2,33 @@
 
 {% block site %}
 
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="container">
-
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('.index') }}">Home</a></li>
-                <li><a href="{{ url_for('.activities') }}">Activiteiten</a></li>
-                <li><a href="{{ url_for('.script') }}">Script</a></li>
-                <li><a href="{{ url_for('.members') }}">Medewerkers</a></li>
-                <li><a href="{{ url_for('.media') }}">Media</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url_for('.logout') }}">Logout</a></li>
-                <li><a href="/">Public</a></li>
-            </ul>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
 
-        {% for category, message in get_flashed_messages(with_categories=true) %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
-
-
-
-        {% block content %}
-        {% endblock %}
-
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('.index') }}">Home</a></li>
+            <li><a href="{{ url_for('.activities') }}">Activiteiten</a></li>
+            <li><a href="{{ url_for('.script') }}">Script</a></li>
+            <li><a href="{{ url_for('.members') }}">Medewerkers</a></li>
+            <li><a href="{{ url_for('.media') }}">Media</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url_for('.logout') }}">Logout</a></li>
+            <li><a href="/">Public</a></li>
+        </ul>
     </div>
+</nav>
+
+<div class="container">
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+
+
+    {% block content %}
+    {% endblock %}
+
+</div>
 
 {% endblock %}

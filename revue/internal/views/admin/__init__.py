@@ -1,8 +1,8 @@
-__author__ = "fkint"
 from revue.internal.views import internal_site
 from revue.utilities.permissions import admin_required
+import activate
+import user
 
-import activate, user
 
 @internal_site.route("/admin/user/<username>", methods=["GET"])
 @admin_required

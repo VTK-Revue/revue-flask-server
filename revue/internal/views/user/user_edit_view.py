@@ -1,4 +1,3 @@
-__author__ = 'fkint'
 from flask import render_template, request
 
 from forms import UpdateUserPasswordForm, UpdateUserInfoForm
@@ -27,10 +26,10 @@ def show_update():
             user.password = h
             db.session.commit()
         return render_template("internal/user/user_edit.html",
-                       u=user, password_form=form,
-                       info_form=UpdateUserInfoForm(request.form),
-                       password_update_target_url="/intern/user?action=update_password",
-                       info_update_target_url="/intern/user?action=update_info")
+                               u=user, password_form=form,
+                               info_form=UpdateUserInfoForm(request.form),
+                               password_update_target_url="/intern/user?action=update_password",
+                               info_update_target_url="/intern/user?action=update_info")
     elif action == "update_info":
         form = UpdateUserInfoForm(request.form)
         if form.validate():
@@ -39,9 +38,8 @@ def show_update():
             user.lastName = form.lastName.data
             db.session.commit()
         return render_template("internal/user/user_edit.html",
-                       u=user, password_form=UpdateUserPasswordForm(request.form),
-                       info_form=form,
-                       password_update_target_url="/intern/user?action=update_password",
-                       info_update_target_url="/intern/user?action=update_info")
+                               u=user, password_form=UpdateUserPasswordForm(request.form),
+                               info_form=form,
+                               password_update_target_url="/intern/user?action=update_password",
+                               info_update_target_url="/intern/user?action=update_info")
     return show()
-

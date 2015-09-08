@@ -1,6 +1,5 @@
-__author__ = 'fkint'
-
 from flask import render_template, request
+
 from revue.models.general import User
 from revue.internal.views.user.forms import UpdateUserPasswordForm, UpdateUserInfoForm
 from revue import bcrypt, db

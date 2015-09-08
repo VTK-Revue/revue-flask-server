@@ -1,10 +1,10 @@
-__author__ = 'fkint'
 from flask import render_template, request, redirect, url_for
 
 from revue.internal.views import internal_site
 from revue.utilities.login import login_required
 from revue.utilities import pages
 from forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
+
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])
 @login_required
@@ -76,5 +76,6 @@ def show_edit_content(content_element):
         form = EditTextElementForm(request.form, obj=content_element)
         if request.method == "POST":
             pages.save_content(content_element, form)
-        return render_template("internal/pages/content/edit_text_element.html", element=content_element, form=form, referring_page_id=request.args.get('referring_page_id', '#'))
+        return render_template("internal/pages/content/edit_text_element.html", element=content_element, form=form,
+                               referring_page_id=request.args.get('referring_page_id', '#'))
     return render_template("internal/pages/content/edit_content_element.html", element=content_element)

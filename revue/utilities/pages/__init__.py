@@ -1,5 +1,3 @@
-__author__ = 'fkint'
-
 from revue.models import YearGroupParticipation, Page, PageAccessRestriction, ContentElement, TextElement, \
     PageContentElement
 from revue.utilities import session

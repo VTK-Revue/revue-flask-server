@@ -4,24 +4,24 @@
 
 <h2>User activation (admin only)</h2>
 <table border="1">
-<tr>
-    <th>Username</th>
-    <th>Email</th>
-    <th>First name</th>
-    <th>Last name</th>
-    <th>Activate</th>
-    <th>Remove</th>
-</tr>
-{% for registration in registrations %}
-<tr>
-  <td>{{ registration.username }}</td>
-  <td>{{ registration.email }}</td>
-  <td>{{ registration.firstName }}</td>
-  <td>{{ registration.lastName }}</td>
-  <td><a href="{{ activate_url(registration.username) }}">Activate</a></td>
-    <td><a href="{{ remove_registration_url(registration.username) }}">Remove</a></td>
-</tr>
-{% endfor %}
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Activate</th>
+        <th>Remove</th>
+    </tr>
+    {% for registration in registrations %}
+    <tr>
+        <td>{{ registration.username }}</td>
+        <td>{{ registration.email }}</td>
+        <td>{{ registration.firstName }}</td>
+        <td>{{ registration.lastName }}</td>
+        <td><a href="{{ activate_url(registration.username) }}">Activate</a></td>
+        <td><a href="{{ remove_registration_url(registration.username) }}">Remove</a></td>
+    </tr>
+    {% endfor %}
 
 </table>
 {% endblock %}

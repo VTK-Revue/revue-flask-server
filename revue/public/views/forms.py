@@ -12,8 +12,9 @@ class Unique(object):
         self.message = message
         if message is None:
             self.message = u'This element already exists'
+
     def __call__(self, form, field):
-        check = self.model.query.filter(self.field==field.data).first()
+        check = self.model.query.filter(self.field == field.data).first()
         if check:
             raise ValidationError(self.message)
 

@@ -28,6 +28,7 @@ app.register_blueprint(public_site)
 # Setup logging
 # TODO: create sane defaults for development
 import logging
+
 logging.basicConfig(
     level=logging.DEBUG
 )

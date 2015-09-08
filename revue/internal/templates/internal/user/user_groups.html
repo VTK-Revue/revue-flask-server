@@ -1,0 +1,32 @@
+{% extends "internal_base.html" %}
+
+{% block content %}
+
+<h2>View user groups</h2>
+<a href="{{ url_for('.show_user', id=user.id) }}">{{ user.firstName }} {{ user.lastName }}</a>
+<h3>General groups</h3>
+<ul>
+    {% for group in general_groups %}
+    <li>
+        <b><a href="{{ url_for('.show_group_by_id', id=group.id) }}">{{ group.name }}</a></b>: {{ group.description }}
+    </li>
+    {% endfor %}
+</ul>
+<h3>Year Groups</h3>
+<ul>
+    {% for year, year_groups in year_groups_by_year.iteritems() %}
+    <li>
+        {{ year }}
+        <ul>
+            {% for year_group in year_groups %}
+            <li>
+                <b><a href="{{ url_for('.show_yeargroup_by_year_and_id', id=year_group.id, year=year) }}">{{
+                    year_group.name }}</a></b>: {{ year_group.description }}
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

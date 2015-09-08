@@ -1,5 +1,3 @@
-__author__ = 'fkint'
-
 from flask import render_template, flash, request
 
 from revue.models import Registration, User

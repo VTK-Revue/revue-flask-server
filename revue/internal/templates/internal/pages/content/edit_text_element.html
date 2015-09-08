@@ -2,12 +2,12 @@
 
 {% block content %}
 
-    <h1>Edit text element</h1>
-    <a href="{{ url_for('.show_page_by_id', id=referring_page_id) }}">Go back</a>
-    <form action="{{ update_url }}" method="post">
-        {{ form.csrf_token }}
-        {% for field in form %}
-            {{ render_field(field) }}
-        {% endfor %}
-    </form>
+<h1>Edit text element</h1>
+<a href="{{ url_for('.show_page_by_id', id=referring_page_id) }}">Go back</a>
+<form action="{{ update_url }}" method="post">
+    {{ form.csrf_token }}
+    {% for field in form %}
+    {{ render_field(field) }}
+    {% endfor %}
+</form>
 {% endblock %}

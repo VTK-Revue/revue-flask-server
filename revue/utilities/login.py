@@ -1,4 +1,5 @@
 from functools import wraps
+
 from flask import redirect, flash
 
 from revue.utilities import session
@@ -13,4 +14,5 @@ def login_required(f):
         else:
             flash('You need to login first.', 'danger')
             return redirect('/login')
+
     return wrap

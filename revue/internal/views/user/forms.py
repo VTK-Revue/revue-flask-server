@@ -1,6 +1,4 @@
-__author__ = 'fkint'
-
-from wtforms import Form, StringField, PasswordField, SubmitField, HiddenField
+from wtforms import Form, StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, EqualTo, Length, Email
 
 
@@ -20,7 +18,7 @@ class UpdateUserInfoForm(Form):
     submit = SubmitField('Save')
 
     def set_user(self, user):
-        #self.firstName.data
+        # self.firstName.data
         self.firstName.default = user.firstName
         self.lastName.default = user.lastName
         self.email.default = user.email

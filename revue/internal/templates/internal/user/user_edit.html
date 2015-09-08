@@ -2,20 +2,20 @@
 
 {% block content %}
 
-    <h2>Edit user information</h2>
-    <form action="{{ info_update_target_url }}" method="post">
-        {{ info_form.csrf_token }}
-        {% for field in info_form %}
-            {{ render_field(field) }}
-        {% endfor %}
+<h2>Edit user information</h2>
+<form action="{{ info_update_target_url }}" method="post">
+    {{ info_form.csrf_token }}
+    {% for field in info_form %}
+    {{ render_field(field) }}
+    {% endfor %}
 
-    </form>
-    <form action="{{ password_update_target_url }}" method="post">
-        {{ password_form.csrf_token }}
-        {% for field in password_form %}
-            {{ render_field(field) }}
-        {% endfor %}
-    </form>
+</form>
+<form action="{{ password_update_target_url }}" method="post">
+    {{ password_form.csrf_token }}
+    {% for field in password_form %}
+    {{ render_field(field) }}
+    {% endfor %}
+</form>
 
 
 {% endblock %}

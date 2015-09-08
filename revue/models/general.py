@@ -1,7 +1,8 @@
-from revue import db, bcrypt
-
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+
 from sqlalchemy.orm import relationship
+
+from revue import db, bcrypt
 
 
 class User(db.Model):
@@ -16,7 +17,6 @@ class User(db.Model):
     password = db.Column(db.String(60))
 
     content_elements = relationship("ContentElement", backref="author")
-
 
     def __init__(self, firstName, lastName, email, username, password=None):
         self.firstName = firstName
@@ -68,13 +68,14 @@ class Permission(db.Model):
     __table_args__ = {"schema": "general"}
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+
     def __init__(self, name):
         self.name = name
 
 
 class UserPermission(db.Model):
     __tablename__ = "user_permission"
-    __table_args__ = (PrimaryKeyConstraint("user", "permission"),{"schema":"general"})
+    __table_args__ = (PrimaryKeyConstraint("user", "permission"), {"schema": "general"})
     user = db.Column(db.Integer, ForeignKey('general.user.id'))
     permission = db.Column(db.Integer, ForeignKey('general.permission.id'))
 

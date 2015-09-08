@@ -1,6 +1,5 @@
-__author__ = 'fkint'
-
 from functools import wraps
+
 from flask import redirect, flash
 
 from revue.models import UserPermission, Permission
@@ -33,5 +32,5 @@ def admin_required(f):
             return redirect('/')
         else:
             return f(*args, **kwargs)
-    return wrap
 
+    return wrap

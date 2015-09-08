@@ -1,5 +1,5 @@
 {% macro render_group_member(member) -%}
-    <li>
-        <a href="{{ url_for('.view_user', username=member.username) }}">{{ member.firstName }} {{ member.lastName }}</a>
-    </li>
+<li>
+    <a href="{{ url_for('.view_user', username=member.username) }}">{{ member.firstName }} {{ member.lastName }}</a>
+</li>
 {%- endmacro %}

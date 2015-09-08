@@ -2,21 +2,21 @@
 {% from "internal/groups/member.html" import render_group_member %}
 {% from "internal/menu/menu.html" import render_menu %}
 {% block content %}
-    <h1>{{ group.name }}</h1>
-    <p>
-        {{ group.description }}
-    </p>
-    <section id="members">
-        <h3>Leden</h3>
-        <ul>
+<h1>{{ group.name }}</h1>
+<p>
+    {{ group.description }}
+</p>
+<section id="members">
+    <h3>Leden</h3>
+    <ul>
         {% for member in members %}
-            {{ render_group_member(member) }}
+        {{ render_group_member(member) }}
         {% endfor %}
-        </ul>
-    </section>
-    <section id="menu">
-        <h3>Menu</h3>
-        {{ render_menu(menu) }}
-    </section>
+    </ul>
+</section>
+<section id="menu">
+    <h3>Menu</h3>
+    {{ render_menu(menu) }}
+</section>
 
 {% endblock %}
