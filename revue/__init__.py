@@ -2,11 +2,13 @@
 # encoding: utf-8
 
 from flask import Flask
+from flask.ext.bootstrap import Bootstrap
 import os
 
 
 # Create application
 app = Flask(__name__)
+Bootstrap(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 from flask.ext.sqlalchemy import SQLAlchemy
