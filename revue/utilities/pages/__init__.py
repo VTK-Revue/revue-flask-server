@@ -1,5 +1,5 @@
-from revue.models import YearGroupParticipation, Page, PageAccessRestriction, ContentElement, TextElement, \
-    PageContentElement
+from revue.models.groups import YearGroupParticipation
+from revue.models.pages import Page, PageAccessRestriction, ContentElement, TextElement, PageContentElement
 from revue.utilities import session
 from revue import db
 

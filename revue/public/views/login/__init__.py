@@ -3,7 +3,7 @@ from flask import request, render_template, flash, redirect
 from revue.public.views import public_site
 from revue.public.views import LoginForm, RegisterForm
 from revue.utilities import session
-from revue.models import User, Registration
+from revue.models.general import User, Registration
 from revue import bcrypt, db
 
 

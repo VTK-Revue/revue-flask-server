@@ -3,10 +3,9 @@ from flask import flash, redirect
 from revue.internal.views import internal_site
 from revue.utilities.login import login_required
 from revue.utilities import session
-import user_edit_view
-import user_view
+from . import user_edit_view, user_view
 from .groups import view_user_groups
-from revue.models import User
+from revue.models.general import User
 
 
 @internal_site.route("/user", methods=['GET'])

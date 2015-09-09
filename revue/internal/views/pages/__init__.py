@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for
 from revue.internal.views import internal_site
 from revue.utilities.login import login_required
 from revue.utilities import pages
-from forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
+from .forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
 
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])

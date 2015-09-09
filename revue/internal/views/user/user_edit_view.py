@@ -1,6 +1,6 @@
 from flask import render_template, request
 
-from forms import UpdateUserPasswordForm, UpdateUserInfoForm
+from .forms import UpdateUserPasswordForm, UpdateUserInfoForm
 from revue import db, bcrypt
 from revue.utilities import session
 

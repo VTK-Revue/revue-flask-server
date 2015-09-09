@@ -1,10 +1,10 @@
 from flask import render_template, Blueprint
 
-from forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm
 
 public_site = Blueprint('public', __name__, template_folder='../templates')
 
-import login
+from . import login
 
 
 @public_site.route("/")

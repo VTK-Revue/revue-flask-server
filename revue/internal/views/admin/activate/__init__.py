@@ -1,6 +1,6 @@
 from flask import render_template, flash, request
 
-from revue.models import Registration, User
+from revue.models.general import Registration, User
 from revue import db
 
 

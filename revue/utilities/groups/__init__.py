@@ -1,4 +1,5 @@
-from revue.models import GroupParticipation, User, Group, YearGroup, YearGroupParticipation, RevueYear
+from revue.models.groups import GroupParticipation, Group, YearGroup, YearGroupParticipation, RevueYear
+from revue.models.general import User
 from revue.models.menus import GroupMenu, MenuEntry
 
 

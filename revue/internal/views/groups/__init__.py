@@ -4,7 +4,8 @@ from revue.internal.views import internal_site
 from revue.utilities.login import login_required
 import revue.utilities.groups as groups
 import revue.utilities.menus as menus
-from revue.models import Group, YearGroup, YearGroupParticipation, RevueYear, User
+from revue.models.groups import Group, YearGroup, YearGroupParticipation, RevueYear
+from revue.models.general import User
 
 
 @internal_site.route('/group/<int:id>')

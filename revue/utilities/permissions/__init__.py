@@ -2,7 +2,7 @@ from functools import wraps
 
 from flask import redirect, flash
 
-from revue.models import UserPermission, Permission
+from revue.models.general import UserPermission, Permission
 from revue.utilities import session
 
 

@@ -1,15 +1,11 @@
 from flask import render_template, Blueprint
 
 from revue.utilities.login import login_required
-from revue.models import Group, YearGroup
+from revue.models.groups import Group, YearGroup
 
 internal_site = Blueprint('intern', __name__, template_folder='../templates')
 
-import pages
-import groups
-import user
-import admin
-
+from . import pages, groups, user, admin
 
 @internal_site.route("/")
 @internal_site.route("/index")
