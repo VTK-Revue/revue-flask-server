@@ -1,6 +1,6 @@
 {% extends "internal_base.html" %}
 
-{% block content %}
+{% block page_content %}
 
 <h2>View user groups</h2>
 <a href="{{ url_for('.show_user', id=user.id) }}">{{ user.firstName }} {{ user.lastName }}</a>

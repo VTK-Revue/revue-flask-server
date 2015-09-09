@@ -15,6 +15,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
+    BOOTSTRAP_SERVE_LOCAL = True
 
 
 class TestingConfig(BaseConfig):

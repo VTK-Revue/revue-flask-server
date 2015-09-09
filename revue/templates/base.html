@@ -1,24 +1,16 @@
-<!doctype html>
-
+{% extends "bootstrap/base.html" %}
 {% from 'helpers/_formhelpers.html' import render_field %}
-
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-
-    <!-- Bootstrap -->
-    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
-</head>
-
-<body>
-{% block site %}
+{% block title %}
+Revue
 {% endblock %}
-
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-</body>
-</html>
+{% block content %}
+<div class="container">
+    {% block messages %}
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endblock %}
+    {% block page_content %}
+    {% endblock %}
+</div>
+{% endblock %}
