@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 import os
-from migrate.versioning.shell import main
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
+
+from revue import app, db
+
+app.config.from_object(os.environ['APP_SETTINGS'])
+
+migrate = Migrate(app, db)
+manager = Manager(app)
+
+manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
-    main(url=os.environ['DATABASE_URL'], debug='False', repository='migrations')
+    manager.run()
