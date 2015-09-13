@@ -3,12 +3,15 @@
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_nav import Nav, register_renderer
 import os
+from revue.utilities.ui.bootstrap import CustomBootstrapRenderer
 
 
 # Create application
 app = Flask(__name__)
 Bootstrap(app)
+nav = Nav()
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -34,3 +37,6 @@ import logging
 logging.basicConfig(
     level=logging.DEBUG
 )
+
+register_renderer(app, 'custom_bootstrap_nav', CustomBootstrapRenderer)
+nav.init_app(app)
