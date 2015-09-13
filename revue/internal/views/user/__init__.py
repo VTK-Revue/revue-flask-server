@@ -7,16 +7,6 @@ from .groups import view_user_groups
 from revue.models.general import User
 
 
-@internal_site.route("/user", methods=['GET'])
-def user_own():
-    return user_edit_view.show()
-
-
-@internal_site.route('/user', methods=['POST'])
-def update_user_data():
-    return user_edit_view.show_update()
-
-
 @internal_site.route("/user/<int:id>", methods=["GET"])
 def show_user(id):
     user = User.query.get(id)

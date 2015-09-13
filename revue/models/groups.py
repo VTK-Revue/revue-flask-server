@@ -19,41 +19,54 @@ class Group(db.Model):
         self.description = description
 
 
+class PersistentGroup(Group):
+    __tablename__ = "persistent_group"
+    __table_args__ = {"schema": "general"}
+    persistent_group_id = db.Column("id", db.Integer, ForeignKey('general.group.id'), primary_key=True, nullable=False)
+    parent_persistent_group_id = db.Column(db.Integer, ForeignKey("general.persistent_group.id"), nullable=True)
+    __mapper_args__={
+        "polymorphic_identity": "persistent_group"
+    }
+
+    def __init__(self, parent_persistent_group_id):
+        self.parent_persistent_group_id = parent_persistent_group_id
+
+
 class YearGroup(Group):
     __tablename__ = "year_group"
     __table_args__ = {"schema": "general"}
     year_group_id = db.Column("id", db.Integer, ForeignKey('general.group.id'), primary_key=True, nullable=False)
-    parent_year_group = db.Column(db.Integer, ForeignKey("general.year_group.id"), nullable=True)
+    parent_year_group_id = db.Column("parent_year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=True)
     __mapper_args__ = {
         "polymorphic_identity": "year_group"
     }
 
-    def __init__(self, parent_year_group):
-        self.parent_year_group = parent_year_group
+    def __init__(self, parent_year_group_id):
+        self.parent_year_group_id = parent_year_group_id
 
 
-class GroupParticipation(db.Model):
-    __tablename__ = "group_participation"
-    __table_args__ = (PrimaryKeyConstraint("group", "user"), {"schema": "general"})
-    group = db.Column("group", db.Integer, ForeignKey("general.group.id"), nullable=False)
-    user = db.Column("user", db.Integer, ForeignKey("general.user.id"), nullable=False)
+class PersistentGroupParticipation(db.Model):
+    __tablename__ = "persistent_group_participation"
+    __table_args__ = (PrimaryKeyConstraint("persistent_group_id", "user_id"), {"schema": "general"})
+    group_id = db.Column("persistent_group_id", db.Integer, ForeignKey("general.group.id"), nullable=False)
+    user_id = db.Column("user_id", db.Integer, ForeignKey("general.user.id"), nullable=False)
 
-    def __init__(self, group, user):
-        self.group = group
-        self.user = user
+    def __init__(self, persistent_group_id, user_id):
+        self.group_id = persistent_group_id
+        self.user_id = user_id
 
 
 class YearGroupParticipation(db.Model):
     __tablename__ = "year_group_participation"
-    __table_args__ = (PrimaryKeyConstraint("year", "year_group", "user"), {"schema": "general"})
-    year = db.Column("year", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
-    year_group = db.Column("year_group", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
-    user = db.Column("user", db.Integer, ForeignKey("general.user.id"), nullable=False)
+    __table_args__ = (PrimaryKeyConstraint("year_id", "year_group_id", "user_id"), {"schema": "general"})
+    year_id = db.Column("year_id", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
+    year_group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
+    user_id = db.Column("user_id", db.Integer, ForeignKey("general.user.id"), nullable=False)
 
-    def __init__(self, year, year_group, user):
-        self.year = year
-        self.year_group = year_group
-        self.user = user
+    def __init__(self, year_id, year_group_id, user_id):
+        self.year_id = year_id
+        self.year_group_id = year_group_id
+        self.user_id = user_id
 
 
 class RevueYear(db.Model):

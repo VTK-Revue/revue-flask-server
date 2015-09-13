@@ -62,7 +62,6 @@ class CustomBootstrapRenderer(BootstrapRenderer):
         return root
 
     def visit_PermissionView(self, node):
-        print('in visit permission view')
         if node.has_required_permission():
             return self.visit_View(node)
         return None
@@ -84,7 +83,5 @@ class PermissionView(View):
         self.url_for_kwargs = kwargs
 
     def has_required_permission(self):
-        print(self.required_permission)
-        print(has_permission(session.get_current_user_id(), self.required_permission))
         return self.required_permission is None or has_permission(session.get_current_user_id(),
                                                                   self.required_permission)

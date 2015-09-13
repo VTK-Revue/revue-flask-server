@@ -1,6 +1,6 @@
 from flask import session
 
-from revue.models import *
+from revue.models.general import User
 
 
 def is_logged_in():
@@ -12,6 +12,7 @@ def get_current_user_id():
 
 
 def get_current_user():
+    print(get_current_user_id())
     return User.query.filter_by(id=get_current_user_id()).first()
 
 

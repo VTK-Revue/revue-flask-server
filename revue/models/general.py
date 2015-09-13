@@ -75,10 +75,10 @@ class Permission(db.Model):
 
 class UserPermission(db.Model):
     __tablename__ = "user_permission"
-    __table_args__ = (PrimaryKeyConstraint("user", "permission"), {"schema": "general"})
-    user = db.Column(db.Integer, ForeignKey('general.user.id'))
-    permission = db.Column(db.Integer, ForeignKey('general.permission.id'))
+    __table_args__ = (PrimaryKeyConstraint("user_id", "permission_id"), {"schema": "general"})
+    user_id = db.Column(db.Integer, ForeignKey('general.user.id'))
+    permission_id = db.Column(db.Integer, ForeignKey('general.permission.id'))
 
-    def __init__(self, user, permission):
-        self.user = user
-        self.permission = permission
+    def __init__(self, user_id, permission_id):
+        self.user_id = user_id
+        self.permission_id = permission_id

@@ -5,8 +5,8 @@ from revue import db
 
 
 def user_meets_restriction(restriction, user_id):
-    ygp = YearGroupParticipation.query.filter_by(year_group=restriction.year_group, year=restriction.revue_year,
-                                                 user=user_id).first()
+    ygp = YearGroupParticipation.query.filter_by(year_group_id=restriction.year_group, year_id=restriction.revue_year_id,
+                                                 user_id=user_id).first()
     if ygp is None:
         return False
     return True
@@ -15,7 +15,7 @@ def user_meets_restriction(restriction, user_id):
 def has_access_to_page(page, user_id):
     if not page.access_restricted:
         return True
-    restrictions = PageAccessRestriction.query.filter_by(page=page.id).all()
+    restrictions = PageAccessRestriction.query.filter_by(page_id=page.id).all()
     for restriction in restrictions:
         if user_meets_restriction(restriction, user_id):
             return True
@@ -35,7 +35,7 @@ def get_page_by_path(path):
         parent_page_id = None
         if current_page is not None:
             parent_page_id = current_page.id
-        current_page = Page.query.filter_by(url_identifier=p, parent_page=parent_page_id).first()
+        current_page = Page.query.filter_by(url_identifier=p, parent_page_id=parent_page_id).first()
         if current_page is None:
             return None
     if has_access_to_page(current_page, session.get_current_user_id()):

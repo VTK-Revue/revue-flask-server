@@ -14,7 +14,7 @@ def has_permission(user_id, permission_name):
     p = Permission.query.filter_by(name=permission_name).first()
     if p is None:
         return False
-    up = UserPermission.query.filter_by(user=user_id, permission=p.id).first()
+    up = UserPermission.query.filter_by(user_id=user_id, permission_id=p.id).first()
     if up is None:
         return False
     return True

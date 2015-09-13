@@ -13,6 +13,7 @@ intern_navbar = CustomNavbar(
         View('Medewerkers', '.members'),
         View('Media', '.media')
     ], [
+        View('Profiel', '.profile'),
         PermissionView('Admin', 'admin.index', Permissions.ADMIN),
         View('Logout', '.logout'),
         View('Public', 'public.index')

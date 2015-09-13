@@ -7,19 +7,19 @@ from revue import db
 
 class Page(db.Model):
     __tablename__ = 'page'
-    __table_args__ = (UniqueConstraint('parent_page', 'url_identifier'), {'schema': 'content'})
+    __table_args__ = (UniqueConstraint('parent_page_id', 'url_identifier'), {'schema': 'content'})
     id = db.Column('id', db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(50), nullable=False)
-    parent_page = db.Column("parent_page", db.Integer, ForeignKey("content.page.id"), nullable=True)
+    parent_page_id = db.Column("parent_page_id", db.Integer, ForeignKey("content.page.id"), nullable=True)
     description = db.Column(db.Text, nullable=False)
     access_restricted = db.Column("access_restricted", db.Boolean, nullable=False)
     url_identifier = db.Column('url_identifier', db.String(50), nullable=False)
 
     page_content_elements = relationship("PageContentElement", backref="page")
 
-    def __init__(self, name, parent_page, description, access_restricted):
+    def __init__(self, name, parent_page_id, description, access_restricted):
         self.name = name
-        self.parent_page = parent_page
+        self.parent_page_id = parent_page_id
         self.description = description
         self.access_restricted = access_restricted
 
@@ -29,15 +29,15 @@ class Page(db.Model):
 
 class PageAccessRestriction(db.Model):
     __tablename__ = "page_access_restriction"
-    __table_args__ = (PrimaryKeyConstraint("page", "year_group", "revue_year"), {"schema": "content"})
-    page = db.Column("page", db.Integer, ForeignKey("content.page.id"), nullable=False)
-    year_group = db.Column("year_group", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
-    revue_year = db.Column("revue_year", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
+    __table_args__ = (PrimaryKeyConstraint("page_id", "year_group_id", "revue_year_id"), {"schema": "content"})
+    page_id = db.Column("page_id", db.Integer, ForeignKey("content.page.id"), nullable=False)
+    year_group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
+    revue_year_id = db.Column("revue_year_id", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
 
-    def __init__(self, page, year_group, revue_year):
-        self.page = page
-        self.year_group = year_group
-        self.revue_year = revue_year
+    def __init__(self, page_id, year_group_id, revue_year_id):
+        self.page_id = page_id
+        self.year_group_id = year_group_id
+        self.revue_year_id = revue_year_id
 
 
 class ContentElement(db.Model):
@@ -50,7 +50,7 @@ class ContentElement(db.Model):
     sticky = db.Column("sticky", db.Boolean, nullable=False, default=False)
     title = db.Column('title', db.String(50), nullable=False, default="")
     identifier = db.Column("identifier", db.String(50), nullable=False, default=None)
-    author_id = db.Column('author', db.Integer, ForeignKey('general.user.id'), nullable=False)
+    author_id = db.Column('author_id', db.Integer, ForeignKey('general.user.id'), nullable=False)
 
     page_content_elements = relationship("PageContentElement", backref="content_element")
 
@@ -68,11 +68,11 @@ class ContentElement(db.Model):
 
 class PageContentElement(db.Model):
     __tablename__ = "page_content_element"
-    __table_args__ = (PrimaryKeyConstraint('content_element', 'page'), {"schema": "content"})
+    __table_args__ = (PrimaryKeyConstraint('content_element_id', 'page_id'), {"schema": "content"})
 
-    content_element_id = db.Column("content_element", db.Integer, ForeignKey('content.content_element.id'),
+    content_element_id = db.Column("content_element_id", db.Integer, ForeignKey('content.content_element.id'),
                                    nullable=False)
-    page_id = db.Column("page", db.Integer, ForeignKey('content.page.id'), nullable=False)
+    page_id = db.Column("page_id", db.Integer, ForeignKey('content.page.id'), nullable=False)
     order_index = db.Column("order_index", db.Integer, nullable=False, default=0)
 
     def __init__(self, content_element_id, page_id, order_index):

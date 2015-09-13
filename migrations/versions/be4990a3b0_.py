@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 8fc67373be
+Revision ID: be4990a3b0
 Revises: None
-Create Date: 2015-09-10 18:00:41.252926
+Create Date: 2015-09-13 22:35:59.086191
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '8fc67373be'
+revision = 'be4990a3b0'
 down_revision = None
 
 from alembic import op
@@ -19,13 +19,13 @@ def upgrade():
     op.create_table('page',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=50), nullable=False),
-    sa.Column('parent_page', sa.Integer(), nullable=True),
+    sa.Column('parent_page_id', sa.Integer(), nullable=True),
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('access_restricted', sa.Boolean(), nullable=False),
     sa.Column('url_identifier', sa.String(length=50), nullable=False),
-    sa.ForeignKeyConstraint(['parent_page'], ['content.page.id'], ),
+    sa.ForeignKeyConstraint(['parent_page_id'], ['content.page.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('parent_page', 'url_identifier'),
+    sa.UniqueConstraint('parent_page_id', 'url_identifier'),
     schema='content'
     )
     op.create_table('group',
@@ -77,77 +77,85 @@ def upgrade():
     sa.Column('sticky', sa.Boolean(), nullable=False),
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('identifier', sa.String(length=50), nullable=False),
-    sa.Column('author', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['author'], ['general.user.id'], ),
+    sa.Column('author_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['author_id'], ['general.user.id'], ),
     sa.PrimaryKeyConstraint('id'),
     schema='content'
     )
     op.create_table('menu_entry',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=50), nullable=False),
-    sa.Column('page', sa.Integer(), nullable=False),
+    sa.Column('page_id', sa.Integer(), nullable=False),
     sa.Column('description', sa.Text(), nullable=False),
-    sa.ForeignKeyConstraint(['page'], ['content.page.id'], ),
+    sa.ForeignKeyConstraint(['page_id'], ['content.page.id'], ),
     sa.PrimaryKeyConstraint('id'),
     schema='content'
     )
-    op.create_table('group_participation',
-    sa.Column('group', sa.Integer(), nullable=False),
-    sa.Column('user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['group'], ['general.group.id'], ),
-    sa.ForeignKeyConstraint(['user'], ['general.user.id'], ),
-    sa.PrimaryKeyConstraint('group', 'user'),
+    op.create_table('persistent_group',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('parent_persistent_group_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['id'], ['general.group.id'], ),
+    sa.ForeignKeyConstraint(['parent_persistent_group_id'], ['general.persistent_group.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='general'
+    )
+    op.create_table('persistent_group_participation',
+    sa.Column('persistent_group_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['persistent_group_id'], ['general.group.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['general.user.id'], ),
+    sa.PrimaryKeyConstraint('persistent_group_id', 'user_id'),
     schema='general'
     )
     op.create_table('user_permission',
-    sa.Column('user', sa.Integer(), nullable=False),
-    sa.Column('permission', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['permission'], ['general.permission.id'], ),
-    sa.ForeignKeyConstraint(['user'], ['general.user.id'], ),
-    sa.PrimaryKeyConstraint('user', 'permission'),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('permission_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['permission_id'], ['general.permission.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['general.user.id'], ),
+    sa.PrimaryKeyConstraint('user_id', 'permission_id'),
     schema='general'
     )
     op.create_table('year_group',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('parent_year_group', sa.Integer(), nullable=True),
+    sa.Column('parent_year_group_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id'], ['general.group.id'], ),
-    sa.ForeignKeyConstraint(['parent_year_group'], ['general.year_group.id'], ),
+    sa.ForeignKeyConstraint(['parent_year_group_id'], ['general.year_group.id'], ),
     sa.PrimaryKeyConstraint('id'),
     schema='general'
     )
     op.create_table('group_menu',
     sa.Column('menu_entry', sa.Integer(), nullable=False),
-    sa.Column('group', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['group'], ['general.group.id'], ),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['general.group.id'], ),
     sa.ForeignKeyConstraint(['menu_entry'], ['content.menu_entry.id'], ),
-    sa.PrimaryKeyConstraint('group'),
+    sa.PrimaryKeyConstraint('group_id'),
     schema='content'
     )
     op.create_table('menu_entry_relationship',
-    sa.Column('child', sa.Integer(), nullable=False),
-    sa.Column('parent', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['child'], ['content.menu_entry.id'], ),
-    sa.ForeignKeyConstraint(['parent'], ['content.menu_entry.id'], ),
-    sa.PrimaryKeyConstraint('parent', 'child'),
+    sa.Column('child_id', sa.Integer(), nullable=False),
+    sa.Column('parent_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['child_id'], ['content.menu_entry.id'], ),
+    sa.ForeignKeyConstraint(['parent_id'], ['content.menu_entry.id'], ),
+    sa.PrimaryKeyConstraint('parent_id', 'child_id'),
     schema='content'
     )
     op.create_table('page_access_restriction',
-    sa.Column('page', sa.Integer(), nullable=False),
-    sa.Column('year_group', sa.Integer(), nullable=False),
-    sa.Column('revue_year', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['page'], ['content.page.id'], ),
-    sa.ForeignKeyConstraint(['revue_year'], ['general.revue_year.id'], ),
-    sa.ForeignKeyConstraint(['year_group'], ['general.year_group.id'], ),
-    sa.PrimaryKeyConstraint('page', 'year_group', 'revue_year'),
+    sa.Column('page_id', sa.Integer(), nullable=False),
+    sa.Column('year_group_id', sa.Integer(), nullable=False),
+    sa.Column('revue_year_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['page_id'], ['content.page.id'], ),
+    sa.ForeignKeyConstraint(['revue_year_id'], ['general.revue_year.id'], ),
+    sa.ForeignKeyConstraint(['year_group_id'], ['general.year_group.id'], ),
+    sa.PrimaryKeyConstraint('page_id', 'year_group_id', 'revue_year_id'),
     schema='content'
     )
     op.create_table('page_content_element',
-    sa.Column('content_element', sa.Integer(), nullable=False),
-    sa.Column('page', sa.Integer(), nullable=False),
+    sa.Column('content_element_id', sa.Integer(), nullable=False),
+    sa.Column('page_id', sa.Integer(), nullable=False),
     sa.Column('order_index', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['content_element'], ['content.content_element.id'], ),
-    sa.ForeignKeyConstraint(['page'], ['content.page.id'], ),
-    sa.PrimaryKeyConstraint('content_element', 'page'),
+    sa.ForeignKeyConstraint(['content_element_id'], ['content.content_element.id'], ),
+    sa.ForeignKeyConstraint(['page_id'], ['content.page.id'], ),
+    sa.PrimaryKeyConstraint('content_element_id', 'page_id'),
     schema='content'
     )
     op.create_table('text_element',
@@ -158,13 +166,13 @@ def upgrade():
     schema='content'
     )
     op.create_table('year_group_participation',
-    sa.Column('year', sa.Integer(), nullable=False),
-    sa.Column('year_group', sa.Integer(), nullable=False),
-    sa.Column('user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user'], ['general.user.id'], ),
-    sa.ForeignKeyConstraint(['year'], ['general.revue_year.id'], ),
-    sa.ForeignKeyConstraint(['year_group'], ['general.year_group.id'], ),
-    sa.PrimaryKeyConstraint('year', 'year_group', 'user'),
+    sa.Column('year_id', sa.Integer(), nullable=False),
+    sa.Column('year_group_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['general.user.id'], ),
+    sa.ForeignKeyConstraint(['year_group_id'], ['general.year_group.id'], ),
+    sa.ForeignKeyConstraint(['year_id'], ['general.revue_year.id'], ),
+    sa.PrimaryKeyConstraint('year_id', 'year_group_id', 'user_id'),
     schema='general'
     )
     ### end Alembic commands ###
@@ -180,7 +188,8 @@ def downgrade():
     op.drop_table('group_menu', schema='content')
     op.drop_table('year_group', schema='general')
     op.drop_table('user_permission', schema='general')
-    op.drop_table('group_participation', schema='general')
+    op.drop_table('persistent_group_participation', schema='general')
+    op.drop_table('persistent_group', schema='general')
     op.drop_table('menu_entry', schema='content')
     op.drop_table('content_element', schema='content')
     op.drop_table('user', schema='general')
@@ -189,4 +198,5 @@ def downgrade():
     op.drop_table('permission', schema='general')
     op.drop_table('group', schema='general')
     op.drop_table('page', schema='content')
+    op.execute('DROP TYPE content_element_types;')
     ### end Alembic commands ###
