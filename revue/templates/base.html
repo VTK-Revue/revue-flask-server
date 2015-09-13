@@ -1,5 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/google.html" as google %}
+{% from "bootstrap/pagination.html" import render_pagination %}
 {% from 'helpers/_formhelpers.html' import render_field %}
 {% block title %}
 Revue
@@ -15,3 +17,8 @@ Revue
     {% endblock %}
 </div>
 {% endblock %}
+
+{% block scripts %}
+{{super()}}
+{{google.uanalytics('UA-61544671-2')}}
+{%endblock%}

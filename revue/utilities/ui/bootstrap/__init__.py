@@ -1,11 +1,13 @@
 from flask_bootstrap.nav import BootstrapRenderer
-from flask_nav.elements import Navbar
-
+from flask_nav.elements import Navbar, View
 from hashlib import sha1
 from dominate import tags
 
-class CustomBootstrapRenderer(BootstrapRenderer):
+from revue.utilities.permissions import has_permission
+from revue.utilities import session
 
+
+class CustomBootstrapRenderer(BootstrapRenderer):
     def visit_CustomNavbar(self, node):
         # create a navbar id that is somewhat fixed, but do not leak any
         # information about memory contents to the outside
@@ -48,15 +50,41 @@ class CustomBootstrapRenderer(BootstrapRenderer):
         bar_list_right = bar.add(tags.ul(_class='nav navbar-nav navbar-right'))
 
         for item in node.left_items:
-            bar_list_left.add(self.visit(item))
+            tag = self.visit(item)
+            if tag is not None:
+                bar_list_left.add(tag)
 
         for item in node.right_items:
-            bar_list_right.add(self.visit(item))
+            tag = self.visit(item)
+            if tag is not None:
+                bar_list_right.add(self.visit(item))
 
         return root
 
+    def visit_PermissionView(self, node):
+        print('in visit permission view')
+        if node.has_required_permission():
+            return self.visit_View(node)
+        return None
+
+
 class CustomNavbar(Navbar):
     def __init__(self, title, left_items, right_items):
-        super().__init__(title, left_items+right_items)
+        super().__init__(title, left_items + right_items)
         self.left_items = left_items
         self.right_items = right_items
+
+
+class PermissionView(View):
+    def __init__(self, text, endpoint, permission, *args, **kwargs):
+        self.text = text
+        self.endpoint = endpoint
+        self.required_permission = permission
+        self.url_for_args = args
+        self.url_for_kwargs = kwargs
+
+    def has_required_permission(self):
+        print(self.required_permission)
+        print(has_permission(session.get_current_user_id(), self.required_permission))
+        return self.required_permission is None or has_permission(session.get_current_user_id(),
+                                                                  self.required_permission)

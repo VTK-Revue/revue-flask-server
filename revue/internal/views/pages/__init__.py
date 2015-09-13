@@ -1,20 +1,17 @@
 from flask import render_template, request, redirect, url_for
 
 from revue.internal.views import internal_site
-from revue.utilities.login import login_required
 from revue.utilities import pages
 from .forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
 
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])
-@login_required
 def show_page_by_id(id):
     page = pages.get_page_by_id(id)
     return show_page(page)
 
 
 @internal_site.route("/page/<path:path>", methods=['GET', 'POST'])
-@login_required
 def show_page_by_path(path):
     page = pages.get_page_by_path(path)
     return show_page(page)
@@ -37,7 +34,6 @@ def show_page(page):
 
 
 @internal_site.route('/page', methods=['GET', 'POST'])
-@login_required
 def show_create_page():
     action = str(request.args.get("action", ""))
     if action == "create":
@@ -51,7 +47,6 @@ def show_create_page():
 
 
 @internal_site.route("/content/<int:id>", methods=["GET", "POST"])
-@login_required
 def show_content(id):
     content_element = pages.get_content_element_by_id(id)
     action = str(request.args.get("action", ""))

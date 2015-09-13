@@ -19,7 +19,11 @@ def login():
             flash('You just logged in', 'success')
             return redirect('intern')
         else:
-            flash('Invalid login', 'danger')
+            registration = Registration.query.filter_by(username=form.username.data).first()
+            if registration is not None and bcrypt.check_password_hash(registration.password, form.password.data):
+                flash('Your account has not been activated yet', 'danger')
+            else:
+                flash('Invalid login', 'danger')
 
     return render_template("public/login/login.html", form=form)
 

@@ -1,9 +1,9 @@
-{% extends "internal_base.html" %}
+{% extends "admin_base.html" %}
 
 {% block page_content %}
 
-<h2>User activation (admin only)</h2>
-<table border="1">
+<h2>Registrations</h2>
+<table class="table table-striped table-condensed">
     <tr>
         <th>Username</th>
         <th>Email</th>
@@ -18,8 +18,8 @@
         <td>{{ registration.email }}</td>
         <td>{{ registration.firstName }}</td>
         <td>{{ registration.lastName }}</td>
-        <td><a href="{{ activate_url(registration.username) }}">Activate</a></td>
-        <td><a href="{{ remove_registration_url(registration.username) }}">Remove</a></td>
+        <td><a href="{{ url_for('.activate_user', username=registration.username)}}">Activate</a></td>
+        <td><a href="{{ url_for('.remove_registration', username=registration.username) }}">Remove</a></td>
     </tr>
     {% endfor %}
 
