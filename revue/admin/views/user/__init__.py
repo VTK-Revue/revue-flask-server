@@ -20,5 +20,5 @@ def edit_user(username):
 
 @admin_site.route('/users')
 def all_users():
-    users = User.query.paginate(int(request.args.get('page', 5)), 1)
+    users = User.query.paginate(int(request.args.get('page', 1)), 1)
     return render_template("admin/user/all_users.html", users=users)
