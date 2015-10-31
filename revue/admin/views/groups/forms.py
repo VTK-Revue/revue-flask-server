@@ -28,10 +28,14 @@ class CreatePersistentGroupForm(Form):
     )
     parent_persistent_group_id = SelectField(
         'Parent Group',
-        # choices=[(None, '-')] + [(g.id, g.name) for g in PersistentGroup.query.all()]
-        choices={None: '-'}.update({g.id: g.name for g in PersistentGroup.query.all()})
     )
     submit = SubmitField('Save')
+
+    def __init__(self, form):
+        Form.__init__(self, form)
+        choices = {g.id: g.name for g in PersistentGroup.query.all()}
+        choices[None] = '-'
+        self.parent_persistent_group_id.choices = [(x, choices[x]) for x in choices.keys()]
 
 
 class EditPersistentGroupForm(CreatePersistentGroupForm):
