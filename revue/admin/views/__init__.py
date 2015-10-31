@@ -3,7 +3,7 @@ from flask import Blueprint, render_template
 admin_site = Blueprint('admin', __name__, template_folder='../templates')
 
 from revue.utilities.permissions import admin_required
-from revue.admin.views import registration, user
+from revue.admin.views import registration, user, groups
 
 
 @admin_site.before_request

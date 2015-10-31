@@ -14,35 +14,26 @@ class Group(db.Model):
         'polymorphic_on': type
     }
 
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-
 
 class PersistentGroup(Group):
     __tablename__ = "persistent_group"
     __table_args__ = {"schema": "general"}
     persistent_group_id = db.Column("id", db.Integer, ForeignKey('general.group.id'), primary_key=True, nullable=False)
     parent_persistent_group_id = db.Column(db.Integer, ForeignKey("general.persistent_group.id"), nullable=True)
-    __mapper_args__={
+    __mapper_args__ = {
         "polymorphic_identity": "persistent_group"
     }
-
-    def __init__(self, parent_persistent_group_id):
-        self.parent_persistent_group_id = parent_persistent_group_id
 
 
 class YearGroup(Group):
     __tablename__ = "year_group"
     __table_args__ = {"schema": "general"}
     year_group_id = db.Column("id", db.Integer, ForeignKey('general.group.id'), primary_key=True, nullable=False)
-    parent_year_group_id = db.Column("parent_year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=True)
+    parent_year_group_id = db.Column("parent_year_group_id", db.Integer, ForeignKey("general.year_group.id"),
+                                     nullable=True)
     __mapper_args__ = {
         "polymorphic_identity": "year_group"
     }
-
-    def __init__(self, parent_year_group_id):
-        self.parent_year_group_id = parent_year_group_id
 
 
 class PersistentGroupParticipation(db.Model):
