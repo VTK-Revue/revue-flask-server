@@ -8,7 +8,8 @@ admin_navbar = CustomNavbar(
     [
         View('Home', '.index'),
         View('Activations', '.registrations'),
-        View('Users', '.all_users')
+        View('Users', '.all_users'),
+        View('Groups', '.group_page')
     ], [
         View('Intern', 'intern.index')
     ]
