@@ -27,7 +27,7 @@ class User(db.Model):
         if password is None:
             self.password = None
         else:
-            self.password = bcrypt.generate_password_hash(password)
+            self.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
     def name(self):
         return self.firstName + " " + self.lastName
