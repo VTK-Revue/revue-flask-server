@@ -3,10 +3,5 @@
 {% block page_content %}
 
 <h1>Create text element</h1>
-<form action="{{ update_url }}" method="post">
-    {{ form.csrf_token }}
-    {% for field in form %}
-    {{ render_field(field) }}
-    {% endfor %}
-</form>
+    {{ wtf.quick_form(form) }}
 {% endblock %}

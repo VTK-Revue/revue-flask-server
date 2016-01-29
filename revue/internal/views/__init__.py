@@ -18,11 +18,9 @@ from . import pages, groups, user
 @internal_site.route("/")
 @internal_site.route("/index")
 def index():
-    groups = Group.query.all()
+    gs = Group.query.all()
     year_groups = YearGroup.query.all()
-    for yg in year_groups:
-        print(yg.id)
-    return render_template("internal/index.html", groups=groups, year_groups=year_groups)
+    return render_template("internal/index.html", groups=gs, year_groups=year_groups)
 
 
 @internal_site.route("/script")

@@ -1,5 +1,7 @@
-from wtforms import Form, StringField, SubmitField, TextAreaField, BooleanField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField
 from wtforms.validators import InputRequired
+from revue.utilities.ui.forms import CKTextAreaField
+from flask.ext.wtf import Form
 
 
 class ContentElementForm(Form):
@@ -14,11 +16,11 @@ class EditContentElementForm(ContentElementForm):
 
 
 class CreateTextElementForm(ContentElementForm):
-    content = TextAreaField("Content")
+    content = CKTextAreaField("Content")
 
 
 class EditTextElementForm(EditContentElementForm):
-    content = TextAreaField("Content")
+    content = CKTextAreaField("Content")
 
 
 class PageForm(Form):
