@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms.fields import StringField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import InputRequired, ValidationError
 
-from revue.models.groups import PersistentGroup
+from revue.models.groups import *
 
 
 class ExistsOrNone(object):
@@ -39,4 +39,27 @@ class CreatePersistentGroupForm(Form):
 
 
 class EditPersistentGroupForm(CreatePersistentGroupForm):
+    pass
+
+class CreateYearGroupForm(Form):
+    name = StringField(
+        'Name',
+        validators=[InputRequired()]
+    )
+    description = TextAreaField(
+        'Description',
+        validators=[]
+    )
+    parent_year_group_id = SelectField(
+        'Parent Group',
+    )
+    submit = SubmitField('Save')
+
+    def __init__(self, form):
+        Form.__init__(self, form)
+        choices = {g.id: g.name for g in YearGroup.query.all()}
+        choices[None] = '-'
+        self.parent_year_group_id.choices = [(x, choices[x]) for x in choices.keys()]
+
+class EditYearGroupForm(CreateYearGroupForm):
     pass
