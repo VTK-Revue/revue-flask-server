@@ -1,7 +1,6 @@
-from flask_wtf import Form
 from wtforms.fields import StringField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import InputRequired, ValidationError
-
+from flask.ext.wtf import Form
 from revue.models.groups import *
 
 
@@ -28,11 +27,13 @@ class CreatePersistentGroupForm(Form):
     )
     parent_persistent_group_id = SelectField(
         'Parent Group',
+        validators=[],
+        coerce=lambda x: int(x) if x not in ['None', None] else None
     )
     submit = SubmitField('Save')
 
-    def __init__(self, form):
-        Form.__init__(self, form)
+    def __init__(self, form, *args, **kwargs):
+        super(CreatePersistentGroupForm, self).__init__(form, *args, **kwargs)
         choices = {g.id: g.name for g in PersistentGroup.query.all()}
         choices[None] = '-'
         self.parent_persistent_group_id.choices = [(x, choices[x]) for x in choices.keys()]
@@ -40,6 +41,7 @@ class CreatePersistentGroupForm(Form):
 
 class EditPersistentGroupForm(CreatePersistentGroupForm):
     pass
+
 
 class CreateYearGroupForm(Form):
     name = StringField(
@@ -52,14 +54,17 @@ class CreateYearGroupForm(Form):
     )
     parent_year_group_id = SelectField(
         'Parent Group',
+        validators=[],
+        coerce=lambda x: int(x) if x not in ['None', None] else None
     )
     submit = SubmitField('Save')
 
-    def __init__(self, form):
-        Form.__init__(self, form)
+    def __init__(self, form, *args, **kwargs):
+        super(CreateYearGroupForm, self).__init__(form, *args, **kwargs)
         choices = {g.id: g.name for g in YearGroup.query.all()}
         choices[None] = '-'
         self.parent_year_group_id.choices = [(x, choices[x]) for x in choices.keys()]
+
 
 class EditYearGroupForm(CreateYearGroupForm):
     pass
