@@ -1,4 +1,4 @@
-from flask_nav.elements import View
+from flask_nav.elements import View, Subgroup
 
 from revue import nav
 from revue.utilities.permissions import Permissions
@@ -13,7 +13,10 @@ intern_navbar = CustomNavbar(
         View('Medewerkers', '.members'),
         View('Media', '.media')
     ], [
-        View('Profiel', '.profile'),
+        Subgroup('Account',
+                 View('Profiel', '.profile'),
+                 View('Groups', '.view_own_groups')
+        ),
         PermissionView('Admin', 'admin.index', Permissions.ADMIN),
         View('Logout', '.logout'),
         View('Public', 'public.index')

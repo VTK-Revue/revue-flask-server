@@ -12,8 +12,7 @@ def get_current_user_id():
 
 
 def get_current_user():
-    print(get_current_user_id())
-    return User.query.filter_by(id=get_current_user_id()).first()
+    return User.query.get(get_current_user_id())
 
 
 def user_login(user):

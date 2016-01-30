@@ -3,21 +3,26 @@
 {% from "internal/menu/menu.html" import render_menu %}
 
 {% block page_content %}
-<h1>{{ group.name }}</h1>
-<p>
-    {{ group.description }}
-</p>
-<section id="members">
-    <h3>Leden</h3>
-    <ul>
-        {% for member in members %}
-        {{ render_group_member(member) }}
-        {% endfor %}
-    </ul>
-</section>
-<section id="menu">
-    <h3>Menu</h3>
-    {{ render_menu(menu) }}
-</section>
+    <h1>{{ group.name }}</h1>
+    {% if current_user_member %}
+        <a class="btn btn-default" href="{{ url_for('.leave_persistent_group_by_id', id=group.id) }}">Leave</a>
+    {% else %}
+        <a class="btn btn-default" href="{{ url_for('.join_persistent_group_by_id', id=group.id) }}">Join</a>
+    {% endif %}
+    <p>
+        {{ group.description }}
+    </p>
+    <section id="members">
+        <h3>Leden</h3>
+        <ul>
+            {% for member in members %}
+                {{ render_group_member(member) }}
+            {% endfor %}
+        </ul>
+    </section>
+    <section id="menu">
+        <h3>Menu</h3>
+        {{ render_menu(menu) }}
+    </section>
 
 {% endblock %}

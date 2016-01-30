@@ -1,11 +1,13 @@
 {% macro render_menu(menu_item_structure) -%}
-<li>
-    <a href="{{ url_for('.show_page_by_id', id=menu_item_structure.page) }}">{{ menu_item_structure.title }}</a>
+    {% if menu_item_structure %}
+        <li>
+            <a href="{{ url_for('.show_page_by_id', id=menu_item_structure.page_id) }}">{{ menu_item_structure.title }}</a>
 
-    <ul>
-        {% for menu_entry in menu_item_structure.children %}
-        {{ render_menu(menu_entry) }}
-        {% endfor %}
-    </ul>
-</li>
+            <ul>
+                {% for menu_entry in menu_item_structure.children %}
+                    {{ render_menu(menu_entry) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
 {%- endmacro %}

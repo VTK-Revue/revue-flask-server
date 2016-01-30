@@ -1,13 +1,18 @@
 {% extends "internal_base.html" %}
 {% from "internal/groups/member.html" import render_group_member %}
 {% block page_content %}
-<h1>{{ group.name }} - {{ year.year }}</h1>
-<p>
-    {{ group.description }}
-</p>
-<ul>
-    {% for member in members %}
-    {{ render_group_member(member) }}
-    {% endfor %}
-</ul>
+    <h1>{{ group.name }} - {{ year.year }}</h1>
+    {% if current_user_member %}
+        <a class="btn btn-default" href="{{ url_for('.leave_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Leave</a>
+    {% else %}
+        <a class="btn btn-default" href="{{ url_for('.join_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Join</a>
+    {% endif %}
+    <p>
+        {{ group.description }}
+    </p>
+    <ul>
+        {% for member in members %}
+            {{ render_group_member(member) }}
+        {% endfor %}
+    </ul>
 {% endblock %}

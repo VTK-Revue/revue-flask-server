@@ -2,8 +2,8 @@ from flask import flash, redirect
 
 from revue.internal.views import internal_site
 from revue.utilities import session
-from . import user_edit_view, user_view
-from .groups import view_user_groups
+from revue.internal.views.user import user_edit_view, user_view
+from revue.internal.views.user.groups import view_user_groups
 from revue.models.general import User
 
 

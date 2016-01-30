@@ -53,12 +53,12 @@ class YearGroupParticipation(db.Model):
     __tablename__ = "year_group_participation"
     __table_args__ = (PrimaryKeyConstraint("year_id", "year_group_id", "user_id"), {"schema": "general"})
     year_id = db.Column("year_id", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
-    year_group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
+    group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
     user_id = db.Column("user_id", db.Integer, ForeignKey("general.user.id"), nullable=False)
 
     def __init__(self, year_id, year_group_id, user_id):
         self.year_id = year_id
-        self.year_group_id = year_group_id
+        self.group_id = year_group_id
         self.user_id = user_id
 
 
