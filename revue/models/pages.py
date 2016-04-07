@@ -23,9 +23,6 @@ class Page(db.Model):
         self.description = description
         self.access_restricted = access_restricted
 
-    def __init__(self):
-        pass
-
 
 class PageAccessRestriction(db.Model):
     __tablename__ = "page_access_restriction"
