@@ -1,29 +1,29 @@
 from flask import request, render_template, flash, redirect
 
-from revue.public.views import public_site
-from revue.public.views import LoginForm, RegisterForm
-from revue.utilities import session
-from revue.models.general import User, Registration
 from revue import bcrypt, db
+from revue.models.general import User
+from revue.public.views import LoginForm, RegisterForm
+from revue.public.views import public_site
+from revue.utilities import session
 
 
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter(User.username == form.username.data).first()
         if user is not None and \
                 bcrypt.check_password_hash(user.password,
                                            form.password.data):
-            session.user_login(user)
-            flash('You just logged in', 'success')
-            return redirect('intern')
-        else:
-            registration = Registration.query.filter_by(username=form.username.data).first()
-            if registration is not None and bcrypt.check_password_hash(registration.password, form.password.data):
-                flash('Your account has not been activated yet', 'danger')
+            if user.activated is not None:
+                print(user.activated)
+                session.user_login(user)
+                flash('You just logged in', 'success')
+                return redirect('intern')
             else:
-                flash('Invalid login', 'danger')
+                flash('Your account has not been activated yet', 'danger')
+        else:
+            flash('Invalid login', 'danger')
 
     return render_template("public/login/login.html", form=form)
 
@@ -33,15 +33,14 @@ def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         if User.query.filter_by(username=form.username.data).first() is None:
-            newUser = User(
+            new_user = User(
                 form.firstName.data,
                 form.lastName.data,
                 form.email.data,
                 form.username.data,
                 form.password.data
             )
-            # TODO: check if duplicate username should be checked
-            db.session.add(Registration.from_user(newUser))
+            db.session.add(new_user)
             db.session.commit()
             # TODO: send notification e-mail to activate this account
             flash('You just created an account. Once your account has been activated, you\''

@@ -2,7 +2,8 @@ from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 
-from revue.models.general import Registration, User
+from revue.models.general import User
+
 
 class Unique(object):
     def __init__(self, model, field, message=None):
@@ -35,8 +36,7 @@ class RegisterForm(Form):
         'Username',
         validators=[InputRequired(),
                     Length(min=3, max=20),
-                    Unique(User, User.username, "A user with this username already exists."),
-                    Unique(Registration, Registration.username, "This username has already been registered.")]
+                    Unique(User, User.username, "A user with this username already exists.")]
     )
     password = PasswordField(
         'Password',
