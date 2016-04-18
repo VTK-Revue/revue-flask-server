@@ -1,6 +1,8 @@
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
 from revue import db
+import revue.models.general
+import revue.models.mail
 
 
 class Group(db.Model):
@@ -25,6 +27,12 @@ class PersistentGroup(Group):
     __mapper_args__ = {
         "polymorphic_identity": "persistent_group"
     }
+
+    def mailing_list(self):
+        return revue.models.mail.PersistentGroupMailingList.query.filter_by(persistent_group_id=self.persistent_group_id).one_or_none()
+
+    def members(self):
+        return [revue.models.general.User.query.get(pgp.user_id) for pgp in PersistentGroupParticipation.query.filter_by(group_id = self.id)]
 
 
 class YearGroup(Group):

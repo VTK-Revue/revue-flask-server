@@ -1,6 +1,8 @@
+import os
 from sqlalchemy import ForeignKey
 
 from revue import db
+from revue.models.groups import PersistentGroup
 
 
 class MailingAddress(db.Model):
@@ -12,6 +14,9 @@ class MailingAddress(db.Model):
         'polymorphic_on': type
     }
 
+    def get_address(self):
+        raise Exception('get_address should be overridden')
+
 
 class MailingAddressIntern(MailingAddress):
     __tablename__ = 'intern'
@@ -22,6 +27,12 @@ class MailingAddressIntern(MailingAddress):
     id = db.Column(db.Integer, db.ForeignKey('mail.address.id'), primary_key=True)
     name = db.Column(db.String(50), nullable=True, unique=True)
 
+    def __init__(self, name):
+        self.name = name
+
+    def get_address(self):
+        return self.name + "@" + os.environ['EMAIL_SUFFIX']
+
 
 class MailingList(MailingAddressIntern):
     __tablename__ = 'list'
@@ -31,6 +42,12 @@ class MailingList(MailingAddressIntern):
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
 
+    def members(self):
+        return [e.get_address() for e in MailingListEntry.filter_by(list_id=self.id)]
+
+    def __init__(self, name):
+        MailingAddressIntern.__init__(self, name)
+
 
 class PersistentGroupMailingList(MailingList):
     __tablename__ = 'persistent_group_list'
@@ -39,7 +56,16 @@ class PersistentGroupMailingList(MailingList):
         "polymorphic_identity": "persistent_group_list"
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.list.id'), primary_key=True)
-    persistent_group_id = db.Column(db.Integer, db.ForeignKey('general.persistent_group.id'), nullable=False, unique=True)
+    persistent_group_id = db.Column(db.Integer, db.ForeignKey('general.persistent_group.id'), nullable=False,
+                                    unique=True)
+
+    def __init__(self, persistent_group_id, name):
+        MailingList.__init__(self, name)
+        self.persistent_group_id = persistent_group_id
+
+    def members(self):
+        pg = PersistentGroup.query.get(self.persistent_group_id)
+        return [u.email() for u in pg.members()]
 
 
 class YearGroupMailingList(MailingList):
@@ -63,6 +89,7 @@ class MailingAlias(MailingAddressIntern):
 
 
 class MailingAddressLocal(MailingAddress):
+    # TODO: let inherit from Internal!
     __tablename__ = 'local_address'
     __table_args__ = {'schema': 'mail'}
     __mapper_args__ = {
@@ -80,6 +107,13 @@ class MailingAddressExtern(MailingAddress):
     id = db.Column(db.Integer, db.ForeignKey('mail.address.id'), primary_key=True)
     address = db.Column(db.String(150), nullable=False)
 
+    def __init__(self, address):
+        MailingAddress.__init__(self)
+        self.address = address
+
+    def get_address(self):
+        return self.address
+
 
 class MailingListEntry(db.Model):
     __tablename__ = 'list_entry'
@@ -91,3 +125,6 @@ class MailingListEntry(db.Model):
     __mapper_args__ = {
         'polymorphic_on': type
     }
+
+    def get_address(self):
+        return MailingAddress.query.get(self.address_id)

@@ -1,22 +1,9 @@
 from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
+from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from revue.models.general import User
-
-
-class Unique(object):
-    def __init__(self, model, field, message=None):
-        self.model = model
-        self.field = field
-        self.message = message
-        if message is None:
-            self.message = u'This element already exists'
-
-    def __call__(self, form, field):
-        check = self.model.query.filter(self.field == field.data).first()
-        if check:
-            raise ValidationError(self.message)
+from revue.utilities.forms import Unique
 
 
 class LoginForm(Form):

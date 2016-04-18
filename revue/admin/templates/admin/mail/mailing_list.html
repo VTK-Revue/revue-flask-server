@@ -1,0 +1,15 @@
+{% extends "admin_base.html" %}
+
+{% block page_content %}
+
+    <h2>Mailing list overview</h2>
+    <table class="table table-condensed table-striped">
+        {% for mail in members %}
+            <tr>
+                <td>
+                    {{ mail.get_address() }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

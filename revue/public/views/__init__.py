@@ -1,7 +1,5 @@
 from flask import render_template, Blueprint
 
-from .forms import LoginForm, RegisterForm
-
 public_site = Blueprint('public', __name__, template_folder='../templates')
 
 from . import login

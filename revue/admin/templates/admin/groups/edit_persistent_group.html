@@ -2,7 +2,17 @@
 
 {% block page_content %}
 
-<h1>Admin - Edit persistent group</h1>
-{{wtf.quick_form(form)}}
+    <h1>Admin - Edit persistent group</h1>
+    {{ wtf.quick_form(form) }}
 
+
+    <h2>Mailing list </h2>
+    {% if group.mailing_list() %}
+        This group can be reached at
+        <a href="{{ url_for('.view_persistent_group_mailing_list', persistent_group_id=group.id) }}">
+            {{ group.mailing_list().get_address() }}
+        </a>.
+    {% else %}
+        {{ wtf.quick_form(generate_mailing_list_form) }}
+    {% endif %}
 {% endblock %}

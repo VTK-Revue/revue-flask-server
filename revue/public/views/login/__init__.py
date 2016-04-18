@@ -2,10 +2,10 @@ from flask import request, render_template, flash, redirect
 
 from revue import bcrypt, db
 from revue.models.general import User
-from revue.public.views import LoginForm, RegisterForm
+from revue.public.views.forms import LoginForm, RegisterForm
 from revue.public.views import public_site
 from revue.utilities import session
-
+from revue.models.mail import MailingAddressExtern
 
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
@@ -33,10 +33,13 @@ def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         if User.query.filter_by(username=form.username.data).first() is None:
+            new_email = MailingAddressExtern(form.email.data)
+            db.session.add(new_email)
+            db.session.commit()
             new_user = User(
                 form.firstName.data,
                 form.lastName.data,
-                form.email.data,
+                new_email.id,
                 form.username.data,
                 form.password.data
             )

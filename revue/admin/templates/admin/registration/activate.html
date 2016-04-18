@@ -15,7 +15,7 @@
     {% for registration in registrations %}
     <tr>
         <td>{{ registration.username }}</td>
-        <td>{{ registration.email }}</td>
+        <td>{% if registration.email() %}{{ registration.email().address }}{% endif %}</td>
         <td>{{ registration.firstName }}</td>
         <td>{{ registration.lastName }}</td>
         <td><a href="{{ url_for('.activate_user', username=registration.username)}}">Activate</a></td>

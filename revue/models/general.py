@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 
 from revue import db, bcrypt
-
+from revue.models.mail import MailingAddressExtern
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -10,7 +10,7 @@ class User(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     firstName = db.Column(db.String(60))
     lastName = db.Column(db.String(60))
-    email = db.Column(db.String(100))
+    email_address_id = db.Column(db.Integer, ForeignKey('mail.extern_address.id'))
 
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(60))
@@ -19,10 +19,10 @@ class User(db.Model):
 
     content_elements = relationship("ContentElement", backref="author")
 
-    def __init__(self, firstName, lastName, email, username, password=None, activated=None):
+    def __init__(self, firstName, lastName, email_address_id, username, password=None, activated=None):
         self.firstName = firstName
         self.lastName = lastName
-        self.email = email
+        self.email_address_id = email_address_id
 
         self.username = username
         if password is None:
@@ -30,6 +30,9 @@ class User(db.Model):
         else:
             self.password = bcrypt.generate_password_hash(password).decode("utf-8")
         self.activated = activated
+
+    def email(self):
+        return MailingAddressExtern.query.get(self.email_address_id)
 
     def name(self):
         return self.firstName + " " + self.lastName

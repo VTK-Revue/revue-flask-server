@@ -1,7 +1,10 @@
+from flask.ext.wtf import Form
 from wtforms.fields import StringField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import InputRequired, ValidationError
-from flask.ext.wtf import Form
+
 from revue.models.groups import *
+from revue.models.mail import MailingAddressIntern
+from revue.utilities.forms import Unique
 
 
 class ExistsOrNone(object):
@@ -68,3 +71,12 @@ class CreateYearGroupForm(Form):
 
 class EditYearGroupForm(CreateYearGroupForm):
     pass
+
+
+class GeneratePersistentGroupMailingListForm(Form):
+    name = StringField(
+        'Name',
+        validators=[InputRequired(),
+                    Unique(MailingAddressIntern, MailingAddressIntern.name, "This address is already in use")]
+    )
+    submit = SubmitField('Save')
