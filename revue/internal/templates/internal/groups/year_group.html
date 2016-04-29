@@ -7,6 +7,13 @@
     <p>
         {{ group.description }}
     </p>
+    <section id="mail">
+        {% if group.mailing_list() %}
+            This group has a mailing list: {{ group.mailing_list().get_address() }}.
+        {% else %}
+            This group does not have a mailing list.
+        {% endif %}
+    </section>
     <section id="menu">
         <h3>Menu</h3>
         {{ render_menu(menu) }}

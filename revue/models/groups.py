@@ -1,8 +1,8 @@
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 
-from revue import db
 import revue.models.general
 import revue.models.mail
+from revue import db
 
 
 class Group(db.Model):
@@ -29,10 +29,12 @@ class PersistentGroup(Group):
     }
 
     def mailing_list(self):
-        return revue.models.mail.PersistentGroupMailingList.query.filter_by(persistent_group_id=self.persistent_group_id).one_or_none()
+        return revue.models.mail.PersistentGroupMailingList.query.filter_by(
+            persistent_group_id=self.persistent_group_id).one_or_none()
 
     def members(self):
-        return [revue.models.general.User.query.get(pgp.user_id) for pgp in PersistentGroupParticipation.query.filter_by(group_id = self.id)]
+        return [revue.models.general.User.query.get(pgp.user_id) for pgp in
+                PersistentGroupParticipation.query.filter_by(group_id=self.id)]
 
 
 class YearGroup(Group):
@@ -44,6 +46,14 @@ class YearGroup(Group):
     __mapper_args__ = {
         "polymorphic_identity": "year_group"
     }
+
+    def mailing_list(self):
+        return revue.models.mail.YearGroupMailingList.query.filter_by(
+            year_group_id=self.year_group_id).one_or_none()
+
+    def members(self, revue_year):
+        return [revue.models.general.User.query.get(ygp.user_id) for ygp in
+                YearGroupParticipation.query.filter_by(year_id=revue_year.id, group_id=self.id)]
 
 
 class PersistentGroupParticipation(db.Model):
@@ -68,15 +78,3 @@ class YearGroupParticipation(db.Model):
         self.year_id = year_id
         self.group_id = year_group_id
         self.user_id = user_id
-
-
-class RevueYear(db.Model):
-    __tablename__ = "revue_year"
-    __table_args__ = {"schema": "general"}
-    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
-    title = db.Column("title", db.String(50), nullable=False)
-    year = db.Column("year", db.Integer, nullable=False)
-
-    def __init__(self, title, year):
-        self.title = title
-        self.year = year

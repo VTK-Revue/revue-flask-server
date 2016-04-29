@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from revue import db, bcrypt
 from revue.models.mail import MailingAddressExtern
 
+
 class User(db.Model):
     __tablename__ = 'user'
     __table_args__ = {'schema': 'general'}
@@ -63,3 +64,18 @@ class UserPermission(db.Model):
     def __init__(self, user_id, permission_id):
         self.user_id = user_id
         self.permission_id = permission_id
+
+
+class RevueYear(db.Model):
+    __tablename__ = "revue_year"
+    __table_args__ = {"schema": "general"}
+    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
+    title = db.Column("title", db.String(50), nullable=False)
+    year = db.Column("year", db.Integer, nullable=False)
+
+    def __init__(self, title, year):
+        self.title = title
+        self.year = year
+
+    def get_mail_affix(self):
+        return "_{}".format(self.year)

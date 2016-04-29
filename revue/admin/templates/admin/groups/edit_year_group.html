@@ -4,5 +4,14 @@
 
 <h1>Admin - Edit year group</h1>
 {{wtf.quick_form(form)}}
-
+<h2>Mailing list </h2>
+    {% if group.mailing_list() %}
+        This group can be reached at
+        <a href="{{ url_for('.view_year_group_mailing_list', year_group_id=group.id) }}">
+            {{ group.mailing_list().get_address() }}
+        </a>.
+        TODO: year versions
+    {% else %}
+        {{ wtf.quick_form(generate_mailing_list_form) }}
+    {% endif %}
 {% endblock %}

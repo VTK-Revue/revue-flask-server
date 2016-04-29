@@ -1,8 +1,9 @@
 import os
 from sqlalchemy import ForeignKey
 
+import revue.models.general
 from revue import db
-from revue.models.groups import PersistentGroup
+from revue.models.groups import PersistentGroup, YearGroup
 
 
 class MailingAddress(db.Model):
@@ -32,6 +33,9 @@ class MailingAddressIntern(MailingAddress):
 
     def get_address(self):
         return self.name + "@" + os.environ['EMAIL_SUFFIX']
+
+    def get_local_address(self):
+        return self.name
 
 
 class MailingList(MailingAddressIntern):
@@ -68,14 +72,34 @@ class PersistentGroupMailingList(MailingList):
         return [u.email() for u in pg.members()]
 
 
-class YearGroupMailingList(MailingList):
+class YearGroupMailingList(MailingAddressIntern):
     __tablename__ = 'year_group_list'
     __table_args__ = {'schema': 'mail'}
     __mapper_args__ = {
         "polymorphic_identity": "year_group_list"
     }
-    id = db.Column(db.Integer, db.ForeignKey('mail.list.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
     year_group_id = db.Column(db.Integer, db.ForeignKey('general.year_group.id'), primary_key=True, unique=True)
+
+    def __init__(self, year_group_id, name):
+        MailingAddressIntern.__init__(self, name)
+        self.year_group_id = year_group_id
+
+    def members(self, revue_year):
+        yg = YearGroup.query.get(self.year_group_id)
+        return [u.email() for u in yg.members(revue_year)]
+
+    def get_local_address_year(self, revue_year):
+        return self.get_local_address() + revue_year.get_mail_affix()
+
+    def get_members_per_year(self):
+        result = []
+        for y in revue.models.general.RevueYear.query.all():
+            result.append({
+                "year": y,
+                "members": self.members(y)
+            })
+        return result
 
 
 class MailingAlias(MailingAddressIntern):
@@ -86,6 +110,9 @@ class MailingAlias(MailingAddressIntern):
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
     other_address_id = db.Column(db.Integer, db.ForeignKey('mail.address.id'), nullable=True)
+
+    def other_address(self):
+        return MailingAddress.query.get(self.other_address_id)
 
 
 class MailingAddressLocal(MailingAddress):

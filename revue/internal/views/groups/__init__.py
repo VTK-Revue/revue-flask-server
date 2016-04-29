@@ -1,12 +1,12 @@
 from flask import render_template, redirect, flash, url_for
 
-from revue.internal.views import internal_site
 import revue.utilities.groups as groups
 import revue.utilities.menus as menus
-from revue.models.groups import Group, YearGroup, YearGroupParticipation, RevueYear, PersistentGroupParticipation
-from revue.models.general import User
-from revue.utilities.session import get_current_user_id, get_current_user
 from revue import db
+from revue.internal.views import internal_site
+from revue.models.general import User, RevueYear
+from revue.models.groups import Group, YearGroup, YearGroupParticipation, PersistentGroupParticipation
+from revue.utilities.session import get_current_user_id, get_current_user
 
 
 @internal_site.route('/group/<int:id>')
@@ -24,7 +24,9 @@ def show_group(group):
     menu_structure = menus.get_menu_structure(groups.get_group_menu(group))
     return render_template("internal/groups/group.html", group=group, members=members, menu=menu_structure,
                            current_user_member=groups.is_user_member_of_persistent_group(group_id=group.id,
-                                                                              user_id=get_current_user_id()))
+                                                                                         user_id=get_current_user_id()))
+
+
 def show_yeargroup(yeargroup):
     members = groups.get_year_group_members_by_year(yeargroup.id)
     menu_structure = menus.get_menu_structure(groups.get_group_menu(yeargroup))
@@ -36,8 +38,9 @@ def show_yeargroup(yeargroup):
             "current_user_member": get_current_user() in members[y]
         }
         for y in years
-    ]
-    return render_template("internal/groups/year_group.html", group=yeargroup, data_per_year=data_per_year, menu=menu_structure)
+        ]
+    return render_template("internal/groups/year_group.html", group=yeargroup, data_per_year=data_per_year,
+                           menu=menu_structure)
 
 
 @internal_site.route('/yeargroup/<int:id>')
@@ -51,7 +54,8 @@ def show_yeargroup_by_year_and_id(year, id):
     participations = YearGroupParticipation.query.filter_by(year_id=revue_year.id, group_id=id)
     members = [User.query.get(p.user_id) for p in participations]
     year_group = YearGroup.query.get(id)
-    return render_template("internal/groups/year_group_year.html", group=year_group, members=members, year=revue_year, current_user_member=get_current_user() in members)
+    return render_template("internal/groups/year_group_year.html", group=year_group, members=members, year=revue_year,
+                           current_user_member=get_current_user() in members)
 
 
 @internal_site.route('/yeargroup/<int:year>/<int:id>/join')

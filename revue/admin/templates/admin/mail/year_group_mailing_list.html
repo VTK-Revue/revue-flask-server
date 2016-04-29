@@ -1,0 +1,22 @@
+{% extends "admin_base.html" %}
+
+{% block page_content %}
+
+    <h2>Year Group mailing list overview</h2>
+    {% for members_list in members %}
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>{{ members_list.year.year }}</th>
+                <th>{{ members_list.year.title }}</th>
+            </tr>
+            {% for mail in members_list['members'] %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        {{ mail.get_address() }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

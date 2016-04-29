@@ -73,7 +73,7 @@ class EditYearGroupForm(CreateYearGroupForm):
     pass
 
 
-class GeneratePersistentGroupMailingListForm(Form):
+class GenerateGroupMailingListForm(Form):
     name = StringField(
         'Name',
         validators=[InputRequired(),
