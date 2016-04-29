@@ -28,3 +28,8 @@ def generate_alias_file():
     for a in MailingAlias.query.all():
         print("{}: {}".format(a.get_local_address(), a.other_address().get_address()))
     f.close()
+
+
+def generate_all_mail_files():
+    generate_alias_file()
+    generate_list_files()
