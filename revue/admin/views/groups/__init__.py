@@ -68,7 +68,7 @@ def all_year_groups():
     return render_template('admin/groups/all_year_groups.html', groups=groups)
 
 
-@admin_site.route('/year_group/<int:id>/edit')
+@admin_site.route('/year_group/<int:id>/edit', methods=['GET', 'POST'])
 def edit_year_group(id):
     group = YearGroup.query.get(id)
     form = EditYearGroupForm(request.form, group)
