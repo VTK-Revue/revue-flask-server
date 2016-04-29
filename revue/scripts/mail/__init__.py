@@ -13,6 +13,7 @@ def generate_list_file(name, members):
 
 
 def generate_list_files():
+    # TODO: create files in new directory and replace target directory with this temporary directory
     for l in PersistentGroupMailingList.query.all():
         generate_list_file(l.get_local_address(), l.members())
     for l in YearGroupMailingList.query.all():
