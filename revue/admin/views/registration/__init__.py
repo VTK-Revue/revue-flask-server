@@ -24,9 +24,9 @@ def activate_user(username):
         flash("Activated user " + str(username), "success")
         msg = Message("Account activated", sender="it@" + os.environ['EMAIL_SUFFIX'],
                       recipients=["it@" + os.environ['EMAIL_SUFFIX'], u.email().address])
-        msg.body = "Hi {},\n\n" + \
-                   "The IT team has activated your account. You can now sign in.\n\n" + \
-                   "Kind regards, \n\n The IT team"
+        msg.body = ("Hi {},\n\n" +
+                    "The IT team has activated your account. You can now sign in.\n\n" +
+                    "Kind regards, \n\n The IT team").format(u.firstName)
         mail.send(msg)
     else:
         flash("No registration found for user " + str(username), "danger")

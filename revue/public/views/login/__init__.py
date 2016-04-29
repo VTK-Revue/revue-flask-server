@@ -49,10 +49,10 @@ def register():
             db.session.commit()
             msg = Message("Revue account registration", sender="it@" + os.environ['EMAIL_SUFFIX'],
                           recipients=["it@" + os.environ['EMAIL_SUFFIX'], form.email.data])
-            msg.body = "Hi {}\n\n" + \
-                       "You just registered an account on our server. " + \
-                       "As soon as the IT team has activated your account, you'll get another email." + \
-                       "\n\nKind regards,\n\nRevue IT".format(form.firstName.data)
+            msg.body = ("Hi {}\n\n" +
+                        "You just registered an account on our server. " +
+                        "As soon as the IT team has activated your account, you'll get another email." +
+                        "\n\nKind regards,\n\nRevue IT").format(form.firstName.data)
             mail.send(msg)
             flash('You just created an account. Once your account has been activated, you\''
                   'll be able to access the internal part of website.', 'success')
