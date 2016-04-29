@@ -1,11 +1,14 @@
+import os
 from flask import request, render_template, flash, redirect
+from flask_mail import Message
 
-from revue import bcrypt, db
+from revue import bcrypt, db, mail
 from revue.models.general import User
-from revue.public.views.forms import LoginForm, RegisterForm
-from revue.public.views import public_site
-from revue.utilities import session
 from revue.models.mail import MailingAddressExtern
+from revue.public.views import public_site
+from revue.public.views.forms import LoginForm, RegisterForm
+from revue.utilities import session
+
 
 @public_site.route("/login", methods=['GET', 'POST'])
 def login():
@@ -16,7 +19,6 @@ def login():
                 bcrypt.check_password_hash(user.password,
                                            form.password.data):
             if user.activated is not None:
-                print(user.activated)
                 session.user_login(user)
                 flash('You just logged in', 'success')
                 return redirect('intern')
@@ -45,7 +47,13 @@ def register():
             )
             db.session.add(new_user)
             db.session.commit()
-            # TODO: send notification e-mail to activate this account
+            msg = Message("Revue account registration", sender="it@" + os.environ['EMAIL_SUFFIX'],
+                          recipients=["it@" + os.environ['EMAIL_SUFFIX'], form.email.data])
+            msg.body = "Hi {}\n\n" + \
+                       "You just registered an account on our server. " + \
+                       "As soon as the IT team has activated your account, you'll get another email." + \
+                       "\n\nKind regards,\n\nRevue IT".format(form.firstName.data)
+            mail.send(msg)
             flash('You just created an account. Once your account has been activated, you\''
                   'll be able to access the internal part of website.', 'success')
             return redirect('/')

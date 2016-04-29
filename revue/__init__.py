@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import os
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail
 from flask_nav import Nav, register_renderer
-import os
-
 
 # Create application
 app = Flask(__name__)
+mail = Mail(app)
 Bootstrap(app)
 nav = Nav()
 app.config.from_object(os.environ['APP_SETTINGS'])
