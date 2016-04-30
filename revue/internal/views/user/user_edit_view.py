@@ -19,7 +19,7 @@ def new_password():
     if request.method == "POST" and password_form.validate():
         h = bcrypt.generate_password_hash(password_form.password.data)
         user = session.get_current_user()
-        user.password = h
+        user.password = h.decode("utf-8")
         db.session.commit()
         flash('Password successfully updated', 'success')
         return redirect(url_for('.profile'))
