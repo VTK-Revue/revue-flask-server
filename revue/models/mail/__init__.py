@@ -47,24 +47,24 @@ class MailingList(MailingAddressIntern):
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
 
     def members(self):
-        return [e.get_address() for e in MailingListEntry.filter_by(list_id=self.id)]
+        return [e.get_address() for e in MailingListEntry.query.filter_by(list_id=self.id)]
 
     def __init__(self, name):
         MailingAddressIntern.__init__(self, name)
 
 
-class PersistentGroupMailingList(MailingList):
+class PersistentGroupMailingList(MailingAddressIntern):
     __tablename__ = 'persistent_group_list'
     __table_args__ = {'schema': 'mail'}
     __mapper_args__ = {
         "polymorphic_identity": "persistent_group_list"
     }
-    id = db.Column(db.Integer, db.ForeignKey('mail.list.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
     persistent_group_id = db.Column(db.Integer, db.ForeignKey('general.persistent_group.id'), nullable=False,
                                     unique=True)
 
     def __init__(self, persistent_group_id, name):
-        MailingList.__init__(self, name)
+        MailingAddressIntern.__init__(self, name)
         self.persistent_group_id = persistent_group_id
 
     def members(self):
@@ -145,13 +145,14 @@ class MailingAddressExtern(MailingAddress):
 class MailingListEntry(db.Model):
     __tablename__ = 'list_entry'
     __table_args__ = {'schema': 'mail'}
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     list_id = db.Column(db.Integer, ForeignKey('mail.list.id'), nullable=False)
     address_id = db.Column(db.Integer, ForeignKey('mail.address.id'), nullable=False)
-    type = db.Column(db.String(50), nullable=True)
-    __mapper_args__ = {
-        'polymorphic_on': type
-    }
 
     def get_address(self):
         return MailingAddress.query.get(self.address_id)
+
+    def __init__(self, list_id, address_id):
+        db.Model.__init__(self)
+        self.list_id = list_id
+        self.address_id = address_id

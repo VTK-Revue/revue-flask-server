@@ -1,17 +1,15 @@
 {% extends "admin_base.html" %}
 
 {% block page_content %}
-    <h2>Mailing list overview: {{ list.get_address() }}</h2>
+
+    <h2>Mailing list overview</h2>
     <table class="table table-condensed table-striped">
-        {% for m in list.members() %}
+        {% for mail in members %}
             <tr>
                 <td>
-                    {{ m.get_address() }}
+                    {{ mail.get_address() }}
                 </td>
             </tr>
         {% endfor %}
     </table>
-    <h2>Add entry to list</h2>
-    {{ wtf.quick_form(add_list_entry_form) }}
-
 {% endblock %}
