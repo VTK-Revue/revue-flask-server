@@ -12,7 +12,7 @@ def before_request():
     pass
 
 
-from . import pages, groups, user
+from . import pages, groups, user, upload
 
 
 @internal_site.route("/")

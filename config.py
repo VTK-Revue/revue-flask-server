@@ -12,6 +12,7 @@ class BaseConfig(object):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    UPLOAD_FOLDER=os.environ['UPLOAD_FOLDER']
 
 
 class DevelopmentConfig(BaseConfig):
