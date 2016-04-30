@@ -52,16 +52,6 @@ def get_content_elements(page):
     return [pce.content_element for pce in page.page_content_elements]
 
 
-def create_page(form):
-    page = Page()
-    if not form.validate():
-        return None
-    form.populate_obj(page)
-    db.session.add(page)
-    db.session.commit()
-    return page
-
-
 def save_page(page, form):
     if not form.validate():
         return False

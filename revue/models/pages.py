@@ -17,11 +17,11 @@ class Page(db.Model):
 
     page_content_elements = relationship("PageContentElement", backref="page")
 
-    def __init__(self, name, parent_page_id, description, access_restricted):
-        self.name = name
-        self.parent_page_id = parent_page_id
-        self.description = description
-        self.access_restricted = access_restricted
+    #def __init__(self, title, parent_page_id, description, access_restricted):
+    #    self.title = title
+    #    self.parent_page_id = parent_page_id
+    #    self.description = description
+    #    self.access_restricted = access_restricted
 
 
 class PageAccessRestriction(db.Model):

@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, url_for
 
 from revue.internal.views import internal_site
+from revue.models.pages import Page
 from revue.utilities import pages
 from .forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
-
+from revue import db
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])
 def show_page_by_id(id):
@@ -35,15 +36,18 @@ def show_page(page):
 
 @internal_site.route('/page', methods=['GET', 'POST'])
 def show_create_page():
-    action = str(request.args.get("action", ""))
-    if action == "create":
-        form = CreatePageForm(request.form)
-        if request.method == "POST":
-            page = pages.create_page(form)
-            if page is not None:
-                return redirect(url_for('.show_page_by_id', id=page.id))
-        return render_template("internal/pages/create_page.html", form=form)
-    return redirect('/')
+    #action = str(request.args.get("action", ""))
+    #if action == "create":
+    form = CreatePageForm(request.form)
+    if form.validate_on_submit():
+        #page = Page(form.title.data, None, form.description.data, form.access_restricted.data)
+        page = Page()
+        form.populate_obj(page)
+        db.session.add(page)
+        db.session.commit()
+        return redirect(url_for('.show_page_by_id', id=page.id))
+    return render_template("internal/pages/create_page.html", form=form)
+    #return redirect('/')
 
 
 @internal_site.route("/content/<int:id>", methods=["GET", "POST"])
@@ -74,3 +78,8 @@ def show_edit_content(content_element):
         return render_template("internal/pages/content/edit_text_element.html", element=content_element, form=form,
                                referring_page_id=request.args.get('referring_page_id', '#'))
     return render_template("internal/pages/content/edit_content_element.html", element=content_element)
+
+
+@internal_site.route('/pages')
+def show_all_pages():
+    return render_template("internal/pages/all_pages.html", pages=Page.query.all())

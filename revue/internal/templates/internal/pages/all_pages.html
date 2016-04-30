@@ -1,0 +1,14 @@
+{% extends "internal_base.html" %}
+
+{% block page_content %}
+
+    <h1>All pages</h1>
+    <ul>
+        {% for page in pages %}
+            <li>
+                <a href="{{ url_for('.show_page_by_id', id=page.id) }}">{{ page.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('.show_create_page') }}">Create a new page</a>
+{% endblock %}
