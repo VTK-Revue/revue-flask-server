@@ -88,19 +88,25 @@ def join_persistent_group_by_id(id):
 def leave_yeargroup_by_year_and_id(year, id):
     revue_year = RevueYear.query.filter_by(year=year).first()
     p = YearGroupParticipation.query.filter_by(year_id=revue_year.id, group_id=id,
-                                               user_id=get_current_user_id()).first()
-    db.session.delete(p)
-    db.session.commit()
-    flash('Successfully left group!', 'success')
+                                               user_id=get_current_user_id()).one_or_none()
+    if p is None:
+        flash('Not a member of this group', 'warning')
+    else:
+        db.session.delete(p)
+        db.session.commit()
+        flash('Successfully left group!', 'success')
     return redirect(url_for('.show_yeargroup_by_year_and_id', year=year, id=id))
 
 
 @internal_site.route('/group/<int:id>/leave')
 def leave_persistent_group_by_id(id):
-    p = PersistentGroupParticipation.query.filter_by(group_id=id, user_id=get_current_user_id()).first()
-    db.session.delete(p)
-    db.session.commit()
-    flash('Successfully left group!', 'success')
+    p = PersistentGroupParticipation.query.filter_by(group_id=id, user_id=get_current_user_id()).one_or_none()
+    if p is None:
+        flash('Not a member of this group', 'warning')
+    else:
+        db.session.delete(p)
+        db.session.commit()
+        flash('Successfully left group!', 'success')
     return redirect(url_for('.show_group_by_id', id=id))
 
 
