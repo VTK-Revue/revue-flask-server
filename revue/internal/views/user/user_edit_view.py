@@ -10,6 +10,9 @@ from revue.utilities import session
 def profile():
     user = session.get_current_user()
     info_form = UpdateUserInfoForm(request.form, user)
+    if info_form.validate_on_submit():
+        info_form.populate_obj(user)
+        db.session.commit()
     return render_template("internal/user/user_edit.html", info_form=info_form)
 
 

@@ -36,18 +36,14 @@ def show_page(page):
 
 @internal_site.route('/page', methods=['GET', 'POST'])
 def show_create_page():
-    #action = str(request.args.get("action", ""))
-    #if action == "create":
     form = CreatePageForm(request.form)
     if form.validate_on_submit():
-        #page = Page(form.title.data, None, form.description.data, form.access_restricted.data)
         page = Page()
         form.populate_obj(page)
         db.session.add(page)
         db.session.commit()
         return redirect(url_for('.show_page_by_id', id=page.id))
     return render_template("internal/pages/create_page.html", form=form)
-    #return redirect('/')
 
 
 @internal_site.route("/content/<int:id>", methods=["GET", "POST"])
