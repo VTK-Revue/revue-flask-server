@@ -1,6 +1,275 @@
 {% extends "public_base.html" %}
+{%block metas%}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description"
+      content="Een jaarlijks totaalspektakel georganiseerd door studenten Ingenieurswetenschappen van de KU Leuven.">
+<meta name="author" content="VTK Revue">
+{%endblock%}
+{%block title%}
+VTK Revue - Welcome
+{%endblock%}
 
-{% block page_content %}
+{%block styles%}
+{{super()}}
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
-<h2>Home</h2>
-{% endblock %}
+<!-- Custom Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+      rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
+      rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+      type="text/css">
+
+<!-- Plugin CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" type="text/css">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{url_for('static', filename='public_site/css/creative.css')}}" type="text/css">
+<link rel="stylesheet" href="{{url_for('static', filename='public_site/css/timeline.css')}}" type="text/css">
+{%endblock%}
+
+{%block content%}
+{%block navbar%}
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">VTK Revue</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="page-scroll" href="#about">About Us</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#presents">Revue Presents</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#portfolio">Portfolio</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#contact">Contact</a>
+                </li>
+                <li>
+                    <a href="{{url_for('.login')}}">Leden login</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+{%endblock%}
+
+<header>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1>Revue</h1>
+            <hr>
+            <p>Afspraak op 29 februari, 1 maart en 2 maart 2016 in OPEK!</p>
+            <a href="#about" class="btn btn-primary btn-xl page-scroll">Over ons</a>
+            <a href="#presents" class="btn btn-primary btn-xl page-scroll">Revue 2016</a>
+            <br><br>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/larKyNwBaFU" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+    </div>
+</header>
+
+<section class="bg-primary" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">U zegt? Revue?</h2>
+                <hr class="light">
+                <p class="text-faded">Wie kent Revue van VTK nog niet? Al meer dan 50 jaar staat er een grote ploeg
+                    VTK-leden klaar om dit totaalspektakel te organiseren. Vorig academiejaar waren er meer dan 60 (!)
+                    mensen in de weer om Revue 2015 in goede banen te leiden. Niet verwonderlijk natuurlijk als je weet
+                    dat deze show elk jaar terug vanaf nul opgebouwd moet worden. De teksten worden zelf gesgreven
+                    (sic), het decor wordt ineengeknutseld, de kostuums worden bijeengestikt, de dansjes worden
+                    verzonnen en zelfs de muziek wordt zelf opnieuw geschreven. Op en top hand-made studentenwerk dus.
+                    Ook dit jaar kijken we er weer naar uit jullie een fantastische Revue 2016 voor te mogen
+                    schotelen!</p>
+                <a href="#presents" class="btn btn-default btn-xl page-scroll">Waar kan ik tickets kopen?</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="presents" class="bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Revue presents: The Backstreet Burgies</h2>
+                <hr class="primary">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-lg-3 col-sm-6 col-lg-offset-3 col-sm-offset-1">
+                <a href="#presents" class="portfolio-box">
+                    <img src="{{url_for('static', filename='public_site/img/Revue2016.jpg')}}" class="img-responsive"
+                         alt="">
+                    <div class="portfolio-box-caption">
+                        <div class="portfolio-box-caption-content">
+                            <div class="project-category text-faded">
+                                Revue 2016 presenteert:
+                            </div>
+                            <div class="project-name">
+                                The Backstreet Burgies
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-2 col-sm-3 col-lg-offset-1 col-sm-offset-1">
+                <h3>Tickets?</h3>
+                <p>Vanaf 15 februari elke weekdag tussen 12.30 en 14 uur in het Theokot.</p>
+                <hr class="secondary">
+                <h3>Wanneer?</h3>
+                <p>Op maandag 29 februari, dinsdag 1 maart en woensdag 2 maart 2016. Deuren om 20.00 uur. Aanvang
+                    voorstelling 20.45 uur.</p>
+                <hr class="secondary">
+                <h3>Waar?</h3>
+                <p>OPEK, Vaartkom 4, 3000 Leuven</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="portfolio" class="bg-medium">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Portfolio</h2>
+                <h3 class="section-subheading text-muted">Revue bracht ons al:</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image">
+                            <img class="img-circle img-responsive"
+                                 src="{{url_for('static', filename='public_site/img/portfolio/2015/affiche-cropped.png')}}"
+                                 alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>2015</h4>
+                                <h4 class="subheading">The Pest Is Yet To Come</h4>
+                            </div>
+                            <!-- <div class="timeline-body">
+                               Code in commentaar hier is enkel om later nog te weten welke classes voor die tekst gebruikt werden
+                               <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+                           </div> -->
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="img-circle img-responsive"
+                                 src="{{url_for('static', filename='public_site/img/portfolio/2014/affiche-cropped.png')}}"
+                                 alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>March 2014</h4>
+                                <h4 class="subheading">In Creemers' Fields</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image">
+                            <img class="img-circle img-responsive"
+                                 src="{{url_for('static', filename='public_site/img/portfolio/2013/affiche-cropped.png')}}"
+                                 alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>December 2013</h4>
+                                <h4 class="subheading">Dierckx Never Dies</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <h4>Stay
+                                <br>Tuned
+                                <br>For More!</h4>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Vind ons op...</h2>
+                <hr class="primary">
+                <p>Wil jij ook op de planken staan? Heb je een creatieve pen? Altijd al eens met knopjes willen werken
+                    voor klank en licht? Of toch liever gewoon ondersteuning met IT of promo? Iedereen is welkom. En
+                    mischien wil jij ons ook wel komen helpen! Laat van je horen:</p>
+            </div>
+            <div class="col-lg-offset-2 col-lg-3 text-center">
+                <i class="fa fa-facebook fa-3x wow bounceIn"></i>
+                <p>
+                    <a href="https://www.facebook.com/VTK-Revue-13288828287" class="btn btn-default btn-lg">
+                        <span class="network-name">Facebook</span>
+                    </a>
+                </p>
+            </div>
+            <div class="col-lg-2 text-center">
+                <i class="fa fa-envelope-o fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+                <p>
+                    <a href="mailto:revue@vtk.be" class="btn btn-default btn-lg">
+                        <span class="network-name">revue@vtk.be</span>
+                    </a>
+                </p>
+            </div>
+            <div class="col-lg-3 text-center">
+                <i class="fa fa-youtube fa-3x wow bounceIn"></i>
+                <p>
+                    <a href="https://www.youtube.com/user/VTKrevue/videos" class="btn btn-default btn-lg">
+                        <span class="network-name">YouTube</span>
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{%endblock%}
+{% block scripts %}
+{{super()}}
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<!-- Plugin JavaScript -->
+<script src="{{url_for('static', filename='public_site/js/jquery.easing.min.js')}}"></script>
+<script src="{{url_for('static', filename='public_site/js/jquery.fittext.js')}}"></script>
+<script src="{{url_for('static', filename='public_site/js/wow.min.js')}}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="{{url_for('static', filename='public_site/js/creative.js')}}"></script>
+{%endblock%}
