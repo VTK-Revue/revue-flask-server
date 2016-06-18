@@ -1,9 +1,11 @@
-from flask import flash, request
-from flask import render_template
+from flask import flash, request, render_template, redirect, url_for
+
 from revue import db
 from revue.admin.views import admin_site
-from revue.admin.views.mail.forms import AddMailingListEntryForm, CreateMailingListForm
-from revue.models.mail import PersistentGroupMailingList, YearGroupMailingList, MailingList, MailingListEntry, MailingAddressExtern
+from revue.admin.views.mail.forms import AddMailingListEntryForm, CreateMailingListForm, \
+    AddMailingListMultipleEntriesForm
+from revue.models.mail import PersistentGroupMailingList, YearGroupMailingList, MailingList, MailingListEntry, \
+    MailingAddressExtern
 from revue.scripts.mail import generate_all_mail_files
 
 
@@ -37,6 +39,26 @@ def view_mailing_lists():
     return render_template('admin/mail/mailing_lists.html', lists=MailingList.query.all(), new_list_form=new_list_form)
 
 
+@admin_site.route('/mail/list/<int:list_id>/batch_add', methods=['GET', 'POST'])
+def view_mailing_list_batch_add(list_id):
+    lst = MailingList.query.get(list_id)
+    add_multiple_entries_form = AddMailingListMultipleEntriesForm(request.form)
+    if add_multiple_entries_form.validate_on_submit():
+        addresses_lines = add_multiple_entries_form.addresses.data.splitlines()
+        for line in addresses_lines:
+            email = line.strip()
+            if len(email) == 0:
+                continue
+            address = MailingAddressExtern(line)
+            db.session.add(address)
+            db.session.commit()
+            entry = MailingListEntry(lst.id, address.id)
+            db.session.add(entry)
+            db.session.commit()
+        flash('Entries successfully added', 'success')
+    return render_template('admin/mail/mailing_list.html', list=lst, add_list_entry_form=add_multiple_entries_form)
+
+
 @admin_site.route('/mail/list/<int:list_id>', methods=['GET', 'POST'])
 def view_mailing_list(list_id):
     lst = MailingList.query.get(list_id)
@@ -50,3 +72,11 @@ def view_mailing_list(list_id):
         db.session.commit()
         flash('Entry successfully added', 'success')
     return render_template('admin/mail/mailing_list.html', list=lst, add_list_entry_form=add_list_entry_form)
+
+
+@admin_site.route('/mail/list/entry/<int:entry_id>')
+def remove_mailing_list_entry(entry_id):
+    entry = MailingListEntry.query.get(entry_id)
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(url_for('.view_mailing_list', list_id=entry.list_id))

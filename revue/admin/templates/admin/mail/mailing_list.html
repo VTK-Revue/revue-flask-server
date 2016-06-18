@@ -1,17 +1,22 @@
 {% extends "admin_base.html" %}
 
 {% block page_content %}
-    <h2>Mailing list overview: {{ list.get_address() }}</h2>
-    <table class="table table-condensed table-striped">
-        {% for m in list.members() %}
-            <tr>
-                <td>
-                    {{ m.get_address() }}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    <h2>Add entry to list</h2>
-    {{ wtf.quick_form(add_list_entry_form) }}
+<h2>Mailing list overview: {{ list.get_address() }}</h2>
+<table class="table table-condensed table-striped">
+    {% for m in list.entries %}
+    <tr>
+        <td>
+            {{ m.get_address() }}
+        </td>
+        <td>
+            <a class="btn btn-sm" href="{{ url_for('.remove_mailing_list_entry', entry_id=m.id) }}"><span
+                    class="glyphicon glyphicon-remove"></span></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Add entry to list</h2>
+{{ wtf.quick_form(add_list_entry_form) }}
 
+<a href="{{url_for('.view_mailing_list_batch_add', list_id=list.id)}}">Batch add</a>
 {% endblock %}

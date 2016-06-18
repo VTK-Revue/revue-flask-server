@@ -1,5 +1,6 @@
 import os
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 import revue.models.general
 from revue import db
@@ -45,6 +46,7 @@ class MailingList(MailingAddressIntern):
         "polymorphic_identity": "list"
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
+    entries = relationship("MailingListEntry", backref="list")
 
     def members(self):
         return [e.get_address() for e in MailingListEntry.query.filter_by(list_id=self.id)]
@@ -150,7 +152,7 @@ class MailingListEntry(db.Model):
     address_id = db.Column(db.Integer, ForeignKey('mail.address.id'), nullable=False)
 
     def get_address(self):
-        return MailingAddress.query.get(self.address_id)
+        return MailingAddress.query.get(self.address_id).get_address()
 
     def __init__(self, list_id, address_id):
         db.Model.__init__(self)

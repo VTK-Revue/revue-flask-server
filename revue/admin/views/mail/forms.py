@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms.fields import StringField, SubmitField
+from wtforms.fields import StringField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Email
 
 from revue.models.mail import MailingAddressIntern
@@ -20,5 +20,13 @@ class AddMailingListEntryForm(Form):
         'Address',
         validators=[InputRequired(),
                     Email()]
+    )
+    submit = SubmitField('Add')
+
+
+class AddMailingListMultipleEntriesForm(Form):
+    addresses = TextAreaField(
+        'Addresses',
+        validators=[InputRequired()]
     )
     submit = SubmitField('Add')
