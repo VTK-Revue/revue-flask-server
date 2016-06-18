@@ -74,6 +74,16 @@ def view_mailing_list(list_id):
     return render_template('admin/mail/mailing_list.html', list=lst, add_list_entry_form=add_list_entry_form)
 
 
+@admin_site.route('/mail/list/<int:list_id>/clear')
+def clear_mailing_list(list_id):
+    lst = MailingList.query.get(list_id)
+    for e in lst.entries:
+        db.session.delete(e)
+    db.session.commit()
+    flash('List cleared', 'success')
+    return redirect(url_for('.view_mailing_list', list_id=list_id))
+
+
 @admin_site.route('/mail/list/entry/<int:entry_id>')
 def remove_mailing_list_entry(entry_id):
     entry = MailingListEntry.query.get(entry_id)

@@ -2,6 +2,7 @@
 
 {% block page_content %}
 <h2>Mailing list overview: {{ list.get_address() }}</h2>
+<a class="btn btn-default" href="{{url_for('.clear_mailing_list', list_id=list.id)}}">Clear entries</a>
 <table class="table table-condensed table-striped">
     {% for m in list.entries %}
     <tr>
