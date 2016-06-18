@@ -31,14 +31,11 @@ def show_yeargroup(yeargroup):
     members = groups.get_year_group_members_by_year(yeargroup.id)
     menu_structure = menus.get_menu_structure(groups.get_group_menu(yeargroup))
     years = sorted(members.keys())
-    data_per_year = [
-        {
-            "year": RevueYear.query.filter_by(year=y).first(),
-            "members": members[y],
-            "current_user_member": get_current_user() in members[y]
-        }
-        for y in years
-        ]
+    data_per_year = [{
+                         "year": RevueYear.query.filter_by(year=y).first(),
+                         "members": members[y],
+                         "current_user_member": get_current_user() in members[y]
+                     } for y in years]
     return render_template("internal/groups/year_group.html", group=yeargroup, data_per_year=data_per_year,
                            menu=menu_structure)
 
