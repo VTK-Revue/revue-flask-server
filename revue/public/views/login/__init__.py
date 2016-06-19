@@ -1,5 +1,5 @@
 import os
-from flask import request, render_template, flash, redirect
+from flask import request, render_template, flash, redirect, url_for
 from flask_mail import Message
 
 from revue import bcrypt, db, mail
@@ -56,6 +56,6 @@ def register():
             mail.send(msg)
             flash('You just created an account. Once your account has been activated, you\''
                   'll be able to access the internal part of website.', 'success')
-            return redirect('/')
+            return redirect(url_for('.login'))
         flash('A user with this username already exists, choose another one')
     return render_template("public/login/register.html", form=form)
