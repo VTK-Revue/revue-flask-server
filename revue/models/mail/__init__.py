@@ -49,7 +49,7 @@ class MailingList(MailingAddressIntern):
     entries = relationship("MailingListEntry", backref="list")
 
     def members(self):
-        return [e.get_address() for e in MailingListEntry.query.filter_by(list_id=self.id)]
+        return [e for e in MailingListEntry.query.filter_by(list_id=self.id)]
 
     def __init__(self, name):
         MailingAddressIntern.__init__(self, name)

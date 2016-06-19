@@ -8,7 +8,7 @@ def generate_list_file(name, members):
     print('Writing to file {}'.format(name))
     f = open(filename, 'w')
     for m in members:
-        print(m, file=f)
+        print(m.get_address(), file=f)
     f.close()
 
 
