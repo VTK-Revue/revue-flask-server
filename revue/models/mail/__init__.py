@@ -48,9 +48,6 @@ class MailingList(MailingAddressIntern):
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
     entries = relationship("MailingListEntry", backref="list")
 
-    def members(self):
-        return [e for e in MailingListEntry.query.filter_by(list_id=self.id)]
-
     def __init__(self, name):
         MailingAddressIntern.__init__(self, name)
 
@@ -69,7 +66,7 @@ class PersistentGroupMailingList(MailingAddressIntern):
         MailingAddressIntern.__init__(self, name)
         self.persistent_group_id = persistent_group_id
 
-    def members(self):
+    def entries(self):
         pg = PersistentGroup.query.get(self.persistent_group_id)
         return [u.email() for u in pg.members()]
 
@@ -94,12 +91,12 @@ class YearGroupMailingList(MailingAddressIntern):
     def get_local_address_year(self, revue_year):
         return self.get_local_address() + revue_year.get_mail_affix()
 
-    def get_members_per_year(self):
+    def get_entries_per_year(self):
         result = []
         for y in revue.models.general.RevueYear.query.all():
             result.append({
                 "year": y,
-                "members": self.members(y)
+                "entries": self.entries(y)
             })
         return result
 

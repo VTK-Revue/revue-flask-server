@@ -12,13 +12,13 @@ from revue.scripts.mail import generate_all_mail_files
 @admin_site.route('/mail/persistent_group/<int:persistent_group_id>')
 def view_persistent_group_mailing_list(persistent_group_id):
     l = PersistentGroupMailingList.query.filter_by(persistent_group_id=persistent_group_id).one()
-    return render_template('admin/mail/persistent_group_mailing_list.html', members=l.members())
+    return render_template('admin/mail/persistent_group_mailing_list.html', entries=l.entries())
 
 
 @admin_site.route('/mail/year_group/<int:year_group_id>')
 def view_year_group_mailing_list(year_group_id):
     l = YearGroupMailingList.query.filter_by(year_group_id=year_group_id).one()
-    return render_template('admin/mail/year_group_mailing_list.html', members=l.get_members_per_year())
+    return render_template('admin/mail/year_group_mailing_list.html', entries=l.get_entries_per_year())
 
 
 @admin_site.route('/mail/generate_lists')
