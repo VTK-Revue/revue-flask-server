@@ -96,7 +96,7 @@ class YearGroupMailingList(MailingAddressIntern):
         for y in revue.models.general.RevueYear.query.all():
             result.append({
                 "year": y,
-                "entries": self.entries(y)
+                "entries": self.members(y)
             })
         return result
 
