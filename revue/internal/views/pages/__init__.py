@@ -5,6 +5,7 @@ from revue.models.pages import Page
 from revue.utilities import pages
 from .forms import EditTextElementForm, CreatePageForm, EditPageForm, CreateTextElementForm
 from revue import db
+from .ckeditor import *
 
 @internal_site.route("/page/<int:id>", methods=['GET', 'POST'])
 def show_page_by_id(id):

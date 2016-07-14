@@ -18,23 +18,26 @@ def allowed_file(filename):
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
-@internal_site.route('/upload', methods=['POST'])
-def upload_file():
-    file = request.files['upload']
+def upload_file(file):
     if file and allowed_file(file.filename):
         filename = secure_filename("{}-{}-{}".format(int(time.time()), random.randint(0, 9999), file.filename))
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return jsonify({
+        return {
             "uploaded": 1,
             "fileName": filename,
             "url": url_for('.uploaded_file', filename=filename)
-        })
-    return jsonify({
+        }
+    return {
         "uploaded": 0,
         "error": {
             "message": "An error occurred"
         }
-    })
+    }
+
+
+@internal_site.route('/upload', methods=['POST'])
+def upload_file_page():
+    return jsonify(upload_file(request.files['upload']))
 
 
 @internal_site.route('/uploads/<filename>')

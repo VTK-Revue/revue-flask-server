@@ -84,7 +84,7 @@ class YearGroupMailingList(MailingAddressIntern):
         MailingAddressIntern.__init__(self, name)
         self.year_group_id = year_group_id
 
-    def members(self, revue_year):
+    def entries(self, revue_year):
         yg = YearGroup.query.get(self.year_group_id)
         return [u.email() for u in yg.members(revue_year)]
 
@@ -96,7 +96,7 @@ class YearGroupMailingList(MailingAddressIntern):
         for y in revue.models.general.RevueYear.query.all():
             result.append({
                 "year": y,
-                "entries": self.members(y)
+                "entries": self.entries(y)
             })
         return result
 
