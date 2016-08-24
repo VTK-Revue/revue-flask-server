@@ -1,5 +1,5 @@
 {% extends "internal_base.html" %}
-{% from "internal/groups/member.html" import render_group_member %}
+{% from "internal/groups/member.html" import render_user_name_link %}
 {% from "internal/menu/menu.html" import render_menu %}
 
 {% block page_content %}
@@ -16,7 +16,7 @@
         <h3>Leden</h3>
         <ul>
             {% for member in members %}
-                {{ render_group_member(member) }}
+                {{ render_user_name_link(member) }}
             {% endfor %}
         </ul>
     </section>

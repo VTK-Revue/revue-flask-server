@@ -1,18 +1,28 @@
 {% extends "internal_base.html" %}
-{% from "internal/groups/member.html" import render_group_member %}
+{% from "internal/groups/member.html" import render_user_name_link %}
 {% block page_content %}
     <h1>{{ group.name }} - {{ year.year }}</h1>
     {% if current_user_member %}
         <a class="btn btn-default" href="{{ url_for('.leave_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Leave</a>
     {% else %}
-        <a class="btn btn-default" href="{{ url_for('.join_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Join</a>
+        {% if is_year_participant %}
+            <a class="btn btn-default"
+               href="{{ url_for('.join_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Join</a>
+        {% else %}
+            Joining not allowed as you're not a member of the current year.<br>
+            {% if has_requested_year_participation %}
+                Requesting to join year pending.
+            {% else %}
+                <a href="{{ url_for('.join_year' ,year=year.year) }}" class="btn btn-default">Request to join year</a>
+            {% endif %}
+        {% endif %}
     {% endif %}
     <p>
         {{ group.description }}
     </p>
     <ul>
         {% for member in members %}
-            {{ render_group_member(member) }}
+            {{ render_user_name_link(member) }}
         {% endfor %}
     </ul>
 {% endblock %}

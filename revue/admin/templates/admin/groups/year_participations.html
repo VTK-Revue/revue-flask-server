@@ -1,0 +1,23 @@
+{% extends "admin_base.html" %}
+
+{% block page_content %}
+    <h2>Year participations {{ year.year }}</h2>
+    <i>{{ year.title }}</i>
+    <h3>Pending requests</h3>
+    <ul>
+        {% for request in pending_requests %}
+            {% set user = request.user() %}
+            <li><a href="{{ url_for('intern.show_user', id=user.id) }}">{{ user.name() }}</a> <a
+                    href="{{ url_for('.approve_year_participation_request', year=year.year, user=user.id) }}">Approve</a>
+                &nbsp; <a href="{{ url_for('.reject_year_participation_request', year=year.year, user=user.id) }}">Reject</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <h3>Members</h3>
+    <ul>
+        {% for participation in participations %}
+            {% set user = participation.user() %}
+            <li><a href="{{ url_for('intern.show_user', id=user.id) }}">{{ user.name() }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

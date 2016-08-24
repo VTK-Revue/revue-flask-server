@@ -3,7 +3,7 @@ from flask import render_template, request, flash, redirect, url_for
 from revue.admin.views import admin_site
 from revue.models.mail import PersistentGroupMailingList,YearGroupMailingList
 from .forms import *
-
+from revue.admin.views.groups import years
 
 @admin_site.route('/groups', methods=['GET'])
 def group_page():

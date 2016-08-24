@@ -1,5 +1,5 @@
 {% extends "internal_base.html" %}
-{% from "internal/groups/member.html" import render_group_member %}
+{% from "internal/groups/member.html" import render_user_name_link %}
 {% from "internal/menu/menu.html" import render_menu %}
 
 {% block page_content %}
@@ -25,12 +25,19 @@
                 <a class="btn btn-default"
                    href="{{ url_for('.leave_yeargroup_by_year_and_id', year=data.year.year, id=group.id) }}">Leave</a>
             {% else %}
-                <a class="btn btn-default"
-                   href="{{ url_for('.join_yeargroup_by_year_and_id', year=data.year.year, id=group.id) }}">Join</a>
+                {% if data.user_member_of_year %}
+                    <a class="btn btn-default"
+                       href="{{ url_for('.join_yeargroup_by_year_and_id', year=data.year.year, id=group.id) }}">Join</a>
+                {% elif data.user_requested_year_participation %}
+                    You have requested to join this year. Once this request has been approved, you can choose to join
+                    this year group.
+                {% else %}
+                    You cannot join this year group as you are not a member of the year {{ data.year.year }}.
+                {% endif %}
             {% endif %}
             <ul>
                 {% for member in data.members %}
-                    {{ render_group_member(member) }}
+                    {{ render_user_name_link(member) }}
                 {% endfor %}
             </ul>
         </div>

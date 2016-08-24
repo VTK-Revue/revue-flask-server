@@ -9,10 +9,14 @@ admin_navbar = CustomNavbar(
         View('Home', '.index'),
         View('Activations', '.registrations'),
         View('Users', '.all_users'),
-        View('Groups', '.group_page'),
+        Subgroup('Groups',
+                 View('All groups', '.group_page'),
+                 View('Years', '.show_all_years')
+                 ),
         Subgroup('Mail',
                  View('Lists', '.view_mailing_lists'),
-                 View('Update files', '.generate_mail_lists'))
+                 View('Update files', '.generate_mail_lists')
+                 )
     ], [
         View('Intern', 'intern.index')
     ]

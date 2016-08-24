@@ -1,0 +1,19 @@
+{% extends "internal_base.html" %}
+{% from "internal/groups/member.html" import render_user_name_link %}
+{% block page_content %}
+    <h1>{{ year.year }}</h1>
+    <p>
+        {% if user_is_member_of_year %}
+            You're member of this group.
+        {% elif user_has_requested_year_participation %}
+            Year participation request is pending.
+        {% else %}
+            <a href="{{ url_for('.join_year', year=year.year) }}" class="btn btn-large btn-default">Request to join</a>
+        {% endif %}
+    </p>
+    <ul>
+        {% for user in members %}
+            {{ render_user_name_link(user) }}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from revue import db, bcrypt
 from revue.models.mail import MailingAddressExtern
-
+from revue.models.groups import YearParticipation
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -79,3 +79,6 @@ class RevueYear(db.Model):
 
     def get_mail_affix(self):
         return "_{}".format(self.year)
+
+    def participations(self):
+        return YearParticipation.query.filter_by(year_id=self.id)

@@ -1,0 +1,10 @@
+{% extends "admin_base.html" %}
+
+{% block page_content %}
+    <h2>Years</h2>
+    <ul>
+        {% for year in years %}
+            <li>{{ year.year }}: {{ year.title }} (<a href="{{ url_for('.show_year_participations', year=year.year) }}">Participants</a>)</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

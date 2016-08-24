@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint, and_
 
 import revue.models.general
 import revue.models.mail
@@ -52,8 +52,12 @@ class YearGroup(Group):
             year_group_id=self.year_group_id).one_or_none()
 
     def members(self, revue_year):
-        return [revue.models.general.User.query.get(ygp.user_id) for ygp in
-                YearGroupParticipation.query.filter_by(year_id=revue_year.id, group_id=self.id)]
+        year_participation_ids = [x.id for x in revue_year.participations()]
+        year_group_participations = YearGroupParticipation.query.filter(
+            and_(YearGroupParticipation.year_participation_id.in_(year_participation_ids),
+                 YearGroupParticipation.year_group_id == self.id)).all()
+        return [revue.models.general.User.query.get(ygp.year_participation().user_id) for ygp in
+                year_group_participations]
 
 
 class PersistentGroupParticipation(db.Model):
@@ -67,14 +71,38 @@ class PersistentGroupParticipation(db.Model):
         self.user_id = user_id
 
 
-class YearGroupParticipation(db.Model):
-    __tablename__ = "year_group_participation"
-    __table_args__ = (PrimaryKeyConstraint("year_id", "year_group_id", "user_id"), {"schema": "general"})
+class YearParticipationRequest(db.Model):
+    __tablename__ = "year_participation_request"
+    __table_args__ = (db.UniqueConstraint('year_id', 'user_id'), {"schema": "general"})
+    id = db.Column("id", db.Integer, primary_key=True, nullable=False)
     year_id = db.Column("year_id", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
-    group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
     user_id = db.Column("user_id", db.Integer, ForeignKey("general.user.id"), nullable=False)
 
-    def __init__(self, year_id, year_group_id, user_id):
+    def __init__(self, year_id, user_id):
         self.year_id = year_id
-        self.group_id = year_group_id
         self.user_id = user_id
+
+    def user(self):
+        return revue.models.general.User.query.get(self.user_id)
+
+
+class YearParticipation(YearParticipationRequest):
+    __tablename__ = "year_participation"
+    __table_args__ = {"schema": "general"}
+    participation_id = db.Column("id", db.Integer, ForeignKey("general.year_participation_request.id"), nullable=False,
+                                 primary_key=True)
+
+
+class YearGroupParticipation(db.Model):
+    __tablename__ = "year_group_participation"
+    __table_args__ = (PrimaryKeyConstraint("year_group_id", "year_participation_id"), {"schema": "general"})
+    year_group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
+    year_participation_id = db.Column("year_participation_id", db.Integer, ForeignKey("general.year_participation.id"),
+                                      nullable=False)
+
+    def __init__(self, year_participation_id, year_group_id):
+        self.year_participation_id = year_participation_id
+        self.year_group_id = year_group_id
+
+    def year_participation(self):
+        return YearParticipation.query.get(self.year_participation_id)
