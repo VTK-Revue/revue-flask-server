@@ -1,9 +1,66 @@
 {% extends "internal_base.html" %}
 
 {% block page_content %}
-
+    <h2>Revue intern</h2>
+    <div class="content">
+        <div class="row">
+            <div class="col-xs-12 col-lg-3">
+                <section id="global-navigation">
+                    <h3>Snelle links</h3>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('.show_current_year') }}">Current year</a>
+                        </li>
+                        <li>
+                            <a href="#">Script</a>
+                        </li>
+                        <li>
+                            <a href="#">Kas</a>
+                        </li>
+                        <li>
+                            <a href="#">YouTube</a>
+                        </li>
+                        <li>
+                            <a href="#">Facebookpagina</a>
+                        </li>
+                        <li>
+                            <a href="#">Facebookgroep</a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <div class="col-xs-12 col-lg-6">
+                <section id="announcements">
+                    <h3>Announcements</h3>
+                </section>
+            </div>
+            <div class="col-xs-12 col-lg-3">
+                <section id="personal">
+                    <h3>Personal</h3>
+                    <img src="#" alt="profile picture"/>
+                    <h4>Werkgroepen</h4>
+                    <ul>
+                        <li>
+                            <a href="#">Muziek</a>
+                        </li>
+                    </ul>
+                    <h4>Algemene groepen</h4>
+                    <ul>
+                        <li>
+                            <a href="#">Activiteiten</a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <div class="col-xs-12 col-lg-6">
+                <section id="recent">
+                    <h3>Recent</h3>
+                </section>
+            </div>
+        </div>
+    </div>
+    {#
     <h2>Startpagina</h2>
-
     <section id="announcements">
         <h3>Announcements</h3>
         <ul>
@@ -44,4 +101,5 @@
             {% endfor %}
         </ul>
     </section>
+#}
 {% endblock %}

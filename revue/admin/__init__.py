@@ -18,7 +18,15 @@ admin_navbar = CustomNavbar(
                  View('Update files', '.generate_mail_lists')
                  )
     ], [
-        View('Intern', 'intern.index')
+        Subgroup('Admin',
+                 View('Public', 'public.index'),
+                 View('Intern', 'intern.index'),
+                 ),
+        Subgroup('Account',
+                 View('Profiel', 'intern.profile'),
+                 View('Groups', 'intern.view_own_groups'),
+                 View('Logout', 'intern.logout'),
+                 ),
     ]
 )
 nav.register_element('admin_navbar', admin_navbar)

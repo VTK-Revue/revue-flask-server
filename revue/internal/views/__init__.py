@@ -1,7 +1,8 @@
 from flask import render_template, Blueprint
 
-from revue.utilities.login import login_required
 from revue.models.groups import Group, YearGroup
+from revue.utilities import users
+from revue.utilities.login import login_required
 
 internal_site = Blueprint('intern', __name__, template_folder='../templates')
 
@@ -40,4 +41,4 @@ def media():
 
 @internal_site.route("/members")
 def members():
-    return render_template("internal/members.html")
+    return render_template("internal/members.html", users=users.get_all_users())

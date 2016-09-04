@@ -1,7 +1,11 @@
 {% extends "internal_base.html" %}
+{% from "internal/groups/member.html" import render_user_name_link %}
 
 {% block page_content %}
-
-<h2>Medewerkers</h2>
-
+    <h2>Medewerkers</h2>
+    <ul>
+        {% for member in users %}
+            {{ render_user_name_link(member) }}
+        {% endfor %}
+    </ul>
 {% endblock %}

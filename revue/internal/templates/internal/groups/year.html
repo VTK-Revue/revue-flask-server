@@ -1,19 +1,55 @@
 {% extends "internal_base.html" %}
 {% from "internal/groups/member.html" import render_user_name_link %}
 {% block page_content %}
-    <h1>{{ year.year }}</h1>
-    <p>
-        {% if user_is_member_of_year %}
+    {% if user_is_member_of_year %}
+        <h1>{{ year.year }}: {{ year.title }}</h1>
+        <p>
             You're member of this group.
-        {% elif user_has_requested_year_participation %}
+        </p>
+        <h2>Links</h2>
+        <ul>
+            <li>
+                <a href="#">Script</a>
+            </li>
+        </ul>
+        <h2>Werkgroepen</h2>
+        <ul id="year-groups">
+            {% for year_group in year_groups %}
+                <li>
+                    <a href="{{ url_for('.show_yeargroup_by_year_and_id', year=year.year, id=year_group.id) }}">
+                        {{ year_group.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <h2>Medewerkers</h2>
+        <ul id="members">
+            {% for user in members %}
+                {{ render_user_name_link(user) }}
+            {% endfor %}
+        </ul>
+    {% elif user_has_requested_year_participation %}
+        <h1>{{ year.year }}</h1>
+        <p>
             Year participation request is pending.
-        {% else %}
+        </p>
+    {% else %}
+        <h1>{{ year.year }}</h1>
+        <p>
             <a href="{{ url_for('.join_year', year=year.year) }}" class="btn btn-large btn-default">Request to join</a>
-        {% endif %}
-    </p>
-    <ul>
-        {% for user in members %}
-            {{ render_user_name_link(user) }}
-        {% endfor %}
-    </ul>
+        </p>
+    {% endif %}
+{% endblock %}
+{% block style %}
+    {{ super() }}
+    <style type="text/css">
+        ul#year-groups, ul#members {
+            -moz-column-count: 4;
+            -moz-column-gap: 20px;
+            -webkit-column-count: 4;
+            -webkit-column-gap: 20px;
+            column-count: 4;
+            column-gap: 20px;
+        }
+    </style>
 {% endblock %}

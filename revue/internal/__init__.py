@@ -8,18 +8,19 @@ intern_navbar = CustomNavbar(
     'Revue',
     [
         View('Home', '.index'),
-        View('Activiteiten', '.activities'),
-        View('Script', '.script'),
+        View('Dit jaar', '.show_current_year'),
         View('Medewerkers', '.members'),
         View('Media', '.media')
     ], [
+        Subgroup('Internal',
+                 View('Public', 'public.index'),
+                 PermissionView('Admin', 'admin.index', Permissions.ADMIN),
+                 ),
         Subgroup('Account',
                  View('Profiel', '.profile'),
-                 View('Groups', '.view_own_groups')
-        ),
-        PermissionView('Admin', 'admin.index', Permissions.ADMIN),
-        View('Logout', '.logout'),
-        View('Public', 'public.index')
+                 View('Groups', '.view_own_groups'),
+                 View('Logout', '.logout'),
+                 ),
     ]
 )
 nav.register_element('intern_navbar', intern_navbar)

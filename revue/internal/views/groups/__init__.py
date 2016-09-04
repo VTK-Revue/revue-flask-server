@@ -54,11 +54,18 @@ def show_yeargroup(year_group):
                            menu=menu_structure)
 
 
+@internal_site.route('/year/current')
+def show_current_year():
+    return show_year(groups.get_current_year().year)
+
+
 @internal_site.route('/year/<int:year>')
 def show_year(year):
     revue_year = groups.get_revue_year_by_year(year)
+    year_groups = groups.get_year_groups()
     return render_template("internal/groups/year.html", year=revue_year,
                            members=groups.get_revue_year_members(revue_year),
+                           year_groups = year_groups,
                            user_is_member_of_year=groups.get_year_participation(revue_year,
                                                                                 get_current_user()) is not None,
                            user_has_requested_year_participation=groups.get_year_participation_request(revue_year,

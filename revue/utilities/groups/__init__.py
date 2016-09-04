@@ -1,7 +1,7 @@
 from revue import db
 from revue.models.general import User, RevueYear
 from revue.models.groups import PersistentGroupParticipation, Group, YearGroupParticipation, \
-    YearParticipation, YearParticipationRequest
+    YearParticipation, YearParticipationRequest, YearGroup
 from revue.models.menus import GroupMenu, MenuEntry
 
 
@@ -40,6 +40,9 @@ def request_year_participation(revue_year, user):
     db.session.add(p)
     db.session.commit()
 
+
+def get_year_groups():
+    return YearGroup.query.all()
 
 def join_year_group(year_group, revue_year, user):
     yp = get_year_participation(revue_year=revue_year, user=user)
@@ -155,3 +158,7 @@ def get_pending_year_participation_requests(revue_year):
 
 def get_year_group_members_by_year(year_group):
     return {revue_year.year: year_group.members(revue_year) for revue_year in get_all_revue_years()}
+
+
+def get_current_year():
+    return get_revue_year_by_year(2016)

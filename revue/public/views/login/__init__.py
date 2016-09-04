@@ -55,7 +55,9 @@ def register():
                         "\n\nKind regards,\n\nRevue IT").format(form.firstName.data)
             mail.send(msg)
             flash('You just created an account. Once your account has been activated, you\''
-                  'll be able to access the internal part of website.', 'success')
+                  'll be able to access the internal part of website. We\ll send you an email'
+                  'upon activating your account. Don\'t forget your SPAM folder. If you don\'t '
+                  'receive an activation mail, please contact the IT team at it@revue.vtk.be', 'success')
             return redirect(url_for('.login'))
         flash('A user with this username already exists, choose another one')
     return render_template("public/login/register.html", form=form)
