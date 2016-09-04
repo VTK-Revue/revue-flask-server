@@ -1,5 +1,6 @@
 from flask import render_template, redirect, flash, url_for
 
+import revue.utilities.group_pages as group_pages
 import revue.utilities.groups as groups
 import revue.utilities.menus as menus
 from revue.internal.views import internal_site
@@ -65,7 +66,7 @@ def show_year(year):
     year_groups = groups.get_year_groups()
     return render_template("internal/groups/year.html", year=revue_year,
                            members=groups.get_revue_year_members(revue_year),
-                           year_groups = year_groups,
+                           year_groups=year_groups,
                            user_is_member_of_year=groups.get_year_participation(revue_year,
                                                                                 get_current_user()) is not None,
                            user_has_requested_year_participation=groups.get_year_participation_request(revue_year,
@@ -89,8 +90,10 @@ def show_yeargroup_by_id(id):
 def show_yeargroup_by_year_and_id(year, id):
     revue_year = groups.get_revue_year_by_year(year)
     year_group = groups.get_group_by_id(id)
+    page = group_pages.get_or_create_year_group_year_page(year_group, revue_year)
     members = year_group.members(revue_year)
     return render_template("internal/groups/year_group_year.html", group=year_group, members=members, year=revue_year,
+                           page=page,
                            current_user_member=get_current_user() in members,
                            is_year_participant=groups.get_year_participation(revue_year,
                                                                              get_current_user()) is not None,

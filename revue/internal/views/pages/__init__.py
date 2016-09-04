@@ -30,9 +30,7 @@ def show_page(page):
         return render_template("internal/pages/edit_page.html", form=form, page=page)
     elif action == 'add-content':
         return show_add_content(page)
-    content_elements = pages.get_content_elements(page)
-    return render_template("internal/pages/page.html", page=page,
-                           content_elements=content_elements)
+    return render_template("internal/pages/page.html", page=page)
 
 
 @internal_site.route('/page', methods=['GET', 'POST'])

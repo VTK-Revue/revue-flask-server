@@ -1,0 +1,64 @@
+{% macro render_text_content_element(text_content_element) %}
+    {{ text_content_element.content|safe }}
+{% endmacro %}
+{% macro render_content_element(content_element) %}
+    {{ content_element.title }}
+    {% if content_element.type == "text" %}
+        {{ render_text_content_element(content_element) }}
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Unsupported content element.
+        </div>
+    {% endif %}
+{% endmacro %}
+{% macro render_page_content_element(content_element, page) -%}
+    <div class="content-element">
+        <h1>{{ content_element.title }}</h1>
+        <ul class="content-actions">
+            <li>
+                <a href="{{ url_for('.show_content', id=content_element.id, action='edit', referring_page_id=page.id) }}">
+                    <i>Edit</i>
+                </a>
+            </li>
+        </ul>
+        <p class="content-element-info">
+            {% if content_element.author %}
+                Published by {{ content_element.author.name() }}
+            {% endif %}
+        </p>
+        <div>
+            {{ render_content_element(content_element) }}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro render_page_content(page) -%}
+    <div class="container-fluid">
+        {% for element in page.page_content_elements %}
+            <div class="row">
+                <div class="col-xs-12">
+                    {{ render_page_content_element(element.content_element, page) }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{%- endmacro %}
+
+{% macro render_embedded_page(page) -%}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <a class="btn btn-xs btn-default" href="{{ url_for('.show_page_by_id', id=page.id) }}">
+                    View full page (to edit)
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                {{ render_page_content(page) }}
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

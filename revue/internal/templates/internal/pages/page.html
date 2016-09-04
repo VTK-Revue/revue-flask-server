@@ -1,4 +1,5 @@
 {% extends "internal_base.html" %}
+{% from "internal/pages/content/page_content.html" import render_page_content %}
 
 {% block page_content %}
 
@@ -12,7 +13,5 @@
 <p>
     {{ page.description }}
 </p>
-{% for element in content_elements %}
-{% include "internal/pages/content/content_element.html" %}
-{% endfor %}
+{{ render_page_content(page) }}
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends "internal_base.html" %}
+{% from "internal/pages/content/page_content.html" import render_content_element %}
 
 {% block page_content %}
 
-{% include "internal/pages/content/content_element.html" %}
+    {{ render_content_element(element) }}
 
 {% endblock %}

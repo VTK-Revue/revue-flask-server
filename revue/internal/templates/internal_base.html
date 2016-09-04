@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{%block navbar%}
-{{nav.intern_navbar.render(renderer='custom_bootstrap_nav')}}
+{% block navbar %}
+    {{ nav.intern_navbar.render(renderer='custom_bootstrap_nav') }}
 {% endblock %}
 
 {% block page_content %}
@@ -9,4 +9,18 @@
 {% block scripts %}
     {{ super() }}
     <script type="text/javascript" src="{{ url_for('static', filename="libs/ckeditor/ckeditor.js") }}"></script>
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <style type="text/css">
+        div.content-element {
+            width: 100%;
+            border: 5px solid grey;
+            border-radius: 10px;
+        }
+
+        div.content-element p.content-element-info {
+            font-style: italic;
+        }
+    </style>
 {% endblock %}

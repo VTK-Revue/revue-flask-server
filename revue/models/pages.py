@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint, UniqueConstraint
 
 from sqlalchemy.orm import relationship
-
+import revue.utilities.users as users
 from revue import db
 
 
@@ -17,11 +17,12 @@ class Page(db.Model):
 
     page_content_elements = relationship("PageContentElement", backref="page")
 
-    #def __init__(self, title, parent_page_id, description, access_restricted):
-    #    self.title = title
-    #    self.parent_page_id = parent_page_id
-    #    self.description = description
-    #    self.access_restricted = access_restricted
+    def __init__(self, title, description):
+        self.title = title
+        self.parent_page_id = None
+        self.description = description
+        self.access_restricted = False,
+        self.url_identifier = ""
 
 
 class PageAccessRestriction(db.Model):
@@ -61,6 +62,12 @@ class ContentElement(db.Model):
         self.title = title
         self.identifier = identifier
         self.author_id = author_id
+
+    def author(self):
+        print("author id = {}".format(self.author_id))
+        if self.author_id is None:
+            return None
+        return users.get_user_by_id(self.author_id)
 
 
 class PageContentElement(db.Model):
