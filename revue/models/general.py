@@ -1,6 +1,3 @@
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint
-from sqlalchemy.orm import relationship
-
 from revue import db, bcrypt
 from revue.models.mail import MailingAddressExtern
 from revue.models.groups import YearParticipation
@@ -11,14 +8,14 @@ class User(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     firstName = db.Column(db.String(60))
     lastName = db.Column(db.String(60))
-    email_address_id = db.Column(db.Integer, ForeignKey('mail.extern_address.id'))
+    email_address_id = db.Column(db.Integer, db.ForeignKey('mail.extern_address.id'))
 
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(60))
 
     activated = db.Column(db.DateTime, default=None, nullable=True)
 
-    content_elements = relationship("ContentElement", backref="author")
+    content_elements = db.relationship("ContentElement", backref="author")
 
     def __init__(self, firstName, lastName, email_address_id, username, password=None, activated=None):
         self.firstName = firstName
@@ -57,9 +54,9 @@ class Permission(db.Model):
 
 class UserPermission(db.Model):
     __tablename__ = "user_permission"
-    __table_args__ = (PrimaryKeyConstraint("user_id", "permission_id"), {"schema": "general"})
-    user_id = db.Column(db.Integer, ForeignKey('general.user.id'))
-    permission_id = db.Column(db.Integer, ForeignKey('general.permission.id'))
+    __table_args__ = (db.PrimaryKeyConstraint("user_id", "permission_id"), {"schema": "general"})
+    user_id = db.Column(db.Integer, db.ForeignKey('general.user.id'))
+    permission_id = db.Column(db.Integer, db.ForeignKey('general.permission.id'))
 
     def __init__(self, user_id, permission_id):
         self.user_id = user_id

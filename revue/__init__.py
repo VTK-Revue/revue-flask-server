@@ -14,8 +14,8 @@ Bootstrap(app)
 nav = Nav()
 app.config.from_object(os.environ['APP_SETTINGS'])
 
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

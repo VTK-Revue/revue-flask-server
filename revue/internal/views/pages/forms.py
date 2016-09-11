@@ -1,7 +1,7 @@
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField
 from wtforms.validators import InputRequired
 from revue.utilities.ui.forms import CKTextAreaField
-from flask.ext.wtf import Form
+from flask_wtf import Form
 
 
 class ContentElementForm(Form):

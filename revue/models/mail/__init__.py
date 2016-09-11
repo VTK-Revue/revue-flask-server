@@ -1,7 +1,4 @@
 import os
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
-
 import revue.models.general
 from revue import db
 from revue.models.groups import PersistentGroup, YearGroup
@@ -46,7 +43,7 @@ class MailingList(MailingAddressIntern):
         "polymorphic_identity": "list"
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
-    entries = relationship("MailingListEntry", backref="list")
+    entries = db.relationship("MailingListEntry", backref="list")
 
     def __init__(self, name):
         MailingAddressIntern.__init__(self, name)
@@ -145,8 +142,8 @@ class MailingListEntry(db.Model):
     __tablename__ = 'list_entry'
     __table_args__ = {'schema': 'mail'}
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    list_id = db.Column(db.Integer, ForeignKey('mail.list.id'), nullable=False)
-    address_id = db.Column(db.Integer, ForeignKey('mail.address.id'), nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey('mail.list.id'), nullable=False)
+    address_id = db.Column(db.Integer, db.ForeignKey('mail.address.id'), nullable=False)
 
     def get_address(self):
         return MailingAddress.query.get(self.address_id).get_address()

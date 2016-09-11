@@ -1,21 +1,18 @@
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint, UniqueConstraint
-
-from sqlalchemy.orm import relationship
 import revue.utilities.users as users
 from revue import db
 
 
 class Page(db.Model):
     __tablename__ = 'page'
-    __table_args__ = (UniqueConstraint('parent_page_id', 'url_identifier'), {'schema': 'content'})
+    __table_args__ = (db.UniqueConstraint('parent_page_id', 'url_identifier'), {'schema': 'content'})
     id = db.Column('id', db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String(50), nullable=False)
-    parent_page_id = db.Column("parent_page_id", db.Integer, ForeignKey("content.page.id"), nullable=True)
+    parent_page_id = db.Column("parent_page_id", db.Integer, db.ForeignKey("content.page.id"), nullable=True)
     description = db.Column(db.Text, nullable=False)
     access_restricted = db.Column("access_restricted", db.Boolean, nullable=False)
     url_identifier = db.Column('url_identifier', db.String(50), nullable=False)
 
-    page_content_elements = relationship("PageContentElement", backref="page")
+    page_content_elements = db.relationship("PageContentElement", backref="page")
 
     def __init__(self, title, description):
         self.title = title
@@ -27,10 +24,10 @@ class Page(db.Model):
 
 class PageAccessRestriction(db.Model):
     __tablename__ = "page_access_restriction"
-    __table_args__ = (PrimaryKeyConstraint("page_id", "year_group_id", "revue_year_id"), {"schema": "content"})
-    page_id = db.Column("page_id", db.Integer, ForeignKey("content.page.id"), nullable=False)
-    year_group_id = db.Column("year_group_id", db.Integer, ForeignKey("general.year_group.id"), nullable=False)
-    revue_year_id = db.Column("revue_year_id", db.Integer, ForeignKey("general.revue_year.id"), nullable=False)
+    __table_args__ = (db.PrimaryKeyConstraint("page_id", "year_group_id", "revue_year_id"), {"schema": "content"})
+    page_id = db.Column("page_id", db.Integer, db.ForeignKey("content.page.id"), nullable=False)
+    year_group_id = db.Column("year_group_id", db.Integer, db.ForeignKey("general.year_group.id"), nullable=False)
+    revue_year_id = db.Column("revue_year_id", db.Integer, db.ForeignKey("general.revue_year.id"), nullable=False)
 
     def __init__(self, page_id, year_group_id, revue_year_id):
         self.page_id = page_id
@@ -48,9 +45,9 @@ class ContentElement(db.Model):
     sticky = db.Column("sticky", db.Boolean, nullable=False, default=False)
     title = db.Column('title', db.String(50), nullable=False, default="")
     identifier = db.Column("identifier", db.String(50), nullable=False, default=None)
-    author_id = db.Column('author_id', db.Integer, ForeignKey('general.user.id'), nullable=False)
+    author_id = db.Column('author_id', db.Integer, db.ForeignKey('general.user.id'), nullable=False)
 
-    page_content_elements = relationship("PageContentElement", backref="content_element")
+    page_content_elements = db.relationship("PageContentElement", backref="content_element")
 
     __mapper_args__ = {
         'polymorphic_on': type
@@ -72,11 +69,11 @@ class ContentElement(db.Model):
 
 class PageContentElement(db.Model):
     __tablename__ = "page_content_element"
-    __table_args__ = (PrimaryKeyConstraint('content_element_id', 'page_id'), {"schema": "content"})
+    __table_args__ = (db.PrimaryKeyConstraint('content_element_id', 'page_id'), {"schema": "content"})
 
-    content_element_id = db.Column("content_element_id", db.Integer, ForeignKey('content.content_element.id'),
+    content_element_id = db.Column("content_element_id", db.Integer, db.ForeignKey('content.content_element.id'),
                                    nullable=False)
-    page_id = db.Column("page_id", db.Integer, ForeignKey('content.page.id'), nullable=False)
+    page_id = db.Column("page_id", db.Integer, db.ForeignKey('content.page.id'), nullable=False)
     order_index = db.Column("order_index", db.Integer, nullable=False, default=0)
 
     def __init__(self, content_element_id, page_id, order_index):
@@ -89,7 +86,7 @@ class TextElement(ContentElement):
     __tablename__ = "text_element"
     __table_args__ = {"schema": "content"}
 
-    text_element_id = db.Column("id", db.Integer, ForeignKey('content.content_element.id'), primary_key=True,
+    text_element_id = db.Column("id", db.Integer, db.ForeignKey('content.content_element.id'), primary_key=True,
                                 nullable=False)
     content = db.Column("content", db.Text, nullable=False)
 
