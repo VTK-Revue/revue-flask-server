@@ -13,7 +13,7 @@ atexit.register(lambda: scheduler.shutdown())
 def schedule_cron_jobs():
     scheduler.add_job(
         func=generate_all_mail_files,
-        trigger=IntervalTrigger(seconds=60),
+        trigger=IntervalTrigger(seconds=10),
         id='generate_mail_lists',
         name='Generate mail lists every minute',
         replace_existing=True)

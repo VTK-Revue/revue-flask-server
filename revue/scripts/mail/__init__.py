@@ -20,7 +20,7 @@ def generate_list_files():
     for l in PersistentGroupMailingList.query.all():
         generate_list_file(l.get_local_address(), l.entries())
     for l in MailingList.query.all():
-        generate_list_file(l.get_local_address(), l.entries())
+        generate_list_file(l.get_local_address(), l.entries)
     current_year = int(os.environ['CURRENT_YEAR'])
     for l in YearGroupMailingList.query.all():
         base_filename = l.get_local_address()
