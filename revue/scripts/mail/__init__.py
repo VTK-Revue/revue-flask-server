@@ -20,7 +20,8 @@ def generate_list_files():
     for l in PersistentGroupMailingList.query.all():
         generate_list_file(l.get_local_address(), l.entries())
     for l in MailingList.query.all():
-        entries = list(l.entries)
+        # TODO: find out why this is not consistent across platforms and fix code below
+        entries = list(l.entries() if callable(l.entries) else l.entries)
         address = l.get_local_address()
         generate_list_file(address, entries)
     current_year = int(os.environ['CURRENT_YEAR'])
