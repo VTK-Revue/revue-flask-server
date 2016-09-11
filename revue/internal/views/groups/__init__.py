@@ -1,8 +1,11 @@
+import os
 from flask import render_template, redirect, flash, url_for
+from flask_mail import Message
 
 import revue.utilities.group_pages as group_pages
 import revue.utilities.groups as groups
 import revue.utilities.menus as menus
+from revue import mail
 from revue.internal.views import internal_site
 from revue.models.groups import YearGroup, PersistentGroup
 from revue.utilities.session import get_current_user
@@ -76,7 +79,16 @@ def show_year(year):
 @internal_site.route('/year/<int:year>/join')
 def join_year(year):
     revue_year = groups.get_revue_year_by_year(year)
-    groups.request_year_participation(revue_year, get_current_user())
+    user = get_current_user()
+    groups.request_year_participation(revue_year, user)
+    msg = Message("{} requested to join the Revue year {}".format(user.name(), revue_year.year),
+                  sender="it@" + os.environ['EMAIL_SUFFIX'],
+                  recipients=["it@" + os.environ['EMAIL_SUFFIX']])
+    msg.body = ("Hi IT\n\n" +
+                "{} asked to join the Revue year {}. Visit {} to approve or decline.\n\nKind regards,"
+                "\n\nYour friendly revue server").format(user.name(), revue_year.year,
+                                                         url_for('admin.show_year_participations'))
+    mail.send(msg)
     flash('Successfully asked to join year', 'success')
     return redirect(url_for('.index'))
 

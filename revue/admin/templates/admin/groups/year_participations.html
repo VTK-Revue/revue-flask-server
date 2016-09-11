@@ -7,9 +7,9 @@
     <ul>
         {% for request in pending_requests %}
             {% set user = request.user() %}
-            <li><a href="{{ url_for('intern.show_user', id=user.id) }}">{{ user.name() }}</a> <a
+            <li><a href="{{ url_for('intern.show_user', id=user.id) }}">{{ user.name() }}</a> - <a class="btn btn-default btn-xs"
                     href="{{ url_for('.approve_year_participation_request', year=year.year, user=user.id) }}">Approve</a>
-                &nbsp; <a href="{{ url_for('.reject_year_participation_request', year=year.year, user=user.id) }}">Reject</a>
+                &nbsp; <a class="btn btn-default btn-xs" href="{{ url_for('.reject_year_participation_request', year=year.year, user=user.id) }}">Reject</a>
             </li>
         {% endfor %}
     </ul>

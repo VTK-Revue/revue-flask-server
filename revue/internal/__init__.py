@@ -12,10 +12,9 @@ intern_navbar = CustomNavbar(
         View('Medewerkers', '.members'),
         View('Media', '.media')
     ], [
-        Subgroup('Internal',
-                 View('Public', 'public.index'),
-                 PermissionView('Admin', 'admin.index', Permissions.ADMIN),
-                 ),
+
+        View('Public', 'public.index'),
+        PermissionView('Admin', 'admin.index', Permissions.ADMIN),
         Subgroup('Account',
                  View('Profiel', '.profile'),
                  View('Groups', '.view_own_groups'),

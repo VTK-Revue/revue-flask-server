@@ -25,7 +25,6 @@ def view_user(username):
 @internal_site.route("/logout")
 def logout():
     session.user_logout()
-    flash('You just logged out', 'success')
     return redirect('/')
 
 

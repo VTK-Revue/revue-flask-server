@@ -1,6 +1,9 @@
+import os
 from flask import flash
 from flask import render_template
+from flask_mail import Message
 
+from revue import mail
 from revue.admin.views import admin_site
 from revue.models.general import User
 from revue.utilities import groups
@@ -25,7 +28,14 @@ def approve_year_participation_request(year, user):
     user = User.query.get(user)
     revue_year = groups.get_revue_year_by_year(year)
     groups.approve_year_participation_request(user, revue_year)
-    flash('Participation request approved', 'success')
+    flash('Request approved', 'success')
+    msg = Message("Your Revue year participation request was approved", sender="it@" + os.environ['EMAIL_SUFFIX'],
+                  recipients=["it@" + os.environ['EMAIL_SUFFIX'], user.email().get_address()])
+    msg.body = ("Hi {}\n\n" +
+                "Your request to join the Revue year {} was approved. " +
+                "You can now join working groups for that year.." +
+                "\n\nKind regards,\n\nRevue IT").format(user.name(), revue_year.year)
+    mail.send(msg)
     return show_year_participations(year)
 
 

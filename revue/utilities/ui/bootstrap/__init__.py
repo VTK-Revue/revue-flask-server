@@ -1,10 +1,10 @@
+from dominate import tags
 from flask_bootstrap.nav import BootstrapRenderer
 from flask_nav.elements import Navbar, View
 from hashlib import sha1
-from dominate import tags
 
-from revue.utilities.permissions import has_permission
 from revue.utilities import session
+from revue.utilities.permissions import has_permission
 
 
 class CustomBootstrapRenderer(BootstrapRenderer):
@@ -63,6 +63,7 @@ class CustomBootstrapRenderer(BootstrapRenderer):
 
     def visit_PermissionView(self, node):
         if node.has_required_permission():
+            print("has required permission")
             return self.visit_View(node)
         return None
 
