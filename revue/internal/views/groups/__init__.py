@@ -5,7 +5,7 @@ from flask_mail import Message
 import revue.utilities.group_pages as group_pages
 import revue.utilities.groups as groups
 import revue.utilities.menus as menus
-from revue import mail
+from revue import mail, app
 from revue.internal.views import internal_site
 from revue.models.groups import YearGroup, PersistentGroup
 from revue.utilities.session import get_current_user
@@ -85,9 +85,11 @@ def join_year(year):
                   sender="it@" + os.environ['EMAIL_SUFFIX'],
                   recipients=["it@" + os.environ['EMAIL_SUFFIX']])
     msg.body = ("Hi IT\n\n" +
-                "{} asked to join the Revue year {}. Visit {} to approve or decline.\n\nKind regards,"
+                "{} asked to join the Revue year {}. Visit <a href='{}'>this link</a> to approve or decline."
+                "\n\nKind regards,"
                 "\n\nYour friendly revue server").format(user.name(), revue_year.year,
-                                                         url_for('admin.show_year_participations'))
+                                                         url_for('admin.show_year_participations',
+                                                                 year=revue_year.year))
     mail.send(msg)
     flash('Successfully asked to join year', 'success')
     return redirect(url_for('.index'))
@@ -149,7 +151,7 @@ def leave_persistent_group_by_id(id):
 
 @internal_site.route('/yeargroup/current/<int:id>')
 def show_yeargroup_current_year(id):
-    return show_yeargroup_by_year_and_id(2016, id)
+    return show_yeargroup_by_year_and_id(int(app.config['CURRENT_YEAR']), id)
 
 
 @internal_site.route('/yeargroup/<int:year>/path')

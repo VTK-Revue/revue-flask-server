@@ -1,4 +1,4 @@
-from revue import db
+from revue import db, app
 from revue.models.general import User, RevueYear
 from revue.models.groups import PersistentGroupParticipation, Group, YearGroupParticipation, \
     YearParticipation, YearParticipationRequest, YearGroup
@@ -161,4 +161,4 @@ def get_year_group_members_by_year(year_group):
 
 
 def get_current_year():
-    return get_revue_year_by_year(2016)
+    return get_revue_year_by_year(int(app.config['CURRENT_YEAR']))

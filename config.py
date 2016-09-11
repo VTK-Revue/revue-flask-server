@@ -12,7 +12,8 @@ class BaseConfig(object):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER=os.environ['UPLOAD_FOLDER']
+    UPLOAD_FOLDER = os.environ['UPLOAD_FOLDER']
+    CURRENT_YEAR = int(os.environ['CURRENT_YEAR'])
 
 
 class DevelopmentConfig(BaseConfig):
