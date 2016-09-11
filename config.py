@@ -14,11 +14,13 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.environ['UPLOAD_FOLDER']
     CURRENT_YEAR = int(os.environ['CURRENT_YEAR'])
+    MAIL_UPDATE_INTERVAL_SECONDS = 60
 
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     BOOTSTRAP_SERVE_LOCAL = True
+    MAIL_UPDATE_INTERVAL_SECONDS = 10
 
 
 class TestingConfig(BaseConfig):
