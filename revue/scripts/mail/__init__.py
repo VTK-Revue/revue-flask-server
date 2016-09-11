@@ -1,4 +1,5 @@
 import os
+import time
 
 from revue.models.mail import MailingAlias, YearGroupMailingList, PersistentGroupMailingList, MailingList
 from revue.models.general import RevueYear
@@ -15,6 +16,7 @@ def generate_list_file(name, entries):
 
 def generate_list_files():
     # TODO: create files in new directory and replace target directory with this temporary directory
+    # Currently existing files are never removed
     for l in PersistentGroupMailingList.query.all():
         generate_list_file(l.get_local_address(), l.entries())
     for l in MailingList.query.all():
@@ -43,5 +45,6 @@ def generate_alias_file():
 
 
 def generate_all_mail_files():
+    print("Generating all mail files. ({})".format(time.strftime("%A, %d. %B %Y %I:%M:%S %p")))
     generate_alias_file()
     generate_list_files()

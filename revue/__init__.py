@@ -44,3 +44,7 @@ from revue.utilities.ui.bootstrap import CustomBootstrapRenderer
 
 register_renderer(app, 'custom_bootstrap_nav', CustomBootstrapRenderer)
 nav.init_app(app)
+
+from revue.scripts import schedule_cron_jobs
+
+schedule_cron_jobs()
