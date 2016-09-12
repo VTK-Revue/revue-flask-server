@@ -84,10 +84,10 @@ def join_year(year):
     msg = Message("{} requested to join the Revue year {}".format(user.name(), revue_year.year),
                   sender="it@" + os.environ['EMAIL_SUFFIX'],
                   recipients=["it@" + os.environ['EMAIL_SUFFIX']])
-    msg.html = ("Hi IT\n\n" +
+    msg.html = ("Hi IT,<br>" +
                 "{} asked to join the Revue year {}. Visit <a href='{}'>this link</a> to approve or decline."
-                "\n\nKind regards,"
-                "\n\nYour friendly revue server").format(user.name(), revue_year.year,
+                "<br>Kind regards,"
+                "<br>Your friendly revue server").format(user.name(), revue_year.year,
                                                          url_for('admin.show_year_participations',
                                                                  year=revue_year.year, _external=True))
     mail.send(msg)
