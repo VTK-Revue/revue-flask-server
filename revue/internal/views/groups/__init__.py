@@ -89,7 +89,7 @@ def join_year(year):
                 "\n\nKind regards,"
                 "\n\nYour friendly revue server").format(user.name(), revue_year.year,
                                                          url_for('admin.show_year_participations',
-                                                                 year=revue_year.year))
+                                                                 year=revue_year.year, _external=True))
     mail.send(msg)
     flash('Successfully asked to join year', 'success')
     return redirect(url_for('.index'))

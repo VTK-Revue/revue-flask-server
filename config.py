@@ -15,6 +15,7 @@ class BaseConfig(object):
     UPLOAD_FOLDER = os.environ['UPLOAD_FOLDER']
     CURRENT_YEAR = int(os.environ['CURRENT_YEAR'])
     MAIL_UPDATE_INTERVAL_SECONDS = 60
+    HOSTNAME = os.environ['HOSTNAME']
 
 
 class DevelopmentConfig(BaseConfig):
