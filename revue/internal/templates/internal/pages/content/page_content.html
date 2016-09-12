@@ -2,7 +2,6 @@
     {{ text_content_element.content|safe }}
 {% endmacro %}
 {% macro render_content_element(content_element) %}
-    {{ content_element.title }}
     {% if content_element.type == "text" %}
         {{ render_text_content_element(content_element) }}
     {% else %}
