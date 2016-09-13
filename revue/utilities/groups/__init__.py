@@ -71,7 +71,7 @@ def get_year_group_participation(year_group, revue_year, user):
                                                   year_group_id=year_group.id).first()
 
 
-def leave_year_group(year_group, user, year):
+def leave_year_group(year_group, year, user):
     participation = get_year_group_participation(year_group, year, user)
     db.session.delete(participation)
     db.session.commit()
