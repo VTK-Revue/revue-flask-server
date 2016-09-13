@@ -4,6 +4,19 @@
 
 {% block page_content %}
     <h1>{{ group.name }} - {{ year.year }}</h1>
+    {% if group.mailing_list() %}
+        {% if year.is_current_year() %}
+            {% set mail_address=group.mailing_list().get_address() %}
+        {% else %}
+            {% set mail_address=group.mailing_list().get_address_year(year) %}
+        {% endif %}
+        This group can be reached at
+        <a href="mailto:{{ mail_address }}">
+            {{ mail_address }}
+        </a>
+    {% else %}
+        This group does not have a mailing list.
+    {% endif %}<br>
     {% if current_user_member %}
         <a class="btn btn-default" href="{{ url_for('.leave_yeargroup_by_year_and_id', year=year.year, id=group.id) }}">Leave</a>
     {% else %}

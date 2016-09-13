@@ -16,6 +16,7 @@ class BaseConfig(object):
     CURRENT_YEAR = int(os.environ['CURRENT_YEAR'])
     MAIL_UPDATE_INTERVAL_SECONDS = 60
     HOSTNAME = os.environ['HOSTNAME']
+    EMAIL_SUFFIX = os.environ['EMAIL_SUFFIX']
 
 
 class DevelopmentConfig(BaseConfig):

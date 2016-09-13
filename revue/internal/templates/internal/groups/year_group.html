@@ -4,16 +4,17 @@
 
 {% block page_content %}
     <h1>{{ group.name }}</h1>
-    <p>
-        {{ group.description }}
-    </p>
     <section id="mail">
         {% if group.mailing_list() %}
-            This group has a mailing list: {{ group.mailing_list().get_address() }}.
+            This group has a mailing list:
+            <a href="mailto:{{ group.mailing_list().get_address() }}">{{ group.mailing_list().get_address() }}</a>.
         {% else %}
             This group does not have a mailing list.
         {% endif %}
     </section>
+    <p>
+        {{ group.description }}
+    </p>
     <section id="menu">
         <h3>Menu</h3>
         {{ render_menu(menu) }}
@@ -21,6 +22,7 @@
     {% for data in data_per_year %}
         <div>
             <h2>{{ data.year.year }}</h2>
+            <a href="{{ url_for('.show_yeargroup_by_year_and_id', year=data.year.year, id=group.id) }}">Link</a><br>
             {% if data.current_user_member %}
                 <a class="btn btn-default"
                    href="{{ url_for('.leave_yeargroup_by_year_and_id', year=data.year.year, id=group.id) }}">Leave</a>

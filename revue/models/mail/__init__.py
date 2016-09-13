@@ -1,6 +1,5 @@
-import os
 import revue.models.general
-from revue import db
+from revue import db, app
 from revue.models.groups import PersistentGroup, YearGroup
 
 
@@ -30,7 +29,7 @@ class MailingAddressIntern(MailingAddress):
         self.name = name
 
     def get_address(self):
-        return self.name + "@" + os.environ['EMAIL_SUFFIX']
+        return self.name + "@" + app.config['EMAIL_SUFFIX']
 
     def get_local_address(self):
         return self.name
@@ -87,6 +86,9 @@ class YearGroupMailingList(MailingAddressIntern):
 
     def get_local_address_year(self, revue_year):
         return self.get_local_address() + revue_year.get_mail_affix()
+
+    def get_address_year(self, revue_year):
+        return self.get_local_address_year(revue_year) + "@" + app.config['EMAIL_SUFFIX']
 
     def get_entries_per_year(self):
         result = []

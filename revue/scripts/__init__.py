@@ -6,7 +6,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from revue import app
 from revue.scripts.mail import generate_all_mail_files
 
-scheduler = BackgroundScheduler()
+scheduler = BackgroundScheduler(daemon=False)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 

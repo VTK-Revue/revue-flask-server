@@ -1,4 +1,4 @@
-from revue import db, bcrypt
+from revue import db, bcrypt, app
 from revue.models.mail import MailingAddressExtern
 from revue.models.groups import YearParticipation
 
@@ -79,3 +79,6 @@ class RevueYear(db.Model):
 
     def participations(self):
         return YearParticipation.query.filter_by(year_id=self.id)
+
+    def is_current_year(self):
+        return self.year == app.config['CURRENT_YEAR']
