@@ -1,9 +1,10 @@
 from flask import render_template, request, flash, redirect, url_for
 
 from revue.admin.views import admin_site
-from revue.models.mail import PersistentGroupMailingList,YearGroupMailingList
-from .forms import *
 from revue.admin.views.groups import years
+from revue.models.mail import PersistentGroupMailingList, YearGroupMailingList
+from .forms import *
+
 
 @admin_site.route('/groups', methods=['GET'])
 def group_page():
@@ -22,12 +23,6 @@ def create_persistent_group():
         flash('Successfully created persistent group ' + pg.name, 'success')
         return redirect(url_for('.edit_persistent_group', id=pg.id))
     return render_template('admin/groups/create_persistent_group.html', form=form)
-
-
-@admin_site.route('/persistent_groups')
-def all_persistent_groups():
-    groups = PersistentGroup.query.all()
-    return render_template('admin/groups/all_persistent_groups.html', groups=groups)
 
 
 @admin_site.route('/persistent_group/<int:id>/edit', methods=['POST', 'GET'])
@@ -60,12 +55,6 @@ def create_year_group():
         flash('Successfully created year group ' + yg.name, 'success')
         return redirect(url_for('.edit_year_group', id=yg.id))
     return render_template('admin/groups/create_year_group.html', form=form)
-
-
-@admin_site.route('/year_groups')
-def all_year_groups():
-    groups = YearGroup.query.all()
-    return render_template('admin/groups/all_year_groups.html', groups=groups)
 
 
 @admin_site.route('/year_group/<int:id>/edit', methods=['GET', 'POST'])
