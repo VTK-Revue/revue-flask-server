@@ -77,12 +77,12 @@ def edit_year_group(id):
     if form.validate_on_submit():
         form.populate_obj(group)
         db.session.commit()
-        flash('Successfully edited persistent group', 'success')
+        flash('Successfully edited year group', 'success')
     if generate_mailing_list_form.validate_on_submit():
         group_list = YearGroupMailingList(group.id, generate_mailing_list_form.name.data)
         db.session.add(group_list)
         db.session.commit()
-        flash('Successfully added mailing list to year group', 'succes')
+        flash('Successfully added mailing list to year group', 'success')
     return render_template('admin/groups/edit_year_group.html', form=form, group=group,
                            generate_mailing_list_form=generate_mailing_list_form)
 
