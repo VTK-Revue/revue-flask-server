@@ -30,7 +30,7 @@ def generate_list_files():
         entries_list = l.get_entries_per_year()
         for ml in entries_list:
             generate_list_file(l.get_local_address_year(ml['year']), ml['entries'])
-            if ml['year'] == current_year:
+            if ml['year'].year == current_year:
                 generate_list_file(base_filename, ml['entries'])
     for year in RevueYear.query.all():
         year_participations = groups.get_year_participations(year)
