@@ -42,7 +42,9 @@ class MailingList(MailingAddressIntern):
         "polymorphic_identity": "list"
     }
     id = db.Column(db.Integer, db.ForeignKey('mail.intern.id'), primary_key=True)
-    entries = db.relationship("MailingListEntry", backref="list")
+
+    def entries(self):
+        return MailingListEntry.query.filter_by(list_id=self.id)
 
     def __init__(self, name):
         MailingAddressIntern.__init__(self, name)
