@@ -6,10 +6,7 @@ from revue import nav
 public_navbar = CustomNavbar(
     'Revue',
     [
-        View('Home', '.index'),
-        View('Voorstellingen', '.voorstellingen'),
-        View('Tickets', '.ticket_info'),
-        View('Contact', '.contact')
+        View('Home', '.index')
     ], [
         View('Intern', 'intern.index')
     ]
