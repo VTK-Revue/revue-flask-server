@@ -104,3 +104,25 @@ class YearGroupParticipation(db.Model):
 
     def year_participation(self):
         return YearParticipation.query.get(self.year_participation_id)
+
+
+class SensitiveYearGroupParticipationRequest(db.Model):
+    __tablename__ = 'sensitive_year_group_participation_request'
+    __table_args__ = (db.PrimaryKeyConstraint("year_group_id", "year_participation_id"), {'schema': 'general'})
+    year_group_id = db.Column('year_group_id', db.Integer, db.ForeignKey('general.year_group.id'), nullable=False)
+    year_participation_id = db.Column("year_participation_id", db.Integer, db.ForeignKey("general.year_participation.id"), nullable=False)
+
+    def __init__(self, year_group_id, year_participation_id):
+        self.year_group_id = year_group_id
+        self.year_participation_id = year_participation_id
+
+
+class SensitivePersistentGroupParticipationRequest(db.Model):
+    __tablename__ = 'sensitive_persistent_group_participation_request'
+    __table_args__ = (db.PrimaryKeyConstraint("persistent_group_id", "user_id"), {'schema': 'general'})
+    persistent_group_id = db.Column("persistent_group_id", db.Integer, db.ForeignKey("general.group.id"), nullable=False)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('general.user.id'), nullable=False)
+
+    def __init__(self, persistent_group_id, user_id):
+        self.persistent_group_id = persistent_group_id
+        self.user_id = user_id

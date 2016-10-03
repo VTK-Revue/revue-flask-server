@@ -115,20 +115,27 @@ def show_yeargroup_by_year_and_id(year, id):
                                                                                                   get_current_user()) is not None)
 
 
+# TODO test if user already asked to join
 @internal_site.route('/yeargroup/<int:year>/<int:id>/join')
 def join_yeargroup_by_year_and_id(year, id):
     revue_year = groups.get_revue_year_by_year(year)
     year_group = groups.get_group_by_id(id)
-    groups.join_year_group(year_group=year_group, revue_year=revue_year, user=get_current_user())
-    flash('Successfully joined group!', 'success')
+    joined = groups.join_year_group(year_group=year_group, revue_year=revue_year, user=get_current_user())
+    if joined:
+        flash('Successfully joined group!', 'success')
+    else:
+        flash('Please wait until your participation request is approved', 'info')
     return redirect(url_for('.show_yeargroup_by_year_and_id', year=year, id=id))
 
 
 @internal_site.route('/group/<int:id>/join')
 def join_persistent_group_by_id(id):
     persistent_group = groups.get_group_by_id(id)
-    groups.join_persistent_group(persistent_group=persistent_group, user=get_current_user())
-    flash('Successfully joined group!', 'success')
+    joined = groups.join_persistent_group(persistent_group=persistent_group, user=get_current_user())
+    if joined:
+        flash('Successfully joined group!', 'success')
+    else:
+        flash('Please wait until your participation request is approved', 'info')
     return redirect(url_for('.show_group_by_id', id=id))
 
 

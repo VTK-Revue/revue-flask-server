@@ -1,7 +1,8 @@
 from revue import db, app
 from revue.models.general import User, RevueYear
 from revue.models.groups import PersistentGroupParticipation, Group, YearGroupParticipation, \
-    YearParticipation, YearParticipationRequest, YearGroup
+    YearParticipation, YearParticipationRequest, PersistentGroup, YearGroup, \
+    SensitiveYearGroupParticipationRequest, SensitivePersistentGroupParticipationRequest
 from revue.models.menus import GroupMenu, MenuEntry
 
 
@@ -44,17 +45,34 @@ def request_year_participation(revue_year, user):
 def get_year_groups():
     return YearGroup.query.all()
 
+
 def join_year_group(year_group, revue_year, user):
+    group = Group.query.filter_by(id=year_group.id).first()
     yp = get_year_participation(revue_year=revue_year, user=user)
-    ygp = YearGroupParticipation(year_group_id=year_group.id, year_participation_id=yp.id)
-    db.session.add(ygp)
-    db.session.commit()
+    if group.sensitive:
+        request = SensitiveYearGroupParticipationRequest(year_group.id, yp.id)
+        db.session.add(request)
+        db.session.commit()
+        return False
+    else:
+        ygp = YearGroupParticipation(year_group_id=year_group.id, year_participation_id=yp.id)
+        db.session.add(ygp)
+        db.session.commit()
+        return True
 
 
 def join_persistent_group(persistent_group, user):
-    group_participation = PersistentGroupParticipation(persistent_group_id=persistent_group.id, user_id=user.id)
-    db.session.add(group_participation)
-    db.session.commit()
+    group = Group.query.filter_by(id=persistent_group.id).first()
+    if group.sensitive:
+        request = SensitivePersistentGroupParticipationRequest(persistent_group.id, user.id)
+        db.session.add(request)
+        db.session.commit()
+        return False
+    else:
+        group_participation = PersistentGroupParticipation(persistent_group_id=persistent_group.id, user_id=user.id)
+        db.session.add(group_participation)
+        db.session.commit()
+        return True
 
 
 def get_year_participation(revue_year, user):
@@ -79,6 +97,12 @@ def leave_year_group(year_group, year, user):
 
 def get_persistent_group_participation(persistent_group, user):
     return PersistentGroupParticipation.query.filter_by(group_id=persistent_group.id, user_id=user.id).first()
+
+
+# def get_specific_group_by_id(group_id):
+#     # FIXME is it possible to do this automatically for all types of groups?
+#     return PersistentGroup.query.filter_by(persistent_group_id=group_id) or \
+#             YearGroup.query.filter_by(year_group_id=group_id)
 
 
 def get_revue_year_members(revue_year):
@@ -162,3 +186,28 @@ def get_year_group_members_by_year(year_group):
 
 def get_current_year():
     return get_revue_year_by_year(int(app.config['CURRENT_YEAR']))
+
+
+def get_sensitive_year_group_participation_requests():
+    return SensitiveYearGroupParticipationRequest.query.all()
+
+
+def get_sensitive_persistent_group_participation_requests():
+    return SensitivePersistentGroupParticipationRequest.query.all()
+
+
+def approve_sensitive_persistent_group_participation_request(user, group):
+    request = SensitivePersistentGroupParticipationRequest(persistent_group_id=group.id, user_id=user.id)
+    group_participation = PersistentGroupParticipation(persistent_group_id=persistent_group.id, user_id=user.id)
+    db.session.delete(request)
+    db.session.add(group_participation)
+    db.session.commit()
+
+
+def approve_sensitive_year_group_participation_request(user, revue_year, year_group):
+    year_participation = get_year_participation(revue_year=revue_year, user=user)
+    request = SensitiveYearGroupParticipationRequest(year_group_id=year_group.id, year_participation_id=year_participation.id)
+    ygp = YearGroupParticipation(year_group_id=year_group.id, year_participation_id=year_participation.id)
+    db.session.delete(request)
+    db.session.add(ygp)
+    db.session.commit()
