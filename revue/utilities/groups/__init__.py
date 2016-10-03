@@ -200,6 +200,7 @@ def approve_sensitive_persistent_group_participation_request(user, group):
     request = SensitivePersistentGroupParticipationRequest(persistent_group_id=group.id, user_id=user.id)
     group_participation = PersistentGroupParticipation(persistent_group_id=persistent_group.id, user_id=user.id)
     db.session.delete(request)
+    db.session.commit()
     db.session.add(group_participation)
     db.session.commit()
 
@@ -209,5 +210,6 @@ def approve_sensitive_year_group_participation_request(user, revue_year, year_gr
     request = SensitiveYearGroupParticipationRequest(year_group_id=year_group.id, year_participation_id=year_participation.id)
     ygp = YearGroupParticipation(year_group_id=year_group.id, year_participation_id=year_participation.id)
     db.session.delete(request)
+    db.session.commit()
     db.session.add(ygp)
     db.session.commit()

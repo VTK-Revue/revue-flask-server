@@ -35,12 +35,12 @@
         <th>Activate</th>
         <th>Reject</th>
     </tr>
-    {% for request in persistent_group_join_requests %}
+    {% for user, group in persistent_group_join_requests %}
     <tr>
-        <td>{{ request['user'].username }}</td>
-        <td>{{ request['group'].name }}</td>
-        <td><a href="{{ url_for('.approve_sensitive_persistent_group_participation_request', user_id=request.user.id, group_id=request.group.id) }}">Approve</a></td>
-        <td><a href="{{ url_for('.reject_sensitive_persistent_group_participation_request', user_id=request.user.id, group_id=request.group.id) }}">Reject</a></td>
+        <td>{{ user.username }}</td>
+        <td>{{ group.name }}</td>
+        <td><a href="{{ url_for('.approve_sensitive_persistent_group_participation_request', user_id=user.id, group_id=group.id) }}">Approve</a></td>
+        <td><a href="{{ url_for('.reject_sensitive_persistent_group_participation_request', user_id=user.id, group_id=group.id) }}">Reject</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -54,13 +54,13 @@
         <th>Activate</th>
         <th>Reject</th>
     </tr>
-    {% for request in persistent_group_join_requests %}
+    {% for user, group, revue_year in year_group_join_requests %}
     <tr>
-        <td>{{ request['user'].username }}</td>
-        <td>{{ request['group'].name }}</td>
-        <td>{{ request['revue_year'].year }}</td>
-        <td><a href="{{ url_for('.approve_sensitive_year_group_participation_request', user_id=request.user.id, revue_year_id=request.revue_year.id, group_id=request.group.id) }}">Approve</a></td>
-        <td><a href="{{ url_for('.reject_sensitive_year_group_participation_request', user_id=request.user.id, revue_year_id=request.revue_year.id, group_id=request.group.id) }}">Reject</a></td>
+        <td>{{ user.username }}</td>
+        <td>{{ group.name }}</td>
+        <td>{{ revue_year.year }}</td>
+        <td><a href="{{ url_for('.approve_sensitive_year_group_participation_request', user_id=user.id, revue_year_id=revue_year.id, group_id=group.id) }}">Approve</a></td>
+        <td><a href="{{ url_for('.reject_sensitive_year_group_participation_request', user_id=user.id, revue_year_id=revue_year.id, group_id=group.id) }}">Reject</a></td>
     </tr>
     {% endfor %}
 </table>

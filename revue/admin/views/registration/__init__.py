@@ -17,19 +17,15 @@ from revue.models.groups import Group, YearParticipation, \
 def registrations():
     registrations = User.query.filter_by(activated=None).all()
 
-    persistent_group_join_requests = [{
-                'user': User.query.get(request.user_id),
-                'group': Group.query.get(request.group_id),
-            } for request in groups.get_sensitive_persistent_group_participation_requests()]
+    persistent_group_join_requests = [(User.query.get(request.user_id), Group.query.get(request.group_id))
+            for request in groups.get_sensitive_persistent_group_participation_requests()]
 
     year_group_join_requests = []
     for request in groups.get_sensitive_year_group_participation_requests():
         year_participation = YearParticipation.query.get(request.year_participation_id)
-        year_group_join_requests.append({
-            'user': User.query.get(year_participation.user_id),
-            'group': Group.query.get(request.year_group_id),
-            'revue_year': RevueYear.query.get(year_participation.year_id),
-        })
+        year_group_join_requests.append((User.query.get(year_participation.user_id),
+            Group.query.get(request.year_group_id),
+            RevueYear.query.get(year_participation.year_id)))
 
     return render_template("admin/registration/activate.html",
             registrations=registrations,
@@ -90,9 +86,9 @@ def reject_sensitive_persistent_group_participation_request(user_id, group_id):
 
 @admin_site.route("/registration/year_group_request/<int:user_id>/<int:revue_year_id>/<int:group_id>/approve")
 def approve_sensitive_year_group_participation_request(user_id, revue_year_id, group_id):
-    user = User.query.filter_by(id=user_id).first()
-    revue_year = Group.query.filter_by(id=revue_year_id).first()
-    group = Group.query.filter_by(id=group_id).first()
+    user = User.query.get(user_id)
+    revue_year = Group.query.get(revue_year_id)
+    group = Group.query.get(group_id)
 
     groups.approve_sensitive_year_group_participation_request(user, revue_year, group)
 
@@ -102,12 +98,12 @@ def approve_sensitive_year_group_participation_request(user_id, revue_year_id, g
 
 @admin_site.route("/registration/year_group_request/<int:user_id>/<int:revue_year_id>/<int:group_id>/reject")
 def reject_sensitive_year_group_participation_request(user_id, revue_year_id, group_id):
-    user = User.query.filter_by(id=user_id).first()
-    revue_year = Group.query.filter_by(id=revue_year_id).first()
-    group = Group.query.filter_by(id=group_id).first()
+    user = User.query.get(user_id)
+    revue_year = RevueYear.query.get(revue_year_id)
+    group = Group.query.get(group_id)
 
-    year_participation = get_year_participation(revue_year=revue_year, user=user)
-    request = SensitiveYearGroupParticipationRequest(year_group_id=year_group.id, year_participation_id=year_participation.id)
+    year_participation = groups.get_year_participation(revue_year=revue_year, user=user)
+    request = SensitiveYearGroupParticipationRequest(year_group_id=group.id, year_participation_id=year_participation.id)
     db.session.delete(request)
     db.session.commit()
 
